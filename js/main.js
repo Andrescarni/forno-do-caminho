@@ -125,18 +125,7 @@ navLinks.querySelectorAll('.nav__link').forEach(link => {
   tick();
 })();
 
-/* ════════════════════════════════════════
-   TRUST BAND MARQUEE — DUPLICATE ITEMS
-════════════════════════════════════════ */
-(function initMarquee() {
-  const runner = document.getElementById('trustRunner');
-  if (!runner) return;
-  const row = runner.querySelector('.trust-row');
-  if (!row) return;
-  const clone = row.cloneNode(true);
-  clone.setAttribute('aria-hidden', 'true');
-  runner.appendChild(clone);
-})();
+/* Trust band marquee — items duplicated in HTML, no JS needed */
 
 /* ════════════════════════════════════════
    SPOTLIGHT CARDS (cult-ui animated-cards)

@@ -506,45 +506,35 @@ body::after {
 .trust-fade--l { left: 0;  background: linear-gradient(to right, var(--bg-card), transparent); }
 .trust-fade--r { right: 0; background: linear-gradient(to left,  var(--bg-card), transparent); }
 
-/* The runner animates — contains two identical rows side by side */
+/* Runner: width:max-content so -50% refers to actual content width */
 .trust-runner {
   display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  overflow: hidden;
-  animation: marquee 30s linear infinite;
+  align-items: center;
+  width: max-content;
+  padding: 1.1rem 0;
+  animation: marquee 32s linear infinite;
 }
 .trust-band:hover .trust-runner { animation-play-state: paused; }
 
 @keyframes marquee {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
 }
 
-/* Each row is a flex-row of items */
-.trust-row {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  align-items: center;
-  flex-shrink: 0;
-  padding: 1.15rem 0;
-}
 .trust-item {
-  display: flex;
-  flex-direction: row;
+  display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
-  padding: 0 2rem;
-  font-size: 0.83rem;
+  gap: 0.55rem;
+  padding: 0 1.8rem;
+  font-size: 0.82rem;
   font-weight: 400;
   color: var(--text);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.045em;
   white-space: nowrap;
-  flex-shrink: 0;
 }
-.trust-item svg { width: 16px; height: 16px; color: var(--gold); flex-shrink: 0; }
+.trust-item svg { width: 15px; height: 15px; color: var(--gold); flex-shrink: 0; }
 .trust-dot {
+  display: inline-block;
   width: 3px; height: 3px;
   border-radius: 50%;
   background: var(--gold);
