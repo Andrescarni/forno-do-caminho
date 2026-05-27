@@ -129,12 +129,13 @@ navLinks.querySelectorAll('.nav__link').forEach(link => {
    TRUST BAND MARQUEE — DUPLICATE ITEMS
 ════════════════════════════════════════ */
 (function initMarquee() {
-  const track = document.getElementById('trustTrack');
-  if (!track) return;
-  // Clone children for seamless loop
-  const clone = track.cloneNode(true);
+  const runner = document.getElementById('trustRunner');
+  if (!runner) return;
+  const row = runner.querySelector('.trust-row');
+  if (!row) return;
+  const clone = row.cloneNode(true);
   clone.setAttribute('aria-hidden', 'true');
-  track.parentElement.appendChild(clone);
+  runner.appendChild(clone);
 })();
 
 /* ════════════════════════════════════════

@@ -487,7 +487,7 @@ body::after {
 }
 
 /* ════════════════════════════════════════
-   TRUST BAND (marquee)
+   TRUST BAND (marquee horizontal)
 ════════════════════════════════════════ */
 .trust-band {
   border-top: 1px solid var(--border);
@@ -495,48 +495,60 @@ body::after {
   background: var(--bg-card);
   position: relative;
   overflow: hidden;
-  padding: 0;
 }
-.trust-band__mask--left,
-.trust-band__mask--right {
+.trust-fade {
   position: absolute;
   top: 0; bottom: 0;
-  width: 120px;
+  width: 110px;
   z-index: 2;
   pointer-events: none;
 }
-.trust-band__mask--left  { left: 0;  background: linear-gradient(to right, var(--bg-card), transparent); }
-.trust-band__mask--right { right: 0; background: linear-gradient(to left,  var(--bg-card), transparent); }
-.trust-band__viewport { overflow: hidden; }
-.trust-band__track {
+.trust-fade--l { left: 0;  background: linear-gradient(to right, var(--bg-card), transparent); }
+.trust-fade--r { right: 0; background: linear-gradient(to left,  var(--bg-card), transparent); }
+
+/* The runner animates — contains two identical rows side by side */
+.trust-runner {
   display: flex;
-  align-items: center;
-  width: max-content;
-  animation: marquee 28s linear infinite;
-  padding: 1.1rem 0;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  animation: marquee 30s linear infinite;
 }
-.trust-band:hover .trust-band__track { animation-play-state: paused; }
+.trust-band:hover .trust-runner { animation-play-state: paused; }
+
 @keyframes marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Each row is a flex-row of items */
+.trust-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 1.15rem 0;
 }
 .trust-item {
   display: flex;
+  flex-direction: row;
   align-items: center;
-  gap: 0.65rem;
-  padding: 0 2.2rem;
-  font-size: 0.84rem;
+  gap: 0.6rem;
+  padding: 0 2rem;
+  font-size: 0.83rem;
   font-weight: 400;
   color: var(--text);
   letter-spacing: 0.04em;
   white-space: nowrap;
+  flex-shrink: 0;
 }
-.trust-item svg { width: 17px; height: 17px; color: var(--gold); flex-shrink: 0; }
+.trust-item svg { width: 16px; height: 16px; color: var(--gold); flex-shrink: 0; }
 .trust-dot {
   width: 3px; height: 3px;
   border-radius: 50%;
   background: var(--gold);
-  opacity: 0.4;
+  opacity: 0.35;
   flex-shrink: 0;
 }
 
@@ -552,56 +564,103 @@ body::after {
 }
 
 /* Visual side */
-.historia__visual { position: relative; display: flex; align-items: center; justify-content: center; }
-.historia__oven-frame {
+.historia__visual {
   position: relative;
-  padding: 2rem;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
 }
+
+/* Premium oven card — dark warm background so wireframe SVG is visible */
+.historia__oven-card {
+  position: relative;
+  width: 100%;
+  background: linear-gradient(155deg, #1d1911 0%, #131108 60%, #0e0e0e 100%);
+  border: 1px solid rgba(201,168,76,.22);
+  border-radius: var(--r-lg);
+  padding: 2.8rem 2.2rem 1.8rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  transition: border-color var(--transition);
+}
+.historia__oven-card:hover { border-color: rgba(201,168,76,.42); }
+
+/* Animated fire glow behind oven */
+.historia__fire-glow {
+  position: absolute;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 280px; height: 200px;
+  background: radial-gradient(ellipse at 50% 100%,
+    rgba(201,168,76,.18) 0%,
+    rgba(201,100,20,.08) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+  animation: ovenGlow 3.5s ease-in-out infinite;
+}
+@keyframes ovenGlow {
+  0%, 100% { opacity: 0.65; transform: translateX(-50%) scaleX(1); }
+  50%       { opacity: 1;    transform: translateX(-50%) scaleX(1.12); }
+}
+
+/* The oven SVG */
 .historia__oven-svg {
   width: 100%;
-  max-width: 310px;
-  filter: drop-shadow(0 0 35px rgba(201,168,76,.12)) drop-shadow(0 0 60px rgba(201,168,76,.06));
+  max-width: 280px;
+  position: relative;
+  z-index: 1;
+  filter:
+    drop-shadow(0 0 12px rgba(201,168,76,.35))
+    drop-shadow(0 0 40px rgba(201,168,76,.12));
 }
 
-/* Corner decorations */
-.historia__corner {
-  position: absolute;
-  width: 28px; height: 28px;
-  border-color: rgba(201,168,76,.3);
-  border-style: solid;
-}
-.historia__corner--tl { top: 0; left: 0; border-width: 1px 0 0 1px; }
-.historia__corner--br { bottom: 0; right: 0; border-width: 0 1px 1px 0; }
-
-/* Fire animations */
-.fire-pulse   { animation: firePulse 2.4s ease-in-out infinite; }
-.fire-pulse-2 { animation: firePulse 1.8s ease-in-out infinite 0.4s; }
+/* Fire pulse animations on SVG ellipses */
+.fire-pulse   { animation: firePulse 2.6s ease-in-out infinite; }
+.fire-pulse-2 { animation: firePulse 1.9s ease-in-out infinite 0.5s; }
 @keyframes firePulse {
-  0%, 100% { opacity: 0.12; }
-  50%       { opacity: 0.28; }
+  0%, 100% { opacity: 0.1; }
+  50%       { opacity: 0.3; }
 }
 
-/* Badge */
-.historia__badge {
-  position: absolute;
-  bottom: -8px; right: 0;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--r-lg);
-  padding: 1rem 1.4rem;
+/* Stats chips at the bottom of the card */
+.historia__chips {
+  display: flex;
+  gap: 0.6rem;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+.historia__chip {
+  flex: 1;
+  background: rgba(201,168,76,.06);
+  border: 1px solid rgba(201,168,76,.18);
+  border-radius: var(--r);
+  padding: 0.65rem 0.5rem;
   text-align: center;
   display: flex;
   flex-direction: column;
-  gap: 0.1rem;
-  box-shadow: 0 8px 32px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.04);
+  gap: 0.15rem;
+  transition: var(--transition);
 }
-.historia__badge-text { font-size: 0.7rem; color: var(--text-muted); letter-spacing: 0.06em; }
-.historia__badge-big {
+.historia__chip:hover {
+  background: rgba(201,168,76,.12);
+  border-color: rgba(201,168,76,.4);
+}
+.historia__chip-val {
   font-family: var(--font-serif);
-  font-size: 1.55rem;
-  font-style: italic;
+  font-size: 1.25rem;
   color: var(--gold);
   line-height: 1;
+}
+.historia__chip-lbl {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 /* Content side */
