@@ -64,19 +64,148 @@
     <!-- Background radial glow -->
     <div class="hero__glow" aria-hidden="true"></div>
 
-    <!-- Landscape illustration -->
+    <!-- Landscape illustration — Santiago de Compostela + Camino -->
     <div class="hero__illustration" aria-hidden="true">
       <svg viewBox="0 0 1400 320" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0 320 Q180 180 360 230 Q540 265 700 175 Q860 90 1040 200 Q1220 280 1400 220 L1400 320 Z" fill="none" stroke="#c9a84c" stroke-width="1.5" opacity="0.18"/>
-        <path d="M0 320 Q200 200 380 245 Q560 280 720 190 Q880 105 1060 210 Q1240 290 1400 235 L1400 320 Z" fill="none" stroke="#c9a84c" stroke-width="1" opacity="0.09"/>
-        <!-- Cypress trees -->
-        <ellipse cx="950" cy="130" rx="13" ry="50" fill="none" stroke="#c9a84c" stroke-width="1.5" opacity="0.22"/>
-        <ellipse cx="982" cy="108" rx="11" ry="62" fill="none" stroke="#c9a84c" stroke-width="1.5" opacity="0.22"/>
-        <ellipse cx="1010" cy="125" rx="12" ry="54" fill="none" stroke="#c9a84c" stroke-width="1.5" opacity="0.18"/>
-        <ellipse cx="1035" cy="118" rx="10" ry="58" fill="none" stroke="#c9a84c" stroke-width="1" opacity="0.14"/>
-        <!-- Path/road -->
-        <path d="M0 300 Q300 278 500 258 Q650 242 700 268 Q750 295 900 268 Q1100 238 1400 270" fill="none" stroke="#c9a84c" stroke-width="1.5" opacity="0.18"/>
-        <path d="M0 312 Q300 293 500 275 Q650 260 700 282 Q750 308 900 282 Q1100 255 1400 283" fill="none" stroke="#c9a84c" stroke-width="0.8" opacity="0.09"/>
+
+        <!-- ── Galician hills (distant background) ── -->
+        <path d="M0 320 Q150 268 350 284 Q550 300 700 240 Q850 186 1050 258 Q1250 294 1400 272 L1400 320 Z"
+              fill="none" stroke="#c9a84c" stroke-width="1.1" opacity="0.12"/>
+        <path d="M0 320 Q200 262 380 276 Q580 290 700 250 Q820 210 1020 264 Q1220 290 1400 275 L1400 320 Z"
+              fill="none" stroke="#c9a84c" stroke-width="0.7" opacity="0.07"/>
+
+        <!-- ── Perspective radials from cathedral (one-point) ── -->
+        <line x1="700" y1="218" x2="0"    y2="295" stroke="#c9a84c" stroke-width="0.5" opacity="0.06"/>
+        <line x1="700" y1="218" x2="1400" y2="295" stroke="#c9a84c" stroke-width="0.5" opacity="0.06"/>
+        <line x1="700" y1="218" x2="0"    y2="320" stroke="#c9a84c" stroke-width="0.4" opacity="0.05"/>
+        <line x1="700" y1="218" x2="1400" y2="320" stroke="#c9a84c" stroke-width="0.4" opacity="0.05"/>
+
+        <!-- ── El Camino de Santiago — converging pilgrim path ── -->
+        <!-- Left edge -->
+        <path d="M0 320 Q240 300 468 260 Q565 240 645 220"
+              stroke="#c9a84c" stroke-width="1.4" opacity="0.27" fill="none" stroke-linecap="round"/>
+        <!-- Right edge -->
+        <path d="M510 320 Q672 300 780 258 Q840 238 755 220"
+              stroke="#c9a84c" stroke-width="1.4" opacity="0.27" fill="none" stroke-linecap="round"/>
+        <!-- Dashed center line (pilgrim waymark) -->
+        <path d="M255 320 Q448 300 614 252 Q664 232 700 220"
+              stroke="#c9a84c" stroke-width="0.75" opacity="0.13" stroke-dasharray="6 11" fill="none"/>
+        <!-- Faint cobblestone cross-lines -->
+        <line x1="100" y1="312" x2="465" y2="312" stroke="#c9a84c" stroke-width="0.5" opacity="0.08"/>
+        <line x1="210" y1="304" x2="530" y2="304" stroke="#c9a84c" stroke-width="0.4" opacity="0.07"/>
+        <line x1="310" y1="296" x2="578" y2="296" stroke="#c9a84c" stroke-width="0.4" opacity="0.06"/>
+
+        <!-- ── Trees flanking the path (Galician pines / eucalyptus) ── -->
+        <!-- Left side -->
+        <ellipse cx="162" cy="248" rx="13" ry="52" fill="none" stroke="#c9a84c" stroke-width="1.2" opacity="0.20"/>
+        <ellipse cx="196" cy="226" rx="11" ry="63" fill="none" stroke="#c9a84c" stroke-width="1.2" opacity="0.20"/>
+        <ellipse cx="230" cy="240" rx="12" ry="55" fill="none" stroke="#c9a84c" stroke-width="1"   opacity="0.15"/>
+        <ellipse cx="260" cy="232" rx="9"  ry="59" fill="none" stroke="#c9a84c" stroke-width="1"   opacity="0.12"/>
+        <!-- Right side -->
+        <ellipse cx="1178" cy="246" rx="13" ry="53" fill="none" stroke="#c9a84c" stroke-width="1.2" opacity="0.20"/>
+        <ellipse cx="1208" cy="224" rx="11" ry="64" fill="none" stroke="#c9a84c" stroke-width="1.2" opacity="0.20"/>
+        <ellipse cx="1242" cy="238" rx="12" ry="56" fill="none" stroke="#c9a84c" stroke-width="1"   opacity="0.15"/>
+        <ellipse cx="1272" cy="230" rx="9"  ry="60" fill="none" stroke="#c9a84c" stroke-width="1"   opacity="0.12"/>
+
+        <!-- ═══════════════════════════════════════════════════
+             CATEDRAL DE SANTIAGO DE COMPOSTELA
+             Fachada del Obradoiro — wireframe gold
+        ═══════════════════════════════════════════════════ -->
+
+        <!-- Ethereal halo (Milky Way / Camino de las Estrellas) -->
+        <circle cx="700" cy="148" r="98"  fill="none" stroke="#c9a84c" stroke-width="0.4" opacity="0.07"/>
+        <circle cx="700" cy="148" r="125" fill="none" stroke="#c9a84c" stroke-width="0.3" opacity="0.04"/>
+
+        <!-- Steps — Praza do Obradoiro (widening downward) -->
+        <path d="M594 218 L806 218" stroke="#c9a84c" stroke-width="1.2" opacity="0.50"/>
+        <path d="M587 222 L813 222" stroke="#c9a84c" stroke-width="1.0" opacity="0.40"/>
+        <path d="M580 226 L820 226" stroke="#c9a84c" stroke-width="0.9" opacity="0.30"/>
+        <path d="M573 230 L827 230" stroke="#c9a84c" stroke-width="0.7" opacity="0.21"/>
+        <path d="M567 234 L833 234" stroke="#c9a84c" stroke-width="0.6" opacity="0.14"/>
+
+        <!-- ─── LEFT TOWER ─── -->
+        <!-- Main shaft -->
+        <rect x="586" y="110" width="60" height="108" fill="none" stroke="#c9a84c" stroke-width="1.4" opacity="0.62"/>
+        <!-- Decorative pilasters (vertical bands on shaft) -->
+        <line x1="600" y1="110" x2="600" y2="218" stroke="#c9a84c" stroke-width="0.55" opacity="0.22"/>
+        <line x1="632" y1="110" x2="632" y2="218" stroke="#c9a84c" stroke-width="0.55" opacity="0.22"/>
+        <!-- Horizontal stringcourse on shaft -->
+        <line x1="586" y1="148" x2="646" y2="148" stroke="#c9a84c" stroke-width="0.6" opacity="0.28"/>
+        <!-- Window arch on shaft -->
+        <path d="M610 164 Q610 154 616 154 Q622 154 622 164" fill="none" stroke="#c9a84c" stroke-width="0.8" opacity="0.36"/>
+        <!-- Small corner pinnacles at shaft top -->
+        <path d="M587 110 L591 101 L595 110" fill="none" stroke="#c9a84c" stroke-width="0.7" opacity="0.32"/>
+        <path d="M641 110 L645 101 L649 110" fill="none" stroke="#c9a84c" stroke-width="0.7" opacity="0.32"/>
+        <!-- Tier 1 (first setback) -->
+        <rect x="591" y="90" width="50" height="20" fill="none" stroke="#c9a84c" stroke-width="1.1" opacity="0.55"/>
+        <!-- Tier 2 -->
+        <rect x="597" y="74" width="38" height="16" fill="none" stroke="#c9a84c" stroke-width="1.0" opacity="0.50"/>
+        <!-- Tier 3 — ornate drum -->
+        <rect x="603" y="60" width="26" height="14" fill="none" stroke="#c9a84c" stroke-width="1.0" opacity="0.46"/>
+        <!-- Baroque dome/helm (characteristic curved cap) -->
+        <path d="M603 60 Q604 47 616 43 Q628 47 629 60" fill="none" stroke="#c9a84c" stroke-width="1.1" opacity="0.54"/>
+        <!-- Spire -->
+        <path d="M610 47 L616 28 L622 47" fill="none" stroke="#c9a84c" stroke-width="1.1" opacity="0.60"/>
+        <!-- Cross finial -->
+        <line x1="616" y1="28" x2="616" y2="17" stroke="#c9a84c" stroke-width="1.0" opacity="0.56"/>
+        <line x1="611" y1="23" x2="621" y2="23" stroke="#c9a84c" stroke-width="0.9" opacity="0.52"/>
+
+        <!-- ─── RIGHT TOWER (mirror) ─── -->
+        <!-- Main shaft -->
+        <rect x="754" y="110" width="60" height="108" fill="none" stroke="#c9a84c" stroke-width="1.4" opacity="0.62"/>
+        <!-- Pilasters -->
+        <line x1="768" y1="110" x2="768" y2="218" stroke="#c9a84c" stroke-width="0.55" opacity="0.22"/>
+        <line x1="800" y1="110" x2="800" y2="218" stroke="#c9a84c" stroke-width="0.55" opacity="0.22"/>
+        <!-- Stringcourse -->
+        <line x1="754" y1="148" x2="814" y2="148" stroke="#c9a84c" stroke-width="0.6" opacity="0.28"/>
+        <!-- Window arch -->
+        <path d="M778 164 Q778 154 784 154 Q790 154 790 164" fill="none" stroke="#c9a84c" stroke-width="0.8" opacity="0.36"/>
+        <!-- Corner pinnacles -->
+        <path d="M751 110 L755 101 L759 110" fill="none" stroke="#c9a84c" stroke-width="0.7" opacity="0.32"/>
+        <path d="M809 110 L813 101 L817 110" fill="none" stroke="#c9a84c" stroke-width="0.7" opacity="0.32"/>
+        <!-- Tier 1 -->
+        <rect x="759" y="90" width="50" height="20" fill="none" stroke="#c9a84c" stroke-width="1.1" opacity="0.55"/>
+        <!-- Tier 2 -->
+        <rect x="765" y="74" width="38" height="16" fill="none" stroke="#c9a84c" stroke-width="1.0" opacity="0.50"/>
+        <!-- Tier 3 -->
+        <rect x="771" y="60" width="26" height="14" fill="none" stroke="#c9a84c" stroke-width="1.0" opacity="0.46"/>
+        <!-- Baroque dome -->
+        <path d="M771 60 Q772 47 784 43 Q796 47 797 60" fill="none" stroke="#c9a84c" stroke-width="1.1" opacity="0.54"/>
+        <!-- Spire -->
+        <path d="M778 47 L784 28 L790 47" fill="none" stroke="#c9a84c" stroke-width="1.1" opacity="0.60"/>
+        <!-- Cross finial -->
+        <line x1="784" y1="28" x2="784" y2="17" stroke="#c9a84c" stroke-width="1.0" opacity="0.56"/>
+        <line x1="779" y1="23" x2="789" y2="23" stroke="#c9a84c" stroke-width="0.9" opacity="0.52"/>
+
+        <!-- ─── CENTRAL FACADE (Obradoiro) ─── -->
+        <!-- Main body -->
+        <rect x="646" y="86" width="108" height="132" fill="none" stroke="#c9a84c" stroke-width="1.3" opacity="0.57"/>
+        <!-- Triangular pediment at top -->
+        <path d="M646 86 L700 68 L754 86" fill="none" stroke="#c9a84c" stroke-width="1.0" opacity="0.48"/>
+        <!-- Connecting roof lines tower→facade -->
+        <line x1="586" y1="110" x2="646" y2="110" stroke="#c9a84c" stroke-width="0.8" opacity="0.35"/>
+        <line x1="754" y1="110" x2="814" y2="110" stroke="#c9a84c" stroke-width="0.8" opacity="0.35"/>
+        <!-- Vertical pilasters on facade -->
+        <line x1="660" y1="86" x2="660" y2="218" stroke="#c9a84c" stroke-width="0.6" opacity="0.24"/>
+        <line x1="740" y1="86" x2="740" y2="218" stroke="#c9a84c" stroke-width="0.6" opacity="0.24"/>
+        <!-- Horizontal stringcourse on facade -->
+        <line x1="646" y1="148" x2="754" y2="148" stroke="#c9a84c" stroke-width="0.6" opacity="0.28"/>
+        <!-- Rose window (iconic circular window) -->
+        <circle cx="700" cy="118" r="15" fill="none" stroke="#c9a84c" stroke-width="1.0" opacity="0.50"/>
+        <circle cx="700" cy="118" r="8"  fill="none" stroke="#c9a84c" stroke-width="0.6" opacity="0.34"/>
+        <!-- Rose window spokes -->
+        <line x1="685" y1="118" x2="715" y2="118" stroke="#c9a84c" stroke-width="0.5" opacity="0.30"/>
+        <line x1="700" y1="103" x2="700" y2="133" stroke="#c9a84c" stroke-width="0.5" opacity="0.30"/>
+        <line x1="690" y1="108" x2="710" y2="128" stroke="#c9a84c" stroke-width="0.4" opacity="0.22"/>
+        <line x1="710" y1="108" x2="690" y2="128" stroke="#c9a84c" stroke-width="0.4" opacity="0.22"/>
+        <!-- Main portal arch (grand entrance) -->
+        <path d="M668 218 Q668 168 700 165 Q732 168 732 218" fill="none" stroke="#c9a84c" stroke-width="1.1" opacity="0.54"/>
+        <!-- Inner portal arch (double arch detail) -->
+        <path d="M675 218 Q675 174 700 172 Q725 174 725 218" fill="none" stroke="#c9a84c" stroke-width="0.6" opacity="0.32"/>
+        <!-- Side windows on facade -->
+        <path d="M651 164 Q651 157 657 157 Q663 157 663 164" fill="none" stroke="#c9a84c" stroke-width="0.7" opacity="0.32"/>
+        <path d="M737 164 Q737 157 743 157 Q749 157 749 164" fill="none" stroke="#c9a84c" stroke-width="0.7" opacity="0.32"/>
+
       </svg>
     </div>
 
