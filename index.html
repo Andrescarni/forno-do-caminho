@@ -27,10 +27,18 @@
     <div class="nav__inner">
       <a href="#inicio" class="nav__logo">
         <svg class="nav__logo-icon" viewBox="0 0 60 50" fill="none">
+          <!-- Dome body filled -->
+          <path d="M10 40 Q10 15 30 15 Q50 15 50 40 Z" fill="#1a0e06"/>
+          <!-- Dome outline -->
           <path d="M10 40 Q10 15 30 15 Q50 15 50 40" stroke="#c9a84c" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <!-- Base -->
           <path d="M5 40 L55 40" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round"/>
-          <circle cx="30" cy="8" r="3" fill="#c9a84c" opacity="0.8"/>
-          <path d="M28 14 Q28 8 30 6 Q32 8 32 14" fill="#c9a84c" opacity="0.6"/>
+          <!-- Arch opening -->
+          <path d="M21 40 Q21 28 30 28 Q39 28 39 40 Z" fill="#060100"/>
+          <path d="M21 40 Q21 28 30 28 Q39 28 39 40" stroke="#c9a84c" stroke-width="1" fill="none" opacity="0.45"/>
+          <!-- Flame — orange -->
+          <path d="M27 37 Q25 30 28 23 Q30 29 33 26 Q31 33 34 34 Q31 38 30 41 Q27 38 25 39Z" fill="#FF6B1A" opacity="0.9"/>
+          <path d="M28 39 Q27 33 30 27 Q32 33 35 30 Q33 37 35 38 Q33 41 31 44 Q28 41 26 42Z" fill="#FFD040" opacity="0.55"/>
         </svg>
         <span class="nav__logo-text">Forno do Caminho</span>
       </a>
@@ -84,14 +92,43 @@
     <div class="hero__content">
       <div class="hero__icon-wrap">
         <svg viewBox="0 0 120 100" fill="none" class="hero__oven-icon">
-          <path d="M20 80 Q20 30 60 30 Q100 30 100 80" stroke="#c9a84c" stroke-width="3" fill="none" stroke-linecap="round"/>
-          <path d="M12 80 L108 80" stroke="#c9a84c" stroke-width="3" stroke-linecap="round"/>
-          <path d="M12 88 L108 88" stroke="#c9a84c" stroke-width="2" stroke-linecap="round"/>
-          <path d="M80 80 Q80 56 60 56 Q40 56 40 80" fill="#1a0800" opacity="0.9"/>
-          <path d="M55 62 Q50 50 57 38 Q60 48 66 43 Q61 57 70 60 Q63 67 60 76 Q56 67 50 68Z" fill="#c9a84c" opacity="0.9"/>
-          <path d="M58 68 Q56 58 61 52 Q63 60 67 56 Q64 65 70 67 Q65 73 63 80 Q59 73 55 74Z" fill="#e8c97a" opacity="0.5"/>
-          <path d="M20 80 Q20 52 42 40" stroke="#c9a84c" stroke-width="1" opacity="0.25" stroke-dasharray="4 7" fill="none"/>
-          <path d="M100 80 Q100 52 78 40" stroke="#c9a84c" stroke-width="1" opacity="0.25" stroke-dasharray="4 7" fill="none"/>
+          <defs>
+            <linearGradient id="heroFlameA" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0%" stop-color="#CC2200"/>
+              <stop offset="35%" stop-color="#FF5500"/>
+              <stop offset="70%" stop-color="#FF9500"/>
+              <stop offset="100%" stop-color="#FFD040"/>
+            </linearGradient>
+            <linearGradient id="heroFlameB" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0%" stop-color="#FF6B1A"/>
+              <stop offset="60%" stop-color="#FFD020"/>
+              <stop offset="100%" stop-color="#FFF5A0"/>
+            </linearGradient>
+          </defs>
+          <!-- Stone base platform -->
+          <rect x="10" y="78" width="100" height="12" rx="3" fill="#1a1008" stroke="#c9a84c" stroke-width="2" opacity="0.9"/>
+          <line x1="10" y1="86" x2="110" y2="86" stroke="#c9a84c" stroke-width="0.8" opacity="0.28"/>
+          <!-- Oven dome (filled stone) -->
+          <path d="M18 78 Q18 26 60 26 Q102 26 102 78 Z" fill="#1a0e06"/>
+          <!-- Dome outline -->
+          <path d="M18 78 Q18 26 60 26 Q102 26 102 78" fill="none" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- Brick rows on dome -->
+          <path d="M21 64 Q60 57 99 64" stroke="#c9a84c" stroke-width="0.9" opacity="0.28" fill="none"/>
+          <path d="M19 50 Q60 42 101 50" stroke="#c9a84c" stroke-width="0.8" opacity="0.22" fill="none"/>
+          <path d="M23 38 Q60 30 97 38" stroke="#c9a84c" stroke-width="0.7" opacity="0.16" fill="none"/>
+          <!-- Chimney -->
+          <rect x="54" y="17" width="12" height="11" rx="2" fill="#1a0e06" stroke="#c9a84c" stroke-width="1.2" opacity="0.65"/>
+          <!-- Arch opening (dark oven mouth) -->
+          <path d="M38 78 Q38 50 60 50 Q82 50 82 78 Z" fill="#060100"/>
+          <path d="M38 78 Q38 50 60 50 Q82 50 82 78" fill="none" stroke="#c9a84c" stroke-width="1.5" opacity="0.7"/>
+          <!-- Ember glow at base -->
+          <ellipse cx="60" cy="77" rx="19" ry="5" fill="#FF4500" opacity="0.22" class="fire-pulse"/>
+          <!-- Main flame (back layer) -->
+          <path d="M52 73 Q47 56 55 43 Q59 55 67 49 Q62 63 71 65 Q63 73 60 81 Q54 72 49 74Z" fill="url(#heroFlameA)" opacity="0.9" class="flame-anim-1"/>
+          <!-- Inner bright flame -->
+          <path d="M55 75 Q53 64 58 54 Q61 63 66 59 Q63 69 68 71 Q63 77 61 83 Q57 76 53 77Z" fill="url(#heroFlameB)" opacity="0.85" class="flame-anim-2"/>
+          <!-- Bright tip -->
+          <path d="M58 67 Q56 59 61 52 Q63 59 66 56 Q64 64 67 66 Q64 71 62 76 Q59 70 57 71Z" fill="#FFF0A0" opacity="0.65" class="flame-anim-3"/>
         </svg>
       </div>
       <p class="hero__eyebrow">Pizzeria Artesanal · Take Away</p>
@@ -166,35 +203,114 @@
             <!-- Animated glow from fire -->
             <div class="historia__fire-glow" aria-hidden="true"></div>
 
-            <!-- Oven SVG — wireframe style matching the restaurant facade -->
+            <!-- Oven SVG — stone dome with realistic fire -->
             <svg viewBox="0 0 300 260" fill="none" xmlns="http://www.w3.org/2000/svg" class="historia__oven-svg">
-              <!-- Base platform -->
-              <rect x="30" y="195" width="240" height="50" rx="4" fill="none" stroke="#c9a84c" stroke-width="1.8" opacity="0.7"/>
+              <defs>
+                <!-- Flame gradients: base=deep red, tip=bright yellow -->
+                <linearGradient id="histFlameA" x1="0" y1="1" x2="0" y2="0">
+                  <stop offset="0%" stop-color="#CC2200"/>
+                  <stop offset="30%" stop-color="#FF4A00"/>
+                  <stop offset="65%" stop-color="#FF9000"/>
+                  <stop offset="100%" stop-color="#FFD020"/>
+                </linearGradient>
+                <linearGradient id="histFlameB" x1="0" y1="1" x2="0" y2="0">
+                  <stop offset="0%" stop-color="#FF5500"/>
+                  <stop offset="50%" stop-color="#FFB020"/>
+                  <stop offset="100%" stop-color="#FFE060"/>
+                </linearGradient>
+                <linearGradient id="histFlameC" x1="0" y1="1" x2="0" y2="0">
+                  <stop offset="0%" stop-color="#FF7700"/>
+                  <stop offset="55%" stop-color="#FFCA30"/>
+                  <stop offset="100%" stop-color="#FFF5A0"/>
+                </linearGradient>
+                <!-- Dome fill — warm dark stone -->
+                <radialGradient id="histDome" cx="50%" cy="75%" r="65%">
+                  <stop offset="0%" stop-color="#241505"/>
+                  <stop offset="100%" stop-color="#0c0803"/>
+                </radialGradient>
+                <!-- Fire light projection inside arch -->
+                <radialGradient id="histFireGlow" cx="50%" cy="95%" r="55%">
+                  <stop offset="0%"   stop-color="#FF5500" stop-opacity="0.28"/>
+                  <stop offset="45%"  stop-color="#FF3300" stop-opacity="0.08"/>
+                  <stop offset="100%" stop-color="#FF2000" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+
+              <!-- Stone base platform -->
+              <rect x="30" y="195" width="240" height="50" rx="4" fill="#1a1008" stroke="#c9a84c" stroke-width="1.8" opacity="0.85"/>
+              <!-- Stone layer lines on base -->
+              <line x1="30" y1="213" x2="270" y2="213" stroke="#c9a84c" stroke-width="0.7" opacity="0.22"/>
+              <line x1="30" y1="228" x2="270" y2="228" stroke="#c9a84c" stroke-width="0.7" opacity="0.15"/>
+              <!-- Vertical joints on base (staggered) -->
+              <line x1="95"  y1="195" x2="95"  y2="213" stroke="#c9a84c" stroke-width="0.6" opacity="0.14"/>
+              <line x1="150" y1="213" x2="150" y2="228" stroke="#c9a84c" stroke-width="0.6" opacity="0.12"/>
+              <line x1="205" y1="195" x2="205" y2="213" stroke="#c9a84c" stroke-width="0.6" opacity="0.14"/>
+              <line x1="65"  y1="213" x2="65"  y2="228" stroke="#c9a84c" stroke-width="0.5" opacity="0.10"/>
+              <line x1="235" y1="213" x2="235" y2="228" stroke="#c9a84c" stroke-width="0.5" opacity="0.10"/>
+
               <!-- Oven legs -->
-              <rect x="50" y="245" width="14" height="12" rx="2" fill="none" stroke="#c9a84c" stroke-width="1.2" opacity="0.4"/>
-              <rect x="236" y="245" width="14" height="12" rx="2" fill="none" stroke="#c9a84c" stroke-width="1.2" opacity="0.4"/>
-              <!-- Main dome -->
-              <path d="M45 195 Q45 70 150 70 Q255 70 255 195" fill="none" stroke="#c9a84c" stroke-width="2" opacity="0.8"/>
-              <!-- Inner arch (opening) -->
-              <path d="M78 195 Q78 128 150 128 Q222 128 222 195" fill="rgba(20,8,0,0.6)" stroke="#c9a84c" stroke-width="1.5" opacity="0.65"/>
-              <!-- Brick detail lines on dome -->
-              <path d="M45 195 Q45 145 75 110" stroke="#c9a84c" stroke-width="1" opacity="0.2" stroke-dasharray="3 9"/>
-              <path d="M255 195 Q255 145 225 110" stroke="#c9a84c" stroke-width="1" opacity="0.2" stroke-dasharray="3 9"/>
-              <path d="M90 82 Q150 65 210 82" stroke="#c9a84c" stroke-width="1" opacity="0.15" stroke-dasharray="3 9"/>
-              <!-- Chimney hint -->
-              <rect x="138" y="52" width="24" height="20" rx="2" fill="none" stroke="#c9a84c" stroke-width="1.2" opacity="0.3"/>
-              <line x1="138" y1="70" x2="138" y2="70" stroke="#c9a84c"/>
-              <!-- Fire glow ellipses -->
-              <ellipse cx="150" cy="192" rx="52" ry="13" fill="#c9a84c" opacity="0.1" class="fire-pulse"/>
-              <ellipse cx="150" cy="192" rx="30" ry="8"  fill="#c9a84c" opacity="0.15" class="fire-pulse-2"/>
-              <!-- Flames — main -->
-              <path d="M136 176 Q130 155 142 138 Q146 153 155 146 Q148 163 160 166 Q150 177 146 190 Q140 177 134 179Z" fill="#c9a84c" opacity="0.95"/>
-              <!-- Flames — secondary -->
-              <path d="M150 182 Q147 166 154 154 Q157 166 162 160 Q159 172 166 174 Q160 181 158 191 Q154 181 149 183Z" fill="#e8c97a" opacity="0.7"/>
-              <!-- Flames — inner bright -->
-              <path d="M144 186 Q141 175 148 167 Q150 175 154 172 Q152 181 157 183 Q152 189 150 196 Q146 189 142 190Z" fill="#fff8e0" opacity="0.45"/>
-              <!-- Tool rest on dome -->
-              <line x1="45" y1="195" x2="255" y2="195" stroke="#c9a84c" stroke-width="1.5" opacity="0.5"/>
+              <rect x="50" y="245" width="14" height="12" rx="2" fill="#1a1008" stroke="#c9a84c" stroke-width="1.2" opacity="0.65"/>
+              <rect x="236" y="245" width="14" height="12" rx="2" fill="#1a1008" stroke="#c9a84c" stroke-width="1.2" opacity="0.65"/>
+
+              <!-- Main dome body (filled stone) -->
+              <path d="M45 195 Q45 70 150 70 Q255 70 255 195 Z" fill="url(#histDome)"/>
+              <!-- Dome outline -->
+              <path d="M45 195 Q45 70 150 70 Q255 70 255 195" fill="none" stroke="#c9a84c" stroke-width="2" opacity="0.9"/>
+
+              <!-- Brick rows (horizontal arcs across dome) -->
+              <path d="M51 178 Q100 170 150 170 Q200 170 249 178" stroke="#c9a84c" stroke-width="0.9" opacity="0.22" fill="none"/>
+              <path d="M48 160 Q100 150 150 150 Q200 150 252 160" stroke="#c9a84c" stroke-width="0.9" opacity="0.19" fill="none"/>
+              <path d="M47 142 Q100 130 150 130 Q200 130 253 142" stroke="#c9a84c" stroke-width="0.8" opacity="0.16" fill="none"/>
+              <path d="M48 124 Q100 111 150 111 Q200 111 252 124" stroke="#c9a84c" stroke-width="0.8" opacity="0.13" fill="none"/>
+              <path d="M51 107 Q100 93 150 91 Q200 93 249 107"  stroke="#c9a84c" stroke-width="0.7" opacity="0.11" fill="none"/>
+              <path d="M57 91  Q100 77 150 75 Q200 77 243 91"   stroke="#c9a84c" stroke-width="0.7" opacity="0.09" fill="none"/>
+
+              <!-- Vertical brick joints (staggered between rows) -->
+              <line x1="100" y1="170" x2="103" y2="150" stroke="#c9a84c" stroke-width="0.6" opacity="0.13"/>
+              <line x1="200" y1="170" x2="197" y2="150" stroke="#c9a84c" stroke-width="0.6" opacity="0.13"/>
+              <line x1="75"  y1="160" x2="77"  y2="142" stroke="#c9a84c" stroke-width="0.5" opacity="0.11"/>
+              <line x1="225" y1="160" x2="223" y2="142" stroke="#c9a84c" stroke-width="0.5" opacity="0.11"/>
+              <line x1="115" y1="150" x2="117" y2="130" stroke="#c9a84c" stroke-width="0.5" opacity="0.10"/>
+              <line x1="185" y1="150" x2="183" y2="130" stroke="#c9a84c" stroke-width="0.5" opacity="0.10"/>
+              <line x1="130" y1="130" x2="131" y2="111" stroke="#c9a84c" stroke-width="0.4" opacity="0.08"/>
+              <line x1="170" y1="130" x2="169" y2="111" stroke="#c9a84c" stroke-width="0.4" opacity="0.08"/>
+
+              <!-- Chimney -->
+              <rect x="137" y="52" width="26" height="20" rx="3" fill="#1a1008" stroke="#c9a84c" stroke-width="1.3" opacity="0.58"/>
+              <rect x="141" y="44" width="18" height="10" rx="2" fill="#1a1008" stroke="#c9a84c" stroke-width="1"   opacity="0.46"/>
+              <!-- Smoke wisps -->
+              <path d="M148 43 Q144 35 147 27 Q151 35 149 27" stroke="#c9a84c" stroke-width="0.8" opacity="0.13" fill="none" stroke-linecap="round"/>
+              <path d="M153 43 Q157 34 154 25"                stroke="#c9a84c" stroke-width="0.7" opacity="0.10" fill="none" stroke-linecap="round"/>
+
+              <!-- Base shelf line -->
+              <line x1="45" y1="195" x2="255" y2="195" stroke="#c9a84c" stroke-width="1.5" opacity="0.55"/>
+
+              <!-- Arch opening (deep dark oven interior) -->
+              <path d="M78 195 Q78 128 150 128 Q222 128 222 195 Z" fill="#050200"/>
+              <path d="M78 195 Q78 128 150 128 Q222 128 222 195" fill="none" stroke="#c9a84c" stroke-width="1.5" opacity="0.72"/>
+
+              <!-- Fire light inside arch -->
+              <path d="M78 195 Q78 128 150 128 Q222 128 222 195 Z" fill="url(#histFireGlow)" class="fire-pulse"/>
+
+              <!-- Hot coals glow at base -->
+              <ellipse cx="150" cy="194" rx="56" ry="8"   fill="#FF3300" opacity="0.12" class="fire-pulse-2"/>
+              <ellipse cx="150" cy="194" rx="32" ry="4.5" fill="#FF6B00" opacity="0.24" class="fire-pulse"/>
+
+              <!-- Flame 1 — back/large (deep red → amber) -->
+              <path d="M132 187 Q125 163 137 145 Q142 160 154 152 Q146 167 160 170 Q150 180 146 193 Q138 181 130 183Z"
+                    fill="url(#histFlameA)" opacity="0.9" class="flame-anim-1"/>
+
+              <!-- Flame 2 — mid (amber → yellow) -->
+              <path d="M141 189 Q137 169 146 154 Q150 167 159 160 Q154 173 165 175 Q156 184 153 194 Q146 184 140 186Z"
+                    fill="url(#histFlameB)" opacity="0.88" class="flame-anim-2"/>
+
+              <!-- Flame 3 — front (yellow → cream tip) -->
+              <path d="M146 191 Q143 176 150 164 Q153 175 158 171 Q155 182 162 184 Q156 190 154 196 Q149 190 144 192Z"
+                    fill="url(#histFlameC)" opacity="0.92" class="flame-anim-3"/>
+
+              <!-- Bright tip highlight -->
+              <path d="M149 177 Q147 168 151 160 Q154 168 157 164 Q155 173 159 175 Q155 179 153 185 Q150 179 147 180Z"
+                    fill="#FFEF90" opacity="0.75" class="flame-anim-2"/>
             </svg>
 
             <!-- Stats chips inside the card -->
@@ -564,10 +680,13 @@
       <div class="container">
         <div class="footer__brand-wrap">
           <svg class="footer__logo-icon" viewBox="0 0 60 50" fill="none">
+            <path d="M10 40 Q10 15 30 15 Q50 15 50 40 Z" fill="#1a0e06"/>
             <path d="M10 40 Q10 15 30 15 Q50 15 50 40" stroke="#c9a84c" stroke-width="2.5" fill="none" stroke-linecap="round"/>
             <path d="M5 40 L55 40" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round"/>
-            <circle cx="30" cy="8" r="3" fill="#c9a84c" opacity="0.8"/>
-            <path d="M28 14 Q28 8 30 6 Q32 8 32 14" fill="#c9a84c" opacity="0.6"/>
+            <path d="M21 40 Q21 28 30 28 Q39 28 39 40 Z" fill="#060100"/>
+            <path d="M21 40 Q21 28 30 28 Q39 28 39 40" stroke="#c9a84c" stroke-width="1" fill="none" opacity="0.45"/>
+            <path d="M27 37 Q25 30 28 23 Q30 29 33 26 Q31 33 34 34 Q31 38 30 41 Q27 38 25 39Z" fill="#FF6B1A" opacity="0.9"/>
+            <path d="M28 39 Q27 33 30 27 Q32 33 35 30 Q33 37 35 38 Q33 41 31 44 Q28 41 26 42Z" fill="#FFD040" opacity="0.55"/>
           </svg>
           <div>
             <span class="footer__brand">Forno do Caminho</span>
