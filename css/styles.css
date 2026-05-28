@@ -1176,4 +1176,7 @@ body::after {
   .footer__bottom .container { flex-direction: column; text-align: center; }
 
   .section { padding: 5rem 0; }
+
+  /* Cathedral illustration hidden on mobile — avoids overlapping hero content */
+  .hero__illustration { display: none; }
 }
