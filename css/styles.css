@@ -15,6 +15,11 @@
   --border:     rgba(201,168,76,.16);
   --border-h:   rgba(201,168,76,.38);
 
+  --fire-orange: #ff6b1a;
+  --fire-amber:  #ff9500;
+  --fire-red:    #e63300;
+  --fire-yellow: #ffd700;
+
   --font-serif: 'Playfair Display', Georgia, serif;
   --font-sans:  'Inter', system-ui, sans-serif;
 
@@ -334,19 +339,25 @@ body::after {
   z-index: 1;
 }
 
-/* Radial glow behind hero content */
+/* Radial glow behind hero content — warm firelight ambience */
 .hero__glow {
   position: absolute;
   top: -10%;
   left: 50%;
   transform: translateX(-50%);
-  width: 900px;
-  height: 600px;
-  background: radial-gradient(ellipse at center,
-    rgba(201,168,76,.07) 0%,
-    rgba(201,168,76,.03) 35%,
-    transparent 70%
-  );
+  width: 920px;
+  height: 620px;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 60%,
+      rgba(255,80,15,.05) 0%,
+      rgba(201,130,20,.03) 30%,
+      transparent 65%
+    ),
+    radial-gradient(ellipse at center,
+      rgba(201,168,76,.07) 0%,
+      rgba(201,168,76,.03) 35%,
+      transparent 70%
+    );
   pointer-events: none;
   z-index: 0;
 }
@@ -393,12 +404,27 @@ body::after {
 .hero__oven-icon {
   width: 88px;
   height: 73px;
-  filter: drop-shadow(0 0 18px rgba(201,168,76,.5)) drop-shadow(0 0 40px rgba(201,168,76,.2));
+  filter:
+    drop-shadow(0 0 16px rgba(201,168,76,.5))
+    drop-shadow(0 0 35px rgba(201,168,76,.18))
+    drop-shadow(0 0 22px rgba(255,90,15,.18));
   animation: iconFloat 4s ease-in-out infinite;
 }
 @keyframes iconFloat {
-  0%, 100% { transform: translateY(0px); filter: drop-shadow(0 0 18px rgba(201,168,76,.5)) drop-shadow(0 0 40px rgba(201,168,76,.2)); }
-  50%       { transform: translateY(-6px); filter: drop-shadow(0 0 28px rgba(201,168,76,.7)) drop-shadow(0 0 55px rgba(201,168,76,.3)); }
+  0%, 100% {
+    transform: translateY(0px);
+    filter:
+      drop-shadow(0 0 16px rgba(201,168,76,.50))
+      drop-shadow(0 0 35px rgba(201,168,76,.18))
+      drop-shadow(0 0 22px rgba(255,90,15,.18));
+  }
+  50% {
+    transform: translateY(-6px);
+    filter:
+      drop-shadow(0 0 22px rgba(255,100,20,.70))
+      drop-shadow(0 0 50px rgba(255,60,10,.32))
+      drop-shadow(0 0 14px rgba(201,168,76,.40));
+  }
 }
 
 .hero__eyebrow {
@@ -576,25 +602,29 @@ body::after {
   gap: 1.5rem;
   transition: border-color var(--transition);
 }
-.historia__oven-card:hover { border-color: rgba(201,168,76,.42); }
+.historia__oven-card:hover {
+  border-color: rgba(201,168,76,.42);
+  box-shadow: 0 0 60px rgba(255,60,10,.08), 0 20px 60px rgba(0,0,0,.35);
+}
 
-/* Animated fire glow behind oven */
+/* Animated fire glow behind oven — orange/amber tones */
 .historia__fire-glow {
   position: absolute;
   bottom: 0; left: 50%;
   transform: translateX(-50%);
-  width: 280px; height: 200px;
+  width: 300px; height: 220px;
   background: radial-gradient(ellipse at 50% 100%,
-    rgba(201,168,76,.18) 0%,
-    rgba(201,100,20,.08) 40%,
-    transparent 70%
+    rgba(255,90,15,.32) 0%,
+    rgba(220,55,10,.14) 40%,
+    rgba(201,100,20,.05) 60%,
+    transparent 75%
   );
   pointer-events: none;
   animation: ovenGlow 3.5s ease-in-out infinite;
 }
 @keyframes ovenGlow {
-  0%, 100% { opacity: 0.65; transform: translateX(-50%) scaleX(1); }
-  50%       { opacity: 1;    transform: translateX(-50%) scaleX(1.12); }
+  0%, 100% { opacity: 0.55; transform: translateX(-50%) scaleX(1);    }
+  50%       { opacity: 1;    transform: translateX(-50%) scaleX(1.18); }
 }
 
 /* The oven SVG */
@@ -604,16 +634,44 @@ body::after {
   position: relative;
   z-index: 1;
   filter:
-    drop-shadow(0 0 12px rgba(201,168,76,.35))
-    drop-shadow(0 0 40px rgba(201,168,76,.12));
+    drop-shadow(0 0 20px rgba(255,80,15,.40))
+    drop-shadow(0 0 45px rgba(255,50,5,.16))
+    drop-shadow(0 0 10px rgba(201,168,76,.28));
 }
 
 /* Fire pulse animations on SVG ellipses */
 .fire-pulse   { animation: firePulse 2.6s ease-in-out infinite; }
 .fire-pulse-2 { animation: firePulse 1.9s ease-in-out infinite 0.5s; }
 @keyframes firePulse {
-  0%, 100% { opacity: 0.1; }
-  50%       { opacity: 0.3; }
+  0%, 100% { opacity: 0.08; }
+  50%       { opacity: 0.38; }
+}
+
+/* Flame dance animations — dancing motion from base up */
+.flame-anim-1,
+.flame-anim-2,
+.flame-anim-3 {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+.flame-anim-1 { animation: flameDance1 1.85s ease-in-out infinite; }
+.flame-anim-2 { animation: flameDance2 2.30s ease-in-out infinite 0.28s; }
+.flame-anim-3 { animation: flameDance3 1.55s ease-in-out infinite 0.14s; }
+
+@keyframes flameDance1 {
+  0%, 100% { transform: scaleX(1)    scaleY(1);    opacity: 0.90; }
+  25%       { transform: scaleX(0.93) scaleY(1.07); opacity: 0.88; }
+  75%       { transform: scaleX(1.05) scaleY(0.95); opacity: 0.92; }
+}
+@keyframes flameDance2 {
+  0%, 100% { transform: scaleX(1)    scaleY(1);    opacity: 0.88; }
+  33%       { transform: scaleX(1.07) scaleY(0.93); opacity: 0.93; }
+  66%       { transform: scaleX(0.93) scaleY(1.10); opacity: 0.83; }
+}
+@keyframes flameDance3 {
+  0%, 100% { transform: scaleY(1);    opacity: 0.92; }
+  40%       { transform: scaleY(1.14); opacity: 0.76; }
+  80%       { transform: scaleY(0.91); opacity: 1.00; }
 }
 
 /* Stats chips at the bottom of the card */
