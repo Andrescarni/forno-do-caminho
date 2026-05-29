@@ -1731,11 +1731,10 @@ body::after {
   position: fixed;
   inset: 0;
   z-index: 900;
-  display: flex;
+  display: none;
   align-items: flex-end;
   justify-content: center;
 }
-.modal[hidden] { display: none; }
 .modal--open { display: flex; }
 
 .modal__backdrop {
@@ -1934,11 +1933,10 @@ body::after {
   position: fixed;
   inset: 0;
   z-index: 800;
-  display: flex;
+  display: none;
   justify-content: flex-end;
 }
-.cart-drawer[hidden] { display: none; }
-.cart-drawer--open  { display: flex; }
+.cart-drawer--open { display: flex; }
 
 .cart-drawer__backdrop {
   position: absolute;
