@@ -66,15 +66,32 @@ navLinks.querySelectorAll('.nav__link').forEach(link => {
   window.addEventListener('resize', resize, { passive: true });
 
   /* ════════════════════════════════════════
-     OVEN ICON — starts completely off
+     OVEN ICON — visible from start, flames hidden.
+     Structure (dome, arch, base) shows immediately.
+     Only flames are off until ignition.
   ════════════════════════════════════════ */
   const ovenWrap = document.querySelector('.hero__icon-wrap');
   const ovenIcon = document.querySelector('.hero__oven-icon');
-  if (ovenWrap) {
-    ovenWrap.style.opacity   = '0';
-    ovenWrap.style.animation = 'none';
+
+  /* Collect flame paths inside the hero SVG */
+  let flameEls = [];
+  let fireEl   = null;
+  if (ovenIcon) {
+    flameEls = [...ovenIcon.querySelectorAll('.flame-anim-1, .flame-anim-2, .flame-anim-3')];
+    fireEl   = ovenIcon.querySelector('.fire-pulse');
+
+    /* Hide flames: freeze dance animation, collapse from base */
+    flameEls.forEach(el => {
+      el.style.animation = 'none';
+      el.style.opacity   = '0';
+      el.style.transform = 'scaleY(0) scaleX(0.5)';
+    });
+    /* Hide ember glow ellipse */
+    if (fireEl) {
+      fireEl.style.animation = 'none';
+      fireEl.style.opacity   = '0';
+    }
   }
-  if (ovenIcon) ovenIcon.style.animation = 'none';
 
   function ovenPos() {
     if (ovenWrap) {
@@ -117,23 +134,46 @@ navLinks.querySelectorAll('.nav__link').forEach(link => {
 
     const { x: ox, y: oy } = ovenPos();
 
-    /* Spark burst */
+    /* Canvas: spark burst + flash ring + warm glow */
     for (let i = 0; i < 52; i++) sparks.push(spawnSpark(ox, oy));
     flashRing = { x: ox, y: oy, r: 4, maxR: 80, life: 26, maxLife: 26 };
     fireGlow  = { x: ox, y: oy, born: performance.now() };
 
-    /* Light up the oven icon with a sharp flash */
-    if (ovenWrap) {
-      ovenWrap.style.transition = 'opacity 0.06s ease-out';
-      ovenWrap.style.opacity    = '1';
-      ovenWrap.style.filter     =
-        'brightness(3.0) drop-shadow(0 0 32px rgba(255,185,55,1))';
-      setTimeout(() => {
-        ovenWrap.style.filter     = '';
-        ovenWrap.style.transition = '';
-      }, 420);
+    /* Brief over-bright flash on the whole oven icon */
+    if (ovenIcon) {
+      ovenIcon.style.filter =
+        'drop-shadow(0 0 30px rgba(255,185,55,.95)) drop-shadow(0 0 60px rgba(255,100,10,.4)) brightness(1.7)';
+      setTimeout(() => { ovenIcon.style.filter = ''; }, 480);
     }
-    if (ovenIcon) ovenIcon.style.animation = '';
+
+    /* Grow flames in from base — staggered so it feels organic */
+    flameEls.forEach((el, i) => {
+      const naturalOpacity = el.getAttribute('opacity') || '1';
+      setTimeout(() => {
+        el.style.transition = 'opacity 0.45s ease-out, transform 0.55s cubic-bezier(0.34, 1.3, 0.64, 1)';
+        el.style.opacity    = naturalOpacity;
+        el.style.transform  = 'scaleY(1) scaleX(1)';
+        /* After grow-in completes, hand control back to flameDance CSS animation */
+        setTimeout(() => {
+          el.style.transition = '';
+          el.style.opacity    = '';
+          el.style.transform  = '';
+          el.style.animation  = '';
+        }, 620);
+      }, i * 120);
+    });
+
+    /* Fade in ember glow at base */
+    if (fireEl) {
+      const naturalOpacity = fireEl.getAttribute('opacity') || '0.22';
+      fireEl.style.transition = 'opacity 0.7s ease-out';
+      fireEl.style.opacity    = naturalOpacity;
+      setTimeout(() => {
+        fireEl.style.transition = '';
+        fireEl.style.opacity    = '';
+        fireEl.style.animation  = '';
+      }, 780);
+    }
   }
 
   /* ════════════════════════════════════════
