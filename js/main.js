@@ -59,6 +59,29 @@ navLinks.querySelectorAll('.nav__link').forEach(link => {
     [255, 120, 20],  [201, 168, 76],
   ];
 
+  /* ── Flame tongue — bezier teardrop pointing up ──
+     cx/cy = base centre, h = height, w = half-width,
+     tiltX = tip drift (organic lean), grad = fillStyle */
+  function flameTongue(cx, cy, h, w, tiltX, grad) {
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(cx + tiltX, cy - h);                            // tip
+    ctx.bezierCurveTo(
+      cx + w * 0.95 + tiltX * 0.6, cy - h * 0.52,
+      cx + w * 0.58,               cy - h * 0.12,
+      cx + w * 0.30,               cy + 5
+    );
+    ctx.quadraticCurveTo(cx, cy + 8, cx - w * 0.30, cy + 5);
+    ctx.bezierCurveTo(
+      cx - w * 0.58,               cy - h * 0.12,
+      cx - w * 0.95 + tiltX * 0.6, cy - h * 0.52,
+      cx + tiltX,                  cy - h
+    );
+    ctx.fillStyle = grad;
+    ctx.fill();
+    ctx.restore();
+  }
+
   function resize() {
     canvas.width  = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
@@ -66,49 +89,19 @@ navLinks.querySelectorAll('.nav__link').forEach(link => {
   resize();
   window.addEventListener('resize', resize, { passive: true });
 
-  /* ── Oven centre (hero icon position) ── */
+  /* ── Oven centre ── */
   const ov = () => ({ x: canvas.width * 0.5, y: canvas.height * 0.28 });
 
   /* ════════════════════════════════════════
-     PHASE 1 — CONVERGING PARTICLES
-     Glowing streaks fly toward the oven
-     from all directions, arriving just as
-     the spark ignites at 280 ms.
-  ════════════════════════════════════════ */
-  const conv = [];
-  (function buildConverging() {
-    const { x: ox, y: oy } = ov();
-    for (let i = 0; i < 40; i++) {
-      const angle = Math.random() * Math.PI * 2;
-      const dist  = 160 + Math.random() * Math.max(canvas.width, canvas.height) * 0.55;
-      const sx = ox + Math.cos(angle) * dist;
-      const sy = oy + Math.sin(angle) * dist;
-      conv.push({
-        sx, sy,
-        tx: ox + (Math.random() - 0.5) * 22,
-        ty: oy + (Math.random() - 0.5) * 16,
-        x: sx, y: sy,
-        progress: 0,
-        speed: 0.028 + Math.random() * 0.032,  // arrive in ~12–20 frames
-        frameDelay: Math.floor(i * 1.8),         // stagger across first ~72 frames
-        size: 0.7 + Math.random() * 1.9,
-        color: HOT_COLORS[Math.floor(Math.random() * HOT_COLORS.length)],
-        trail: [],
-        done: false,
-      });
-    }
-  })();
-
-  /* ════════════════════════════════════════
-     PHASE 2 — IGNITION SPARK + FLASH RING
-     Fires at 280 ms (oven icon fade-in).
+     SPARK BURST + FLASH RING (at 400 ms)
   ════════════════════════════════════════ */
   const sparks    = [];
   let   flashRing = null;
+  let   fireGlow  = null;   // { x, y, born }
 
   function spawnSpark(ox, oy) {
-    const angle = Math.random() * Math.PI * 2;
-    const speed = 1.8 + Math.random() * 5.5;
+    const angle   = Math.random() * Math.PI * 2;
+    const speed   = 1.8 + Math.random() * 5.5;
     const maxLife = 22 + Math.floor(Math.random() * 32);
     return {
       x: ox + (Math.random() - 0.5) * 18,
@@ -121,22 +114,12 @@ navLinks.querySelectorAll('.nav__link').forEach(link => {
     };
   }
 
-  /* ════════════════════════════════════════
-     PHASE 3 — FIRE IGNITION GLOW
-     Warm light blooms from the oven and
-     settles into a steady flicker.
-  ════════════════════════════════════════ */
-  let fireGlow = null;   // { x, y, born }
-
   setTimeout(() => {
     const { x: ox, y: oy } = ov();
-    /* spark burst */
     for (let i = 0; i < 58; i++) sparks.push(spawnSpark(ox, oy));
-    /* expanding ring */
     flashRing = { x: ox, y: oy, r: 4, maxR: 72, life: 22, maxLife: 22 };
-    /* fire warmup glow */
     fireGlow  = { x: ox, y: oy, born: performance.now() };
-  }, 280);
+  }, 400);
 
   /* ════════════════════════════════════════
      AMBIENT EMBERS — continuous, subtle
@@ -168,90 +151,98 @@ navLinks.querySelectorAll('.nav__link').forEach(link => {
   function tick() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    /* ── 1. Converging streaks ── */
-    for (const p of conv) {
-      if (p.done) continue;
-      if (p.frameDelay > 0) { p.frameDelay--; continue; }
-
-      /* Ease-in acceleration: slow start → fast arrival */
-      p.progress += p.speed * (1 + p.progress * 2);
-      if (p.progress >= 1) { p.done = true; continue; }
-
-      const eased = p.progress * p.progress;
-      p.x = p.sx + (p.tx - p.sx) * eased;
-      p.y = p.sy + (p.ty - p.sy) * eased;
-
-      /* rolling trail (last 7 positions) */
-      p.trail.push({ x: p.x, y: p.y });
-      if (p.trail.length > 7) p.trail.shift();
-
-      const [cr, cg, cb] = p.color;
-      /* fade in as it approaches, shrink near arrival */
-      const alpha = Math.min(p.progress * 5, 1) * (1 - eased * 0.4);
-
-      /* draw trail */
-      ctx.save();
-      for (let t = 1; t < p.trail.length; t++) {
-        const ta = (t / p.trail.length) * alpha * 0.45;
-        ctx.globalAlpha = ta;
-        ctx.shadowColor = `rgb(${cr},${cg},${cb})`;
-        ctx.shadowBlur  = p.size * 3;
-        ctx.strokeStyle = `rgb(${cr},${cg},${cb})`;
-        ctx.lineWidth   = p.size * (t / p.trail.length) * 0.8;
-        ctx.beginPath();
-        ctx.moveTo(p.trail[t - 1].x, p.trail[t - 1].y);
-        ctx.lineTo(p.trail[t].x, p.trail[t].y);
-        ctx.stroke();
-      }
-      ctx.restore();
-
-      /* draw head dot */
-      ctx.save();
-      ctx.globalAlpha = alpha;
-      ctx.shadowColor = `rgb(${cr},${cg},${cb})`;
-      ctx.shadowBlur  = p.size * 6;
-      ctx.fillStyle   = `rgb(${cr},${cg},${cb})`;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, Math.max(p.size * (1 - eased * 0.6), 0.2), 0, Math.PI * 2);
-      ctx.fill();
-      ctx.restore();
-    }
-
-    /* ── 2. Fire glow ── */
+    /* ── 1. FLAME — slow organic build-up over 6 seconds ── */
     if (fireGlow) {
-      const ms  = performance.now() - fireGlow.born;
-      const t   = ms / 1400;  /* 1.4 s to settle */
+      const ms   = performance.now() - fireGlow.born;
+      const rawT = Math.min(ms / 6000, 1);
+      /* smoothstep: gradual start, accelerates mid, eases at end */
+      const t    = rawT * rawT * (3 - 2 * rawT);
 
-      /* intensity: fast bloom → hold → settle to steady 0.28 */
-      let intensity;
-      if      (t < 0.22) intensity = t / 0.22;
-      else if (t < 0.50) intensity = 1;
-      else if (t < 1)    intensity = 1 - (t - 0.50) / 0.50 * 0.72;
-      else               intensity = 0.28;
+      const ox = fireGlow.x, oy = fireGlow.y;
 
-      const flk = Math.sin(ms * 0.018) * 0.09 + Math.sin(ms * 0.043) * 0.06;
-      const fin = Math.max(0, intensity + flk);
-      const rad = 55 + intensity * 90;
+      /* organic noise from multiple overlapping sine waves */
+      const n1 = Math.sin(ms * 0.0055) * 0.12 + Math.sin(ms * 0.0188 + 0.7)  * 0.07;
+      const n2 = Math.sin(ms * 0.0082 + 1.3) * 0.10 + Math.sin(ms * 0.0263)   * 0.05;
+      const n3 = Math.sin(ms * 0.0071 + 2.1) * 0.09 + Math.sin(ms * 0.0340 + 1.8) * 0.04;
 
-      const g = ctx.createRadialGradient(
-        fireGlow.x, fireGlow.y, 0,
-        fireGlow.x, fireGlow.y, rad
-      );
-      g.addColorStop(0,    `rgba(255,220,100,${(fin * 0.40).toFixed(3)})`);
-      g.addColorStop(0.35, `rgba(255,100,20,${(fin * 0.20).toFixed(3)})`);
-      g.addColorStop(1,    'rgba(255,40,5,0)');
+      /* flame dimensions grow with t */
+      const H = t * 92;          /* max height ~92 px */
+      const W = t * 28;          /* max half-width ~28 px */
 
+      if (H > 1) {
+        /* ── Main tongue (centre) ── */
+        let g = ctx.createLinearGradient(ox, oy + 6, ox, oy - H);
+        g.addColorStop(0,    `rgba(255,65,5,${(t * 0.58).toFixed(3)})`);
+        g.addColorStop(0.28, `rgba(255,140,12,${(t * 0.68).toFixed(3)})`);
+        g.addColorStop(0.62, `rgba(255,210,65,${(t * 0.55).toFixed(3)})`);
+        g.addColorStop(1,    `rgba(255,255,180,${(t * 0.28).toFixed(3)})`);
+        flameTongue(ox, oy,
+          H  * (1 + n1 * 0.11),
+          W  * (1 + Math.abs(n2) * 0.18),
+          n2 * 9, g);
+
+        /* ── Left tongue — appears after 15 % growth ── */
+        if (t > 0.15) {
+          const t2 = Math.min((t - 0.15) / 0.85, 1);
+          const ss = t2 * t2 * (3 - 2 * t2); /* own smoothstep */
+          g = ctx.createLinearGradient(ox - 7, oy + 5, ox - 7, oy - H * 0.70);
+          g.addColorStop(0,    `rgba(255,55,5,${(ss * 0.42).toFixed(3)})`);
+          g.addColorStop(0.45, `rgba(255,115,18,${(ss * 0.48).toFixed(3)})`);
+          g.addColorStop(1,    `rgba(255,195,55,${(ss * 0.22).toFixed(3)})`);
+          flameTongue(ox - 8 + n3 * 11, oy,
+            H * 0.66 * (1 + n2 * 0.10),
+            W * 0.54, n3 * 7, g);
+        }
+
+        /* ── Right tongue — appears after 28 % growth ── */
+        if (t > 0.28) {
+          const t3 = Math.min((t - 0.28) / 0.72, 1);
+          const ss = t3 * t3 * (3 - 2 * t3);
+          g = ctx.createLinearGradient(ox + 6, oy + 5, ox + 6, oy - H * 0.62);
+          g.addColorStop(0,    `rgba(255,55,5,${(ss * 0.38).toFixed(3)})`);
+          g.addColorStop(0.45, `rgba(255,108,14,${(ss * 0.44).toFixed(3)})`);
+          g.addColorStop(1,    `rgba(255,185,48,${(ss * 0.20).toFixed(3)})`);
+          flameTongue(ox + 7 + n1 * 9, oy,
+            H * 0.60 * (1 + n3 * 0.12),
+            W * 0.50, n1 * 6, g);
+        }
+
+        /* ── Hot inner core — bright white-yellow centre ── */
+        const coreA = t * (0.52 + n1 * 0.10);
+        const cg = ctx.createRadialGradient(
+          ox, oy - H * 0.22, 0,
+          ox, oy - H * 0.18, H * 0.38
+        );
+        cg.addColorStop(0,   `rgba(255,255,215,${coreA.toFixed(3)})`);
+        cg.addColorStop(0.4, `rgba(255,215,80,${(coreA * 0.55).toFixed(3)})`);
+        cg.addColorStop(1,   'rgba(255,100,10,0)');
+        ctx.save();
+        ctx.globalCompositeOperation = 'screen';
+        ctx.fillStyle = cg;
+        const cr2 = H * 0.45;
+        ctx.beginPath();
+        ctx.arc(ox, oy - H * 0.18, cr2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      /* ── Warm ground glow (always present, grows with t) ── */
+      const glowR = 42 + t * 72;
+      const glowA = t * (0.26 + n1 * 0.07);
+      const gg = ctx.createRadialGradient(ox, oy, 0, ox, oy, glowR);
+      gg.addColorStop(0,   `rgba(255,185,55,${glowA.toFixed(3)})`);
+      gg.addColorStop(0.4, `rgba(255,75,12,${(glowA * 0.38).toFixed(3)})`);
+      gg.addColorStop(1,   'rgba(200,28,0,0)');
       ctx.save();
       ctx.globalCompositeOperation = 'screen';
-      ctx.fillStyle = g;
+      ctx.fillStyle = gg;
       ctx.beginPath();
-      ctx.arc(fireGlow.x, fireGlow.y, rad, 0, Math.PI * 2);
+      ctx.arc(ox, oy, glowR, 0, Math.PI * 2);
       ctx.fill();
       ctx.restore();
-      /* never cleared — stays as a warm ambient glow */
     }
 
-    /* ── 3. Flash ring ── */
+    /* ── 2. Flash ring ── */
     if (flashRing) {
       flashRing.life--;
       flashRing.r += (flashRing.maxR - 4) / flashRing.maxLife;
@@ -269,7 +260,7 @@ navLinks.querySelectorAll('.nav__link').forEach(link => {
       if (flashRing.life <= 0) flashRing = null;
     }
 
-    /* ── 4. Sparks ── */
+    /* ── 3. Sparks ── */
     for (let i = sparks.length - 1; i >= 0; i--) {
       const s = sparks[i];
       s.x  += s.vx;
@@ -291,7 +282,7 @@ navLinks.querySelectorAll('.nav__link').forEach(link => {
       ctx.restore();
     }
 
-    /* ── 5. Ambient embers ── */
+    /* ── 4. Ambient embers ── */
     for (let i = 0; i < embers.length; i++) {
       const p = embers[i];
       p.phase += p.phaseSpeed;
