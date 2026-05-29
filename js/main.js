@@ -422,25 +422,70 @@ navLinks.querySelectorAll('.nav__link').forEach(link => {
     '.draw-details *',
   ].join(','))];
 
-  let ready   = false;
-  let ticking = false;
-  let prevT   = -1;
+  let ready        = false;
+  let ticking      = false;
+  let prevT        = -1;
+  let transitioning = false;
+
+  /* Compute scroll t + eased offset at current scroll position */
+  function scrollState() {
+    const heroH = hero.offsetHeight;
+    const raw   = window.scrollY / heroH;
+    const t     = Math.min(Math.max((raw - 0.05) / 0.80, 0), 1);
+    const eased = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+    return { t, offset: eased * 100, opacity: 1 - eased * 0.5 };
+  }
 
   /* Take over from the CSS draw animations */
-  function enableScrollControl() {
+  function enableScrollControl(early) {
     if (ready) return;
     ready = true;
+
+    if (!early) {
+      /* Normal path: animations already finished, dashoffset is 0 */
+      paths.forEach(el => {
+        el.style.strokeDashoffset = '0';
+        el.style.animation        = 'none';
+      });
+      return;
+    }
+
+    /* Early path: user scrolled before animations completed.
+       1. Read each path's current animated position via getComputedStyle.
+       2. Freeze it there (stop animation, write inline style).
+       3. Smooth-transition to the scroll-based target.          */
     paths.forEach(el => {
-      el.style.strokeDashoffset = '0';
+      const cur = parseFloat(getComputedStyle(el).strokeDashoffset);
       el.style.animation        = 'none';
+      el.style.strokeDashoffset = `${isNaN(cur) ? 0 : Math.max(0, Math.min(100, cur))}`;
+    });
+
+    const { t, offset, opacity } = scrollState();
+    prevT        = t;
+    transitioning = true;
+
+    const TR = 'stroke-dashoffset 0.45s cubic-bezier(0.4, 0, 0.2, 1)';
+    paths.forEach(el => { el.style.transition = TR; });
+    illus.style.transition = 'opacity 0.45s ease-out';
+
+    /* One rAF so the frozen value is painted before the transition starts */
+    requestAnimationFrame(() => {
+      paths.forEach(el => { el.style.strokeDashoffset = `${offset}`; });
+      illus.style.opacity = opacity;
+
+      setTimeout(() => {
+        paths.forEach(el => { el.style.transition = ''; });
+        illus.style.transition = '';
+        transitioning = false;
+      }, 480);
     });
   }
 
-  /* svg-ready fires at ~2.3s; last draw animation ends at ~2.3 + 7.7 + 0.8 = 10.8s */
+  /* svg-ready fires at ~2.3s; last draw animation ends at ~10.8s */
   if (reduceMotion) {
-    enableScrollControl();
+    enableScrollControl(false);
   } else {
-    setTimeout(enableScrollControl, 11200);
+    setTimeout(() => enableScrollControl(false), 11200);
   }
 
   /* Scroll listener */
@@ -453,26 +498,18 @@ navLinks.querySelectorAll('.nav__link').forEach(link => {
   function update() {
     ticking = false;
 
-    const heroH = hero.offsetHeight;
-    const raw   = window.scrollY / heroH;
+    /* Force-enable if user scrolls before animations complete */
+    if (!ready) { enableScrollControl(true); return; }
 
-    /* Map scroll: starts dissolving at 5 %, fully gone at 85 % */
-    const t = Math.min(Math.max((raw - 0.05) / 0.80, 0), 1);
+    /* While the hand-off transition is running, don't fight it */
+    if (transitioning) return;
+
+    const { t, offset, opacity } = scrollState();
     if (t === prevT) return;
     prevT = t;
 
-    /* Force-enable if user scrolls before animations complete */
-    if (!ready && t > 0) enableScrollControl();
-    if (!ready) return;
-
-    /* Ease-in-out curve for a smooth, organic dissolve */
-    const eased  = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-    const offset = eased * 100;
-
     paths.forEach(el => { el.style.strokeDashoffset = offset; });
-
-    /* Whole illustration also dims as it undraws */
-    illus.style.opacity = 1 - eased * 0.5;
+    illus.style.opacity = opacity;
   }
 })();
 
