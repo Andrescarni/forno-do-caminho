@@ -1,0 +1,13 @@
+{
+  "name": "forno-do-caminho",
+  "version": "1.0.0",
+  "description": "Pizzeria artesanal take-away — Forno do Caminho",
+  "private": true,
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0",
+    "stripe": "^16.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

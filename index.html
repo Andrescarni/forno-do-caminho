@@ -936,114 +936,8 @@
         <button class="carta__tab" data-category="extras">Extras</button>
       </div>
 
-      <!-- Spotlight cards grid (cult-ui animated-cards pattern) -->
-      <div class="carta__grid animated-cards" id="cartaGrid">
-
-        <div class="carta__item" data-category="classicas">
-          <div class="carta__spotlight" aria-hidden="true"></div>
-          <div class="carta__item-header">
-            <h3 class="carta__item-name">Margherita</h3>
-            <span class="carta__item-price">9,50€</span>
-          </div>
-          <p class="carta__item-desc">Salsa de tomate San Marzano, mozzarella fior di latte, albahaca fresca</p>
-          <span class="carta__item-tag">Vegetariana</span>
-        </div>
-
-        <div class="carta__item" data-category="classicas">
-          <div class="carta__spotlight" aria-hidden="true"></div>
-          <div class="carta__item-header">
-            <h3 class="carta__item-name">Napolitana</h3>
-            <span class="carta__item-price">10,50€</span>
-          </div>
-          <p class="carta__item-desc">Salsa de tomate, mozzarella, anchoas, alcaparras, aceitunas negras, orégano</p>
-        </div>
-
-        <div class="carta__item" data-category="classicas">
-          <div class="carta__spotlight" aria-hidden="true"></div>
-          <div class="carta__item-header">
-            <h3 class="carta__item-name">Prosciutto</h3>
-            <span class="carta__item-price">12,00€</span>
-          </div>
-          <p class="carta__item-desc">Salsa de tomate, mozzarella, jamón crudo, rúcula, parmesano en lascas</p>
-        </div>
-
-        <div class="carta__item" data-category="classicas">
-          <div class="carta__spotlight" aria-hidden="true"></div>
-          <div class="carta__item-header">
-            <h3 class="carta__item-name">Quattro Stagioni</h3>
-            <span class="carta__item-price">13,00€</span>
-          </div>
-          <p class="carta__item-desc">Salsa de tomate, mozzarella, champiñones, jamón, alcachofas y aceitunas</p>
-        </div>
-
-        <div class="carta__item carta__item--hidden" data-category="especiais">
-          <div class="carta__spotlight" aria-hidden="true"></div>
-          <div class="carta__item-header">
-            <h3 class="carta__item-name">Caminho</h3>
-            <span class="carta__item-price">14,50€</span>
-          </div>
-          <p class="carta__item-desc">Nuestra firma. Salsa de tomate, mozzarella, nduja, miel de romero, nuez y rúcula</p>
-          <span class="carta__item-tag carta__item-tag--gold">Chef's Pick</span>
-        </div>
-
-        <div class="carta__item carta__item--hidden" data-category="especiais">
-          <div class="carta__spotlight" aria-hidden="true"></div>
-          <div class="carta__item-header">
-            <h3 class="carta__item-name">Trufada</h3>
-            <span class="carta__item-price">15,50€</span>
-          </div>
-          <p class="carta__item-desc">Base de crema de trufa, mozzarella, setas silvestres, parmesano y aceite trufado</p>
-          <span class="carta__item-tag">Sin tomate</span>
-        </div>
-
-        <div class="carta__item carta__item--hidden" data-category="especiais">
-          <div class="carta__spotlight" aria-hidden="true"></div>
-          <div class="carta__item-header">
-            <h3 class="carta__item-name">Alheira</h3>
-            <span class="carta__item-price">13,50€</span>
-          </div>
-          <p class="carta__item-desc">Salsa de tomate, mozzarella, alheira artesanal, pimiento asado y berza gallega</p>
-          <span class="carta__item-tag">Sabor portugués</span>
-        </div>
-
-        <div class="carta__item carta__item--hidden" data-category="especiais">
-          <div class="carta__spotlight" aria-hidden="true"></div>
-          <div class="carta__item-header">
-            <h3 class="carta__item-name">Burrata</h3>
-            <span class="carta__item-price">15,00€</span>
-          </div>
-          <p class="carta__item-desc">Salsa de tomate cherry, burrata fresca, tomate cherry, albahaca y aceite de oliva virgen extra</p>
-          <span class="carta__item-tag">Vegetariana</span>
-        </div>
-
-        <div class="carta__item carta__item--hidden" data-category="extras">
-          <div class="carta__spotlight" aria-hidden="true"></div>
-          <div class="carta__item-header">
-            <h3 class="carta__item-name">Ingrediente extra</h3>
-            <span class="carta__item-price">1,50€</span>
-          </div>
-          <p class="carta__item-desc">Añade cualquier ingrediente a tu pizza</p>
-        </div>
-
-        <div class="carta__item carta__item--hidden" data-category="extras">
-          <div class="carta__spotlight" aria-hidden="true"></div>
-          <div class="carta__item-header">
-            <h3 class="carta__item-name">Masa sin gluten</h3>
-            <span class="carta__item-price">+2,00€</span>
-          </div>
-          <p class="carta__item-desc">Disponible para todas las pizzas con pedido anticipado</p>
-        </div>
-
-        <div class="carta__item carta__item--hidden" data-category="extras">
-          <div class="carta__spotlight" aria-hidden="true"></div>
-          <div class="carta__item-header">
-            <h3 class="carta__item-name">Bebidas</h3>
-            <span class="carta__item-price">1,50€ — 3,00€</span>
-          </div>
-          <p class="carta__item-desc">Agua, refrescos, cervezas artesanales y vino tinto de la región</p>
-        </div>
-
-      </div>
+      <!-- Spotlight cards grid — built dynamically by cart.js -->
+      <div class="carta__grid animated-cards" id="cartaGrid"></div>
 
       <p class="carta__note reveal-up">
         * Los precios incluyen IVA. Carta sujeta a cambios estacionales.<br>
@@ -1259,6 +1153,171 @@
     </div>
   </footer>
 
+  <!-- ═══════════════════════════════════════
+       PIZZA CUSTOMIZATION MODAL
+  ═══════════════════════════════════════ -->
+  <div id="pizzaModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal__backdrop"></div>
+    <div class="modal__panel" tabindex="-1">
+      <button class="modal__close" aria-label="Cerrar modal">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M3 3l10 10M13 3L3 13"/></svg>
+      </button>
+
+      <div class="modal__header">
+        <h2 class="modal__title" id="modalTitle">Pizza</h2>
+        <p class="modal__desc" id="modalDesc"></p>
+        <div class="modal__base-price">
+          <span>Precio base</span>
+          <strong id="modalBasePrice">0,00€</strong>
+        </div>
+      </div>
+
+      <div class="modal__body">
+        <h3 class="modal__section-title">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" width="14" height="14"><path d="M8 2v12M2 8h12"/></svg>
+          Añadir extras
+        </h3>
+        <div class="modal__extras" id="modalExtras"></div>
+      </div>
+
+      <div class="modal__footer">
+        <div class="modal__qty-wrap">
+          <button class="qty__btn" id="qtyMinus" aria-label="Quitar uno">−</button>
+          <span class="qty__value" id="qtyValue">1</span>
+          <button class="qty__btn" id="qtyPlus" aria-label="Añadir uno">+</button>
+        </div>
+        <button class="btn btn--primary modal__cta" id="modalAddBtn">
+          Añadir al pedido
+          <span class="modal__cta-price" id="modalTotal">0,00€</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       CART DRAWER
+  ═══════════════════════════════════════ -->
+  <div id="cartDrawer" class="cart-drawer">
+    <div class="cart-drawer__backdrop"></div>
+    <div class="cart-drawer__panel" role="dialog" aria-modal="true" aria-label="Tu pedido">
+
+      <div class="cart-drawer__header">
+        <h2 class="cart-drawer__title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="20" height="20" aria-hidden="true">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>
+          </svg>
+          Tu pedido
+        </h2>
+        <button class="cart-drawer__close" aria-label="Cerrar carrito">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M3 3l10 10M13 3L3 13"/></svg>
+        </button>
+      </div>
+
+      <!-- Items list -->
+      <div class="cart-drawer__items" id="cartItems"></div>
+
+      <!-- Empty state -->
+      <div class="cart-drawer__empty" id="cartEmpty">
+        <svg viewBox="0 0 64 64" fill="none" width="48" height="48" aria-hidden="true">
+          <circle cx="32" cy="32" r="30" stroke="#c9a84c" stroke-width="1.5" opacity="0.3"/>
+          <path d="M20 32 Q32 18 44 32 Q32 46 20 32Z" stroke="#c9a84c" stroke-width="1.5" fill="none" opacity="0.5"/>
+          <circle cx="32" cy="32" r="4" fill="#c9a84c" opacity="0.4"/>
+        </svg>
+        <p>Aún no has añadido nada.<br>¡Elige tu pizza!</p>
+        <button class="btn btn--ghost cart-empty__cta" id="cartEmptyCta">Ver la carta</button>
+      </div>
+
+      <!-- Footer: form + totals + checkout -->
+      <div class="cart-drawer__footer" id="cartFooter" hidden>
+        <div class="cart-drawer__fields">
+          <div class="form-field">
+            <label class="form-field__label" for="customerName">
+              Tu nombre <span aria-hidden="true">*</span>
+            </label>
+            <input
+              class="form-field__input"
+              type="text"
+              id="customerName"
+              placeholder="Para el ticket de recogida"
+              autocomplete="given-name"
+              maxlength="60"
+            >
+          </div>
+          <div class="form-field">
+            <label class="form-field__label" for="customerEmail">
+              Email <span class="form-field__optional">(para tu confirmación)</span>
+            </label>
+            <input
+              class="form-field__input"
+              type="email"
+              id="customerEmail"
+              placeholder="tu@email.com"
+              autocomplete="email"
+            >
+          </div>
+          <div class="form-field">
+            <label class="form-field__label" for="orderNote">
+              Nota <span class="form-field__optional">(alergias, preferencias…)</span>
+            </label>
+            <textarea
+              class="form-field__input form-field__textarea"
+              id="orderNote"
+              rows="2"
+              placeholder="Sin cebolla, extra picante…"
+              maxlength="280"
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="cart-summary">
+          <div class="cart-summary__row">
+            <span>Subtotal</span>
+            <span id="cartSubtotal">0,00€</span>
+          </div>
+          <div class="cart-summary__divider" aria-hidden="true"></div>
+          <div class="cart-summary__row cart-summary__row--total">
+            <strong>Total</strong>
+            <strong id="cartTotal">0,00€</strong>
+          </div>
+          <div class="cart-summary__eta">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" width="14" height="14" aria-hidden="true">
+              <circle cx="8" cy="8" r="6.5"/><path d="M8 4.5v4l2.5 1.5"/>
+            </svg>
+            <span>Listo en aproximadamente <strong>20 minutos</strong></span>
+          </div>
+        </div>
+
+        <button class="btn btn--primary btn--block" id="checkoutBtn">
+          Pagar con tarjeta
+          <span class="checkout-btn__total" id="checkoutTotal">0,00€</span>
+        </button>
+        <p class="cart-secure-note">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" width="12" height="12" aria-hidden="true">
+            <rect x="2" y="6" width="10" height="7" rx="1.5"/><path d="M4.5 6V4.5a2.5 2.5 0 015 0V6"/>
+          </svg>
+          Pago seguro con Stripe. No almacenamos datos de tarjeta.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       FLOATING CART BUTTON
+  ═══════════════════════════════════════ -->
+  <div id="cartFloat" class="cart-float" hidden aria-live="polite">
+    <button class="cart-float__btn" id="cartFloatOpen" aria-label="Ver tu pedido">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20" aria-hidden="true">
+        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>
+      </svg>
+      <span class="cart-float__label">Ver pedido</span>
+      <span class="cart-float__pill">
+        <span class="cart-float__count" id="cartCount">0</span>
+      </span>
+      <span class="cart-float__total" id="cartFloatTotal">0,00€</span>
+    </button>
+  </div>
+
   <script src="js/main.js"></script>
+  <script src="js/cart.js"></script>
 </body>
 </html>

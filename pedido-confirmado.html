@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pedido confirmado — Forno do Caminho</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍕</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    body { min-height: 100dvh; display: flex; flex-direction: column; }
+    .confirm-page {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 1.5rem;
+    }
+    .confirm-card {
+      width: 100%;
+      max-width: 520px;
+      background: oklch(0.14 0.012 60);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      text-align: center;
+    }
+    .confirm-card__top {
+      padding: 3rem 2.5rem 2rem;
+      background: linear-gradient(160deg, oklch(0.18 0.025 65) 0%, oklch(0.13 0.01 60) 100%);
+      border-bottom: 1px solid var(--border);
+    }
+    .confirm-icon {
+      width: 72px;
+      height: 72px;
+      background: oklch(0.20 0.03 75);
+      border: 2px solid var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    @keyframes popIn {
+      from { transform: scale(0); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+    .confirm-title {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+    .confirm-subtitle {
+      color: var(--ink-muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    .confirm-card__body {
+      padding: 2rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    .confirm-eta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      padding: 1rem 1.5rem;
+      background: oklch(0.18 0.025 65);
+      border: 1px solid rgba(201,168,76,.25);
+      border-radius: 12px;
+      color: var(--ink);
+      font-size: 0.95rem;
+    }
+    .confirm-eta__time {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      color: var(--gold);
+      line-height: 1;
+      display: block;
+      margin-top: 0.15rem;
+    }
+    .confirm-eta__label { color: var(--ink-muted); font-size: 0.8rem; }
+    .confirm-number {
+      font-size: 0.8rem;
+      color: var(--ink-muted);
+    }
+    .confirm-number strong { color: var(--ink); font-family: monospace; letter-spacing: 0.05em; }
+    .confirm-items {
+      text-align: left;
+      background: oklch(0.17 0.012 60);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .confirm-items__title {
+      padding: 0.7rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--ink-muted);
+      border-bottom: 1px solid var(--border);
+    }
+    .confirm-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.65rem 1rem;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.88rem;
+    }
+    .confirm-item:last-child { border-bottom: none; }
+    .confirm-item__name { color: var(--ink); font-weight: 600; }
+    .confirm-item__extras { color: var(--ink-muted); font-size: 0.78rem; margin-top: 0.1rem; }
+    .confirm-item__qty { color: var(--gold); font-weight: 700; font-size: 0.82rem; }
+    .confirm-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    @media (max-width: 480px) {
+      .confirm-card__top,
+      .confirm-card__body { padding-left: 1.5rem; padding-right: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav" style="position:relative;border-bottom:1px solid var(--border)">
+    <div class="container" style="display:flex;align-items:center;padding-top:1rem;padding-bottom:1rem">
+      <a href="/" class="nav__logo" style="display:flex;align-items:center;gap:.6rem;text-decoration:none">
+        <svg viewBox="0 0 60 50" fill="none" width="32" height="27">
+          <path d="M10 40 Q10 15 30 15 Q50 15 50 40 Z" fill="#1a0e06"/>
+          <path d="M10 40 Q10 15 30 15 Q50 15 50 40" stroke="#c9a84c" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M5 40 L55 40" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M21 40 Q21 28 30 28 Q39 28 39 40 Z" fill="#060100"/>
+          <path d="M27 37 Q25 30 28 23 Q30 29 33 26 Q31 33 34 34 Q31 38 30 41Z" fill="#FF6B1A" opacity="0.9"/>
+        </svg>
+        <span style="font-family:var(--font-display);font-size:1rem;color:var(--gold)">Forno do Caminho</span>
+      </a>
+    </div>
+  </nav>
+
+  <main class="confirm-page">
+    <div class="confirm-card" id="confirmCard">
+      <!-- State: loading -->
+      <div class="confirm-card__top" id="stateLoading">
+        <div class="confirm-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2" width="32" height="32">
+            <circle cx="12" cy="12" r="10" stroke-dasharray="60" stroke-dashoffset="60" style="animation:dash 1s linear infinite">
+              <animate attributeName="stroke-dashoffset" values="60;0;60" dur="1.5s" repeatCount="indefinite"/>
+            </circle>
+          </svg>
+        </div>
+        <p class="confirm-subtitle">Confirmando tu pedido…</p>
+      </div>
+
+      <!-- State: success (hidden by default) -->
+      <div id="stateSuccess" hidden>
+        <div class="confirm-card__top">
+          <div class="confirm-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2.5" width="32" height="32">
+              <path d="M20 6L9 17l-5-5"/>
+            </svg>
+          </div>
+          <h1 class="confirm-title">¡Pedido recibido!</h1>
+          <p class="confirm-subtitle">
+            Estamos preparando tu pizza artesanal.<br>
+            Pasaremos en cuanto esté lista.
+          </p>
+        </div>
+
+        <div class="confirm-card__body">
+          <div class="confirm-eta">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="22" height="22" aria-hidden="true" style="color:var(--gold)">
+              <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+            </svg>
+            <div>
+              <span class="confirm-eta__label">Tiempo estimado</span>
+              <span class="confirm-eta__time" id="etaTime">~20 min</span>
+            </div>
+          </div>
+
+          <p class="confirm-number">
+            Pedido <strong id="orderRef">—</strong>
+          </p>
+
+          <div class="confirm-items" id="confirmItems" hidden>
+            <p class="confirm-items__title">Lo que has pedido</p>
+            <div id="confirmItemsList"></div>
+          </div>
+
+          <div class="confirm-actions">
+            <a href="/#carta" class="btn btn--primary">Hacer otro pedido</a>
+            <a href="/" class="btn btn--ghost">Volver al inicio</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- State: error (hidden by default) -->
+      <div id="stateError" hidden>
+        <div class="confirm-card__top">
+          <div class="confirm-icon" style="border-color:oklch(0.65 0.2 25)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="oklch(0.65 0.2 25)" stroke-width="2.5" width="32" height="32">
+              <path d="M12 8v5M12 16h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+            </svg>
+          </div>
+          <h1 class="confirm-title" style="color:oklch(0.65 0.2 25)">Algo salió mal</h1>
+          <p class="confirm-subtitle">No pudimos confirmar tu pedido.<br>Llámanos o inténtalo de nuevo.</p>
+        </div>
+        <div class="confirm-card__body">
+          <a href="/#carta" class="btn btn--primary">Volver a la carta</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    (async function() {
+      const params    = new URLSearchParams(location.search);
+      const sessionId = params.get('session');
+
+      const loading = document.getElementById('stateLoading');
+      const success = document.getElementById('stateSuccess');
+      const error   = document.getElementById('stateError');
+
+      if (!sessionId) {
+        loading.hidden = true;
+        error.hidden   = false;
+        return;
+      }
+
+      try {
+        /* Verify session + get order details */
+        const res  = await fetch(`/api/order-status?session=${encodeURIComponent(sessionId)}`);
+        const data = res.ok ? await res.json() : null;
+
+        loading.hidden = true;
+
+        if (!data || data.error) { error.hidden = false; return; }
+
+        /* Populate success state */
+        document.getElementById('orderRef').textContent = '#' + sessionId.slice(-8).toUpperCase();
+
+        /* Dynamic ETA: base 15 min + 3 per item */
+        const itemCount = (data.items || []).reduce((n, i) => n + (i.qty || 1), 0);
+        const eta = Math.min(15 + itemCount * 3, 35);
+        document.getElementById('etaTime').textContent = `~${eta} min`;
+
+        /* Render items if present */
+        if (data.items && data.items.length > 0) {
+          const listEl = document.getElementById('confirmItemsList');
+          listEl.innerHTML = data.items.map(item => `
+            <div class="confirm-item">
+              <div>
+                <span class="confirm-item__name">${item.name}</span>
+                ${item.extras && item.extras.length
+                  ? `<div class="confirm-item__extras">${item.extras.join(', ')}</div>`
+                  : ''}
+              </div>
+              <span class="confirm-item__qty">× ${item.qty || 1}</span>
+            </div>
+          `).join('');
+          document.getElementById('confirmItems').hidden = false;
+        }
+
+        success.hidden = false;
+
+        /* Clear cart from localStorage on success */
+        localStorage.removeItem('forno_cart');
+
+      } catch {
+        loading.hidden = true;
+        error.hidden   = false;
+      }
+    })();
+  </script>
+</body>
+</html>

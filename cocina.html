@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Cocina — Forno do Caminho</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍕</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold:    #c9a84c;
+      --bg:      #0c0c0c;
+      --surface: #141414;
+      --card:    #1a1a1a;
+      --border:  rgba(255,255,255,.08);
+      --ink:     #f0ece4;
+      --muted:   rgba(240,236,228,.5);
+      --green:   oklch(0.55 0.18 145);
+      --orange:  #e8821a;
+      --red:     oklch(0.55 0.22 25);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Inter', system-ui, sans-serif;
+      min-height: 100dvh;
+    }
+
+    /* LOGIN */
+    .login-screen {
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .login-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 340px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
+    }
+    .login-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--gold);
+    }
+    .login-subtitle { font-size: 0.85rem; color: var(--muted); }
+    .pin-input {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.85rem 1rem;
+      color: var(--ink);
+      font-size: 1.2rem;
+      font-family: monospace;
+      text-align: center;
+      letter-spacing: 0.2em;
+      width: 100%;
+      transition: border-color 0.15s;
+    }
+    .pin-input:focus { outline: none; border-color: var(--gold); }
+    .pin-input.error { border-color: var(--red); }
+    .login-btn {
+      background: var(--gold);
+      color: #0e0e0e;
+      border: none;
+      border-radius: 10px;
+      padding: 0.85rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    .login-btn:hover { opacity: 0.88; }
+
+    /* KITCHEN PANEL */
+    .kitchen { display: none; flex-direction: column; min-height: 100dvh; }
+    .kitchen.visible { display: flex; }
+
+    .kitchen-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .kitchen-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 700;
+      color: var(--gold);
+    }
+    .kitchen-status {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2s infinite;
+    }
+    .status-dot.offline { background: var(--red); animation: none; }
+    @keyframes pulse {
+      0%,100% { opacity: 1; }
+      50%      { opacity: 0.4; }
+    }
+    .kitchen-pending-count {
+      background: var(--red);
+      color: #fff;
+      border-radius: 50px;
+      padding: 0.2rem 0.6rem;
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+
+    .kitchen-body {
+      flex: 1;
+      padding: 1.5rem;
+    }
+
+    .orders-empty {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .orders-empty svg { margin-bottom: 1rem; opacity: 0.4; }
+
+    .orders-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1rem;
+    }
+
+    /* Order card */
+    .order-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      animation: cardIn 0.25s ease-out;
+    }
+    @keyframes cardIn {
+      from { transform: translateY(8px); opacity: 0; }
+      to   { transform: translateY(0);   opacity: 1; }
+    }
+    .order-card.preparing {
+      border-color: rgba(232,130,26,.35);
+      background: oklch(0.15 0.025 55);
+    }
+    .order-card__header {
+      padding: 0.9rem 1rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+    .order-name {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--ink);
+    }
+    .order-time {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+    .order-badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+    .order-badge--pending {
+      background: rgba(201,168,76,.15);
+      color: var(--gold);
+    }
+    .order-badge--preparing {
+      background: rgba(232,130,26,.15);
+      color: var(--orange);
+    }
+
+    .order-card__items {
+      padding: 0.8rem 1rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .order-line {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+    .order-line__name {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .order-line__extras {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 0.1rem;
+    }
+    .order-line__qty {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--gold);
+      min-width: 1.5rem;
+      text-align: right;
+    }
+    .order-note {
+      margin: 0 1rem 0.8rem;
+      padding: 0.5rem 0.7rem;
+      background: oklch(0.18 0.02 55);
+      border-left: 2px solid var(--orange);
+      border-radius: 0 6px 6px 0;
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .order-card__footer {
+      padding: 0.8rem 1rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 0.5rem;
+    }
+    .btn-kitchen {
+      flex: 1;
+      padding: 0.7rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+    .btn-kitchen:hover { opacity: 0.85; }
+    .btn-kitchen:active { transform: scale(0.97); }
+    .btn-kitchen--preparing {
+      background: var(--orange);
+      color: #fff;
+    }
+    .btn-kitchen--ready {
+      background: var(--green);
+      color: #fff;
+    }
+    .btn-kitchen--done {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    .order-total {
+      font-size: 0.78rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      padding: 0 1rem 0.7rem;
+    }
+    .order-total strong { color: var(--gold); margin-left: 0.3rem; }
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN SCREEN -->
+  <div class="login-screen" id="loginScreen">
+    <div class="login-card">
+      <div>
+        <svg viewBox="0 0 60 50" fill="none" width="40" height="33" style="margin-bottom:.6rem">
+          <path d="M10 40 Q10 15 30 15 Q50 15 50 40 Z" fill="#1a0e06"/>
+          <path d="M10 40 Q10 15 30 15 Q50 15 50 40" stroke="#c9a84c" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M5 40 L55 40" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+        <p class="login-title">Panel de Cocina</p>
+        <p class="login-subtitle">Forno do Caminho</p>
+      </div>
+      <input
+        class="pin-input"
+        type="password"
+        id="pinInput"
+        inputmode="numeric"
+        placeholder="PIN"
+        maxlength="8"
+        autocomplete="off"
+      >
+      <button class="login-btn" id="loginBtn">Entrar</button>
+    </div>
+  </div>
+
+  <!-- KITCHEN PANEL -->
+  <div class="kitchen" id="kitchenPanel">
+    <header class="kitchen-header">
+      <div class="kitchen-brand">
+        🍕 Cocina
+      </div>
+      <div style="display:flex;align-items:center;gap:.8rem">
+        <span id="pendingBadge" class="kitchen-pending-count" hidden>0</span>
+        <div class="kitchen-status">
+          <span class="status-dot" id="statusDot"></span>
+          <span id="statusText">Conectado</span>
+        </div>
+        <button
+          onclick="logout()"
+          style="background:none;border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:.3rem .7rem;font-size:.75rem;cursor:pointer">
+          Salir
+        </button>
+      </div>
+    </header>
+
+    <main class="kitchen-body">
+      <div class="orders-empty" id="ordersEmpty">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" width="48" height="48">
+          <circle cx="24" cy="24" r="20"/><path d="M16 24h16M24 16v16"/>
+        </svg>
+        <p>Sin pedidos pendientes.<br>Esperando nuevos pedidos…</p>
+      </div>
+      <div class="orders-grid" id="ordersGrid" hidden></div>
+    </main>
+  </div>
+
+  <script>
+    const POLL_INTERVAL = 15000; // 15 s
+    let pin = '';
+    let pollTimer = null;
+
+    /* ── Login ── */
+    const pinInput  = document.getElementById('pinInput');
+    const loginBtn  = document.getElementById('loginBtn');
+
+    pinInput.addEventListener('keydown', e => { if (e.key === 'Enter') attemptLogin(); });
+    loginBtn.addEventListener('click', attemptLogin);
+
+    function attemptLogin() {
+      const entered = pinInput.value.trim();
+      if (!entered) return;
+      pin = entered;
+      loginBtn.textContent = 'Verificando…';
+      loginBtn.disabled = true;
+      fetchOrders().then(ok => {
+        if (ok) {
+          document.getElementById('loginScreen').style.display = 'none';
+          document.getElementById('kitchenPanel').classList.add('visible');
+          startPolling();
+        } else {
+          pinInput.classList.add('error');
+          setTimeout(() => pinInput.classList.remove('error'), 1200);
+          loginBtn.textContent = 'PIN incorrecto';
+          loginBtn.disabled = false;
+          setTimeout(() => { loginBtn.textContent = 'Entrar'; }, 2000);
+        }
+      });
+    }
+
+    function logout() {
+      pin = '';
+      clearInterval(pollTimer);
+      document.getElementById('kitchenPanel').classList.remove('visible');
+      document.getElementById('loginScreen').style.display = '';
+      pinInput.value = '';
+    }
+
+    /* ── Polling ── */
+    function startPolling() {
+      fetchOrders();
+      pollTimer = setInterval(fetchOrders, POLL_INTERVAL);
+    }
+
+    async function fetchOrders() {
+      const dot  = document.getElementById('statusDot');
+      const text = document.getElementById('statusText');
+      try {
+        const res = await fetch('/api/orders', {
+          headers: { 'x-kitchen-pin': pin }
+        });
+        if (res.status === 401) return false;
+        if (!res.ok) throw new Error('Server error');
+        const orders = await res.json();
+        renderOrders(orders);
+        dot.classList.remove('offline');
+        text.textContent = 'Conectado · ' + new Date().toLocaleTimeString('es-ES', { hour:'2-digit', minute:'2-digit' });
+        return true;
+      } catch {
+        dot.classList.add('offline');
+        text.textContent = 'Sin conexión';
+        return false;
+      }
+    }
+
+    /* ── Render ── */
+    function renderOrders(orders) {
+      const grid    = document.getElementById('ordersGrid');
+      const empty   = document.getElementById('ordersEmpty');
+      const badge   = document.getElementById('pendingBadge');
+      const pending = orders.filter(o => o.status === 'pending').length;
+
+      badge.textContent = pending;
+      badge.hidden      = pending === 0;
+
+      if (orders.length === 0) {
+        grid.hidden  = true;
+        empty.hidden = false;
+        return;
+      }
+      grid.hidden  = false;
+      empty.hidden = true;
+
+      grid.innerHTML = orders.map(order => {
+        const created = new Date(order.created_at);
+        const timeStr = created.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+        const mins    = Math.floor((Date.now() - created) / 60000);
+        const minsStr = mins < 1 ? 'ahora mismo' : `hace ${mins} min`;
+        const isPending   = order.status === 'pending';
+        const isPreparing = order.status === 'preparing';
+
+        const itemsHtml = (order.items || []).map(i => `
+          <div class="order-line">
+            <div>
+              <span class="order-line__name">${i.name}</span>
+              ${i.extras && i.extras.length
+                ? `<div class="order-line__extras">+ ${i.extras.join(', ')}</div>`
+                : ''}
+            </div>
+            <span class="order-line__qty">×${i.qty || 1}</span>
+          </div>
+        `).join('');
+
+        return `
+          <div class="order-card ${isPreparing ? 'preparing' : ''}" id="order-${order.id}">
+            <div class="order-card__header">
+              <div>
+                <div class="order-name">${order.customer_name}</div>
+                <div class="order-time">${timeStr} · ${minsStr}</div>
+              </div>
+              <span class="order-badge order-badge--${order.status}">
+                ${isPending ? 'Nuevo' : 'En preparación'}
+              </span>
+            </div>
+            <div class="order-card__items">${itemsHtml}</div>
+            ${order.note ? `<div class="order-note">📝 ${order.note}</div>` : ''}
+            <div class="order-total">Total: <strong>${Number(order.total).toFixed(2).replace('.',',')}€</strong></div>
+            <div class="order-card__footer">
+              ${isPending ? `
+                <button class="btn-kitchen btn-kitchen--preparing" onclick="updateOrder('${order.id}','preparing')">
+                  🔥 En preparación
+                </button>
+              ` : ''}
+              ${isPreparing ? `
+                <button class="btn-kitchen btn-kitchen--ready" onclick="updateOrder('${order.id}','ready')">
+                  ✓ Listo para recoger
+                </button>
+              ` : ''}
+              <button class="btn-kitchen btn-kitchen--done" onclick="confirmDone('${order.id}')">
+                Archivar
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function updateOrder(id, status) {
+      const card = document.getElementById('order-' + id);
+      if (card) card.style.opacity = '0.5';
+
+      try {
+        await fetch('/api/orders', {
+          method:  'PATCH',
+          headers: { 'Content-Type': 'application/json', 'x-kitchen-pin': pin },
+          body:    JSON.stringify({ id, status }),
+        });
+        fetchOrders();
+      } catch {
+        if (card) card.style.opacity = '1';
+      }
+    }
+
+    function confirmDone(id) {
+      if (confirm('¿Archivar este pedido?')) updateOrder(id, 'done');
+    }
+  </script>
+</body>
+</html>
