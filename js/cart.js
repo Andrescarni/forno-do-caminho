@@ -445,18 +445,17 @@ const CartDrawer = (() => {
 /* ════════════════════════════════════════
    FLOATING CART BUTTON
 ════════════════════════════════════════ */
-const floatBtn  = document.getElementById('cartFloat');
-const floatOpen = document.getElementById('cartFloatOpen');
-
 function updateFloatBtn(items) {
-  if (!floatBtn) return;
+  /* Lookup fresh every call — avoids TDZ issues with declaration order */
+  const el = document.getElementById('cartFloat');
+  if (!el) return;
   const count = items.reduce((n, i) => n + i.quantity, 0);
-  floatBtn.hidden = count === 0;
-  const badge = floatBtn.querySelector('.cart-float__count');
+  el.hidden = count === 0;
+  const badge = el.querySelector('.cart-float__count');
   if (badge) badge.textContent = count;
 }
 
-floatOpen?.addEventListener('click', () => CartDrawer.open());
+document.getElementById('cartFloatOpen')?.addEventListener('click', () => CartDrawer.open());
 
 /* ════════════════════════════════════════
    CARTA — BUILD + WIRE UP
@@ -517,6 +516,12 @@ floatOpen?.addEventListener('click', () => CartDrawer.open());
   `).join('');
 
   grid.innerHTML = pizzaCards + bebidaCards;
+
+  /* Make initial classicas visible with appear animation */
+  grid.querySelectorAll('.carta__item:not(.carta__item--hidden)').forEach((el, i) => {
+    el.style.setProperty('--card-i', i);
+    el.classList.add('carta__item--appear');
+  });
 
   /* Tabs — update to include bebidas */
   const tabsEl = document.querySelector('.carta__tabs');
