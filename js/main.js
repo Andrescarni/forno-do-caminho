@@ -49,15 +49,15 @@ navLinks.querySelectorAll('.nav__link').forEach(link => {
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
 
-  const COLORS = [
-    [201, 168, 76],   // brand gold
-    [228, 201, 122],  // light gold
-    [245, 166, 35],   // amber
-    [255, 200, 80],   // warm gold
-    [255, 245, 200],  // pale warm white
-    [255, 130, 20],   // deep orange-gold
+  /* ── Colour palettes ── */
+  const EMBER_COLORS = [
+    [201, 168, 76], [228, 201, 122], [245, 166, 35],
+    [255, 200, 80],  [255, 245, 200], [255, 130, 20],
   ];
-  const MAX = 42; // reduced density
+  const HOT_COLORS = [
+    [255, 255, 230], [255, 230, 140], [255, 180, 60],
+    [255, 120, 20],  [201, 168, 76],
+  ];
 
   function resize() {
     canvas.width  = canvas.offsetWidth;
@@ -66,37 +66,45 @@ navLinks.querySelectorAll('.nav__link').forEach(link => {
   resize();
   window.addEventListener('resize', resize, { passive: true });
 
-  function spawn(randomY) {
-    const cx = Math.random() * canvas.width;
-    const cy = randomY
-      ? Math.random() * canvas.height
-      : canvas.height * (0.75 + Math.random() * 0.25);
-    const maxLife = 140 + Math.random() * 200;
-    return {
-      x: cx, y: cy,
-      vx: (Math.random() - 0.5) * 0.55,
-      vy: -(0.4 + Math.random() * 1.1),
-      size: 0.4 + Math.random() * 1.4, // smaller
-      phase: Math.random() * Math.PI * 2,
-      phaseSpeed: 0.03 + Math.random() * 0.04,
-      color: COLORS[Math.floor(Math.random() * COLORS.length)],
-      maxLife,
-      life: randomY ? Math.random() * maxLife : maxLife,
-    };
-  }
+  /* ── Oven centre (hero icon position) ── */
+  const ov = () => ({ x: canvas.width * 0.5, y: canvas.height * 0.28 });
 
-  const particles = Array.from({ length: MAX }, () => spawn(true));
+  /* ════════════════════════════════════════
+     PHASE 1 — CONVERGING PARTICLES
+     Glowing streaks fly toward the oven
+     from all directions, arriving just as
+     the spark ignites at 280 ms.
+  ════════════════════════════════════════ */
+  const conv = [];
+  (function buildConverging() {
+    const { x: ox, y: oy } = ov();
+    for (let i = 0; i < 40; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const dist  = 160 + Math.random() * Math.max(canvas.width, canvas.height) * 0.55;
+      const sx = ox + Math.cos(angle) * dist;
+      const sy = oy + Math.sin(angle) * dist;
+      conv.push({
+        sx, sy,
+        tx: ox + (Math.random() - 0.5) * 22,
+        ty: oy + (Math.random() - 0.5) * 16,
+        x: sx, y: sy,
+        progress: 0,
+        speed: 0.028 + Math.random() * 0.032,  // arrive in ~12–20 frames
+        frameDelay: Math.floor(i * 1.8),         // stagger across first ~72 frames
+        size: 0.7 + Math.random() * 1.9,
+        color: HOT_COLORS[Math.floor(Math.random() * HOT_COLORS.length)],
+        trail: [],
+        done: false,
+      });
+    }
+  })();
 
-  /* ── Ignition spark burst ── */
-  const SPARK_COLORS = [
-    [255, 255, 230],  // near-white hot
-    [255, 230, 140],  // bright gold
-    [255, 180, 60],   // orange-gold
-    [255, 120, 20],   // deep orange
-    [201, 168, 76],   // brand gold
-  ];
-  const sparks = [];
-  let flashRing = null;
+  /* ════════════════════════════════════════
+     PHASE 2 — IGNITION SPARK + FLASH RING
+     Fires at 280 ms (oven icon fade-in).
+  ════════════════════════════════════════ */
+  const sparks    = [];
+  let   flashRing = null;
 
   function spawnSpark(ox, oy) {
     const angle = Math.random() * Math.PI * 2;
@@ -106,27 +114,144 @@ navLinks.querySelectorAll('.nav__link').forEach(link => {
       x: ox + (Math.random() - 0.5) * 18,
       y: oy + (Math.random() - 0.5) * 12,
       vx: Math.cos(angle) * speed,
-      vy: Math.sin(angle) * speed - 1.8, // upward bias
+      vy: Math.sin(angle) * speed - 1.8,
       size: 0.9 + Math.random() * 2.6,
-      color: SPARK_COLORS[Math.floor(Math.random() * SPARK_COLORS.length)],
-      maxLife,
-      life: maxLife,
+      color: HOT_COLORS[Math.floor(Math.random() * HOT_COLORS.length)],
+      maxLife, life: maxLife,
     };
   }
 
-  // Fire the burst at 280ms — aligned with oven icon fade-in
+  /* ════════════════════════════════════════
+     PHASE 3 — FIRE IGNITION GLOW
+     Warm light blooms from the oven and
+     settles into a steady flicker.
+  ════════════════════════════════════════ */
+  let fireGlow = null;   // { x, y, born }
+
   setTimeout(() => {
-    const ox = canvas.width * 0.5;
-    const oy = canvas.height * 0.28;
+    const { x: ox, y: oy } = ov();
+    /* spark burst */
     for (let i = 0; i < 58; i++) sparks.push(spawnSpark(ox, oy));
-    // Expanding flash ring
+    /* expanding ring */
     flashRing = { x: ox, y: oy, r: 4, maxR: 72, life: 22, maxLife: 22 };
+    /* fire warmup glow */
+    fireGlow  = { x: ox, y: oy, born: performance.now() };
   }, 280);
 
+  /* ════════════════════════════════════════
+     AMBIENT EMBERS — continuous, subtle
+  ════════════════════════════════════════ */
+  const MAX = 42;
+  function spawnEmber(randomY) {
+    const cx = Math.random() * canvas.width;
+    const cy = randomY
+      ? Math.random() * canvas.height
+      : canvas.height * (0.75 + Math.random() * 0.25);
+    const maxLife = 140 + Math.random() * 200;
+    return {
+      x: cx, y: cy,
+      vx: (Math.random() - 0.5) * 0.55,
+      vy: -(0.4 + Math.random() * 1.1),
+      size: 0.4 + Math.random() * 1.4,
+      phase: Math.random() * Math.PI * 2,
+      phaseSpeed: 0.03 + Math.random() * 0.04,
+      color: EMBER_COLORS[Math.floor(Math.random() * EMBER_COLORS.length)],
+      maxLife,
+      life: randomY ? Math.random() * maxLife : maxLife,
+    };
+  }
+  const embers = Array.from({ length: MAX }, () => spawnEmber(true));
+
+  /* ════════════════════════════════════════
+     MAIN LOOP
+  ════════════════════════════════════════ */
   function tick() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    /* flash ring */
+    /* ── 1. Converging streaks ── */
+    for (const p of conv) {
+      if (p.done) continue;
+      if (p.frameDelay > 0) { p.frameDelay--; continue; }
+
+      /* Ease-in acceleration: slow start → fast arrival */
+      p.progress += p.speed * (1 + p.progress * 2);
+      if (p.progress >= 1) { p.done = true; continue; }
+
+      const eased = p.progress * p.progress;
+      p.x = p.sx + (p.tx - p.sx) * eased;
+      p.y = p.sy + (p.ty - p.sy) * eased;
+
+      /* rolling trail (last 7 positions) */
+      p.trail.push({ x: p.x, y: p.y });
+      if (p.trail.length > 7) p.trail.shift();
+
+      const [cr, cg, cb] = p.color;
+      /* fade in as it approaches, shrink near arrival */
+      const alpha = Math.min(p.progress * 5, 1) * (1 - eased * 0.4);
+
+      /* draw trail */
+      ctx.save();
+      for (let t = 1; t < p.trail.length; t++) {
+        const ta = (t / p.trail.length) * alpha * 0.45;
+        ctx.globalAlpha = ta;
+        ctx.shadowColor = `rgb(${cr},${cg},${cb})`;
+        ctx.shadowBlur  = p.size * 3;
+        ctx.strokeStyle = `rgb(${cr},${cg},${cb})`;
+        ctx.lineWidth   = p.size * (t / p.trail.length) * 0.8;
+        ctx.beginPath();
+        ctx.moveTo(p.trail[t - 1].x, p.trail[t - 1].y);
+        ctx.lineTo(p.trail[t].x, p.trail[t].y);
+        ctx.stroke();
+      }
+      ctx.restore();
+
+      /* draw head dot */
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.shadowColor = `rgb(${cr},${cg},${cb})`;
+      ctx.shadowBlur  = p.size * 6;
+      ctx.fillStyle   = `rgb(${cr},${cg},${cb})`;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, Math.max(p.size * (1 - eased * 0.6), 0.2), 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    /* ── 2. Fire glow ── */
+    if (fireGlow) {
+      const ms  = performance.now() - fireGlow.born;
+      const t   = ms / 1400;  /* 1.4 s to settle */
+
+      /* intensity: fast bloom → hold → settle to steady 0.28 */
+      let intensity;
+      if      (t < 0.22) intensity = t / 0.22;
+      else if (t < 0.50) intensity = 1;
+      else if (t < 1)    intensity = 1 - (t - 0.50) / 0.50 * 0.72;
+      else               intensity = 0.28;
+
+      const flk = Math.sin(ms * 0.018) * 0.09 + Math.sin(ms * 0.043) * 0.06;
+      const fin = Math.max(0, intensity + flk);
+      const rad = 55 + intensity * 90;
+
+      const g = ctx.createRadialGradient(
+        fireGlow.x, fireGlow.y, 0,
+        fireGlow.x, fireGlow.y, rad
+      );
+      g.addColorStop(0,    `rgba(255,220,100,${(fin * 0.40).toFixed(3)})`);
+      g.addColorStop(0.35, `rgba(255,100,20,${(fin * 0.20).toFixed(3)})`);
+      g.addColorStop(1,    'rgba(255,40,5,0)');
+
+      ctx.save();
+      ctx.globalCompositeOperation = 'screen';
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(fireGlow.x, fireGlow.y, rad, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+      /* never cleared — stays as a warm ambient glow */
+    }
+
+    /* ── 3. Flash ring ── */
     if (flashRing) {
       flashRing.life--;
       flashRing.r += (flashRing.maxR - 4) / flashRing.maxLife;
@@ -144,19 +269,17 @@ navLinks.querySelectorAll('.nav__link').forEach(link => {
       if (flashRing.life <= 0) flashRing = null;
     }
 
-    /* sparks */
+    /* ── 4. Sparks ── */
     for (let i = sparks.length - 1; i >= 0; i--) {
       const s = sparks[i];
       s.x  += s.vx;
       s.y  += s.vy;
       s.vx *= 0.93;
-      s.vy += 0.09; // gravity drag
+      s.vy += 0.09;
       s.life--;
       if (s.life <= 0) { sparks.splice(i, 1); continue; }
-
-      const t = s.life / s.maxLife; // 1→0 as spark dies
+      const t = s.life / s.maxLife;
       const [cr, cg, cb] = s.color;
-
       ctx.save();
       ctx.globalAlpha = t * 0.95;
       ctx.shadowColor = `rgb(${cr},${cg},${cb})`;
@@ -168,32 +291,24 @@ navLinks.querySelectorAll('.nav__link').forEach(link => {
       ctx.restore();
     }
 
-    /* ambient embers — much subtler */
-    for (let i = 0; i < particles.length; i++) {
-      const p = particles[i];
+    /* ── 5. Ambient embers ── */
+    for (let i = 0; i < embers.length; i++) {
+      const p = embers[i];
       p.phase += p.phaseSpeed;
       p.x  += p.vx + Math.sin(p.phase) * 0.38;
       p.y  += p.vy;
       p.vy -= 0.007;
       p.life--;
-
-      if (p.life <= 0 || p.y < -12) {
-        particles[i] = spawn(false);
-        continue;
-      }
-
+      if (p.life <= 0 || p.y < -12) { embers[i] = spawnEmber(false); continue; }
       const t = p.life / p.maxLife;
-      const alpha = t > 0.85 ? (1 - t) / 0.15
-                  : t < 0.2  ? t / 0.2
-                  : 1;
+      const alpha = t > 0.85 ? (1 - t) / 0.15 : t < 0.2 ? t / 0.2 : 1;
       const flicker = 0.72 + Math.sin(p.phase * 4.3) * 0.28;
       const r = p.size * flicker;
       const [cr, cg, cb] = p.color;
-
       ctx.save();
-      ctx.globalAlpha = alpha * 0.36; // was 0.88 — much more subtle
+      ctx.globalAlpha = alpha * 0.36;
       ctx.shadowColor = `rgb(${cr},${cg},${cb})`;
-      ctx.shadowBlur  = r * 3;        // was r * 5
+      ctx.shadowBlur  = r * 3;
       ctx.fillStyle   = `rgb(${cr},${cg},${cb})`;
       ctx.beginPath();
       ctx.arc(p.x, p.y, Math.max(r, 0.1), 0, Math.PI * 2);
