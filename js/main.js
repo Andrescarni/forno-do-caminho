@@ -563,165 +563,21 @@ document.querySelectorAll('.btn--magnetic').forEach(btn => {
 });
 
 /* ════════════════════════════════════════
-   PILGRIM ROUTES — canvas intro animation
-   Lines converge from all edges toward the
-   cathedral, then the SVG landscape draws.
+   SVG READY TRIGGER
+   Activates the SVG landscape draw
+   animations after a short delay.
 ════════════════════════════════════════ */
-(function initPilgrimRoutes() {
+(function initSvgTrigger() {
   const canvas = document.getElementById('introLines');
-  if (!canvas) return;
+  if (canvas) canvas.style.display = 'none';
 
-  /* Reduced motion: reveal SVG immediately, skip intro */
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     document.documentElement.classList.add('svg-ready');
-    canvas.style.display = 'none';
     return;
   }
 
-  const ctx = canvas.getContext('2d');
-  const GOLD = { r: 201, g: 168, b: 76 };
-  let W = 0, H = 0;
-
-  function resize() {
-    W = canvas.width  = canvas.offsetWidth  || (canvas.parentElement && canvas.parentElement.offsetWidth)  || 1280;
-    H = canvas.height = canvas.offsetHeight || (canvas.parentElement && canvas.parentElement.offsetHeight) || 680;
-  }
-  resize();
-  window.addEventListener('resize', resize, { passive: true });
-
-  /* Cathedral sits at roughly (50%, 80%) of the hero */
-  const getCenter = () => ({ x: W * 0.50, y: H * 0.80 });
-
-  /* Quadratic Bézier position */
-  function bezier(p0x, p0y, cpx, cpy, p2x, p2y, t) {
-    const u = 1 - t;
-    return {
-      x: u * u * p0x + 2 * u * t * cpx + t * t * p2x,
-      y: u * u * p0y + 2 * u * t * cpy + t * t * p2y,
-    };
-  }
-
-  /* Build a stream that originates near/beyond an edge */
-  function makeStream(idx, total) {
-    const cv  = getCenter();
-    const angle = (idx / total) * Math.PI * 2 + (Math.random() - 0.5) * 0.55;
-    /* Push start point well beyond the canvas edges */
-    const reach = Math.max(W, H) * (0.72 + Math.random() * 0.42);
-    const sx  = cv.x + Math.cos(angle) * reach;
-    const sy  = cv.y + Math.sin(angle) * reach;
-    /* Target lands within a small cluster around the cathedral */
-    const tx  = cv.x + (Math.random() - 0.5) * 70;
-    const ty  = cv.y + (Math.random() - 0.5) * 50;
-    /* Control point deflects the curve slightly for organic feel */
-    const cpx = (sx + tx) * 0.5 + (Math.random() - 0.5) * W * 0.22;
-    const cpy = (sy + ty) * 0.5 + (Math.random() - 0.5) * H * 0.18;
-    const maxLife = 55 + Math.floor(Math.random() * 25);
-    return {
-      sx, sy, tx, ty, cpx, cpy,
-      progress  : 0,
-      duration  : 1.5 + Math.random() * 1.6,       /* seconds to travel */
-      startDelay: idx * 0.072 + Math.random() * 0.10,
-      width     : 0.45 + Math.random() * 1.0,
-      maxAlpha  : 0.13 + Math.random() * 0.20,
-      trail     : [],
-      trailMax  : maxLife,
-    };
-  }
-
-  const STREAM_N = 28;
-  const streams  = Array.from({ length: STREAM_N }, (_, i) => makeStream(i, STREAM_N));
-
-  /* Timeline (ms) */
-  const T_ACTIVE      = 3400;   /* all streams running */
-  const T_FADE        = 1000;   /* canvas fade-out */
-  const T_SVG_TRIGGER = T_ACTIVE * 0.68; /* ~2312ms — add svg-ready class */
-
-  let t0           = null;
-  let svgTriggered = false;
-
-  function frame(now) {
-    if (!t0) t0 = now;
-    const ms  = now - t0;
-    const sec = ms / 1000;
-
-    /* Global canvas alpha — full until T_ACTIVE, then fades out */
-    let gAlpha = 1;
-    if (ms > T_ACTIVE) {
-      gAlpha = Math.max(0, 1 - (ms - T_ACTIVE) / T_FADE);
-    }
-
-    /* Trigger SVG landscape drawing at ~68% through the intro */
-    if (!svgTriggered && ms >= T_SVG_TRIGGER) {
-      svgTriggered = true;
-      document.documentElement.classList.add('svg-ready');
-    }
-
-    /* Stop and hide once the fade is done */
-    if (ms > T_ACTIVE + T_FADE + 80) {
-      ctx.clearRect(0, 0, W, H);
-      canvas.style.display = 'none';
-      return;
-    }
-
-    ctx.clearRect(0, 0, W, H);
-
-    /* ── Convergence bloom ── */
-    const arrivedN = streams.filter(s => s.progress > 0.70).length;
-    if (arrivedN > 4) {
-      const cv    = getCenter();
-      const bloom = Math.min((arrivedN / STREAM_N) * gAlpha, 1);
-      const rB    = 40 + bloom * 80;
-      const grd   = ctx.createRadialGradient(cv.x, cv.y, 0, cv.x, cv.y, rB);
-      grd.addColorStop(0,   `rgba(${GOLD.r},${GOLD.g},${GOLD.b},${0.28 * bloom})`);
-      grd.addColorStop(0.4, `rgba(${GOLD.r},${GOLD.g},${GOLD.b},${0.10 * bloom})`);
-      grd.addColorStop(1,   `rgba(${GOLD.r},${GOLD.g},${GOLD.b},0)`);
-      ctx.fillStyle = grd;
-      ctx.beginPath();
-      ctx.arc(cv.x, cv.y, rB, 0, Math.PI * 2);
-      ctx.fill();
-    }
-
-    /* ── Draw each stream trail ── */
-    streams.forEach(s => {
-      if (sec < s.startDelay) return;
-
-      const elapsed = sec - s.startDelay;
-      const rawT    = Math.min(elapsed / s.duration, 1);
-      /* Ease-out-cubic so head decelerates as it arrives */
-      s.progress    = 1 - Math.pow(1 - rawT, 3);
-
-      const pos = bezier(s.sx, s.sy, s.cpx, s.cpy, s.tx, s.ty, s.progress);
-      s.trail.push({ x: pos.x, y: pos.y });
-      if (s.trail.length > s.trailMax) s.trail.shift();
-      if (s.trail.length < 2) return;
-
-      for (let i = 1; i < s.trail.length; i++) {
-        const tf    = i / s.trail.length;   /* 0 = tail, 1 = head */
-        const alpha = tf * tf * s.maxAlpha * gAlpha;
-        const lw    = s.width * (0.12 + tf * 0.88);
-
-        ctx.save();
-        ctx.globalAlpha = alpha;
-        ctx.strokeStyle = `rgb(${GOLD.r},${GOLD.g},${GOLD.b})`;
-        ctx.lineWidth   = lw;
-        ctx.lineCap     = 'round';
-
-        /* Soft glow on the leading head segment */
-        if (tf > 0.80) {
-          ctx.shadowColor = `rgba(${GOLD.r},${GOLD.g},${GOLD.b},0.85)`;
-          ctx.shadowBlur  = 7;
-        }
-
-        ctx.beginPath();
-        ctx.moveTo(s.trail[i - 1].x, s.trail[i - 1].y);
-        ctx.lineTo(s.trail[i].x,     s.trail[i].y);
-        ctx.stroke();
-        ctx.restore();
-      }
-    });
-
-    requestAnimationFrame(frame);
-  }
-
-  requestAnimationFrame(frame);
+  /* Match original ~2300ms timing so SVG draws at the same moment */
+  setTimeout(() => {
+    document.documentElement.classList.add('svg-ready');
+  }, 2300);
 })();
