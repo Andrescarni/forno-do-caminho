@@ -49,7 +49,6 @@ navLinks.querySelectorAll('.nav__link').forEach(link => {
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
 
-  /* ── Colour palettes ── */
   const EMBER_COLORS = [
     [201, 168, 76], [228, 201, 122], [245, 166, 35],
     [255, 200, 80],  [255, 245, 200], [255, 130, 20],
@@ -59,29 +58,6 @@ navLinks.querySelectorAll('.nav__link').forEach(link => {
     [255, 120, 20],  [201, 168, 76],
   ];
 
-  /* ── Flame tongue — bezier teardrop pointing up ──
-     cx/cy = base centre, h = height, w = half-width,
-     tiltX = tip drift (organic lean), grad = fillStyle */
-  function flameTongue(cx, cy, h, w, tiltX, grad) {
-    ctx.save();
-    ctx.beginPath();
-    ctx.moveTo(cx + tiltX, cy - h);                            // tip
-    ctx.bezierCurveTo(
-      cx + w * 0.95 + tiltX * 0.6, cy - h * 0.52,
-      cx + w * 0.58,               cy - h * 0.12,
-      cx + w * 0.30,               cy + 5
-    );
-    ctx.quadraticCurveTo(cx, cy + 8, cx - w * 0.30, cy + 5);
-    ctx.bezierCurveTo(
-      cx - w * 0.58,               cy - h * 0.12,
-      cx - w * 0.95 + tiltX * 0.6, cy - h * 0.52,
-      cx + tiltX,                  cy - h
-    );
-    ctx.fillStyle = grad;
-    ctx.fill();
-    ctx.restore();
-  }
-
   function resize() {
     canvas.width  = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
@@ -89,15 +65,68 @@ navLinks.querySelectorAll('.nav__link').forEach(link => {
   resize();
   window.addEventListener('resize', resize, { passive: true });
 
-  /* ── Oven centre ── */
-  const ov = () => ({ x: canvas.width * 0.5, y: canvas.height * 0.28 });
+  /* ════════════════════════════════════════
+     OVEN ICON — starts off, lights up on ignition
+  ════════════════════════════════════════ */
+  const ovenWrap = document.querySelector('.hero__icon-wrap');
+  const ovenIcon = document.querySelector('.hero__oven-icon');
+  if (ovenWrap) {
+    ovenWrap.style.opacity   = '0';
+    ovenWrap.style.animation = 'none';
+  }
+  if (ovenIcon) ovenIcon.style.animation = 'none';
+
+  /* Real oven canvas position (getBoundingClientRect works even at opacity 0) */
+  function ovenPos() {
+    if (ovenWrap) {
+      const wr = ovenWrap.getBoundingClientRect();
+      const cr = canvas.getBoundingClientRect();
+      if (wr.width > 0) return {
+        x: wr.left + wr.width  / 2 - cr.left,
+        y: wr.top  + wr.height / 2 - cr.top,
+      };
+    }
+    return { x: canvas.width * 0.5, y: canvas.height * 0.28 };
+  }
 
   /* ════════════════════════════════════════
-     SPARK BURST + FLASH RING (at 400 ms)
+     CONVERGING PARTICLES
+     Stream from all directions toward the
+     oven icon. When they arrive (600 ms)
+     the oven ignites.
+  ════════════════════════════════════════ */
+  const conv = [];
+
+  /* Build after two rAF frames so layout is ready */
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    const { x: ox, y: oy } = ovenPos();
+    for (let i = 0; i < 42; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const dist  = 200 + Math.random() * Math.max(canvas.width, canvas.height) * 0.52;
+      const sx    = ox + Math.cos(angle) * dist;
+      const sy    = oy + Math.sin(angle) * dist;
+      conv.push({
+        sx, sy,
+        tx: ox + (Math.random() - 0.5) * 18,
+        ty: oy + (Math.random() - 0.5) * 12,
+        x: sx, y: sy,
+        progress: 0,
+        speed: 0.022 + Math.random() * 0.026,  /* arrive in ~15–25 frames */
+        frameDelay: Math.floor(i * 2.5),        /* stagger over ~105 frames */
+        size: 0.8 + Math.random() * 2.0,
+        color: HOT_COLORS[Math.floor(Math.random() * HOT_COLORS.length)],
+        trail: [],
+        done: false,
+      });
+    }
+  }));
+
+  /* ════════════════════════════════════════
+     IGNITION — fires at 700 ms
   ════════════════════════════════════════ */
   const sparks    = [];
   let   flashRing = null;
-  let   fireGlow  = null;   // { x, y, born }
+  let   fireGlow  = null;
 
   function spawnSpark(ox, oy) {
     const angle   = Math.random() * Math.PI * 2;
@@ -115,11 +144,30 @@ navLinks.querySelectorAll('.nav__link').forEach(link => {
   }
 
   setTimeout(() => {
-    const { x: ox, y: oy } = ov();
+    const { x: ox, y: oy } = ovenPos();
+
+    /* spark burst */
     for (let i = 0; i < 58; i++) sparks.push(spawnSpark(ox, oy));
     flashRing = { x: ox, y: oy, r: 4, maxR: 72, life: 22, maxLife: 22 };
     fireGlow  = { x: ox, y: oy, born: performance.now() };
-  }, 400);
+
+    /* light up the oven icon */
+    if (ovenWrap) {
+      ovenWrap.style.transition = 'opacity 0.08s ease-out';
+      ovenWrap.style.opacity    = '1';
+      /* brief over-bright flash */
+      ovenWrap.style.filter =
+        'brightness(2.6) drop-shadow(0 0 26px rgba(255,185,55,.95))';
+      setTimeout(() => {
+        ovenWrap.style.filter     = '';
+        ovenWrap.style.transition = '';
+      }, 380);
+    }
+    if (ovenIcon) {
+      /* restore float animation */
+      ovenIcon.style.animation = '';
+    }
+  }, 700);
 
   /* ════════════════════════════════════════
      AMBIENT EMBERS — continuous, subtle
@@ -151,98 +199,79 @@ navLinks.querySelectorAll('.nav__link').forEach(link => {
   function tick() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    /* ── 1. FLAME — slow organic build-up over 6 seconds ── */
-    if (fireGlow) {
-      const ms   = performance.now() - fireGlow.born;
-      const rawT = Math.min(ms / 6000, 1);
-      /* smoothstep: gradual start, accelerates mid, eases at end */
-      const t    = rawT * rawT * (3 - 2 * rawT);
+    /* ── 1. Converging streaks → oven ── */
+    for (const p of conv) {
+      if (p.done) continue;
+      if (p.frameDelay > 0) { p.frameDelay--; continue; }
 
-      const ox = fireGlow.x, oy = fireGlow.y;
+      p.progress += p.speed * (1 + p.progress * 2); /* ease-in: accelerates */
+      if (p.progress >= 1) { p.done = true; continue; }
 
-      /* organic noise from multiple overlapping sine waves */
-      const n1 = Math.sin(ms * 0.0055) * 0.12 + Math.sin(ms * 0.0188 + 0.7)  * 0.07;
-      const n2 = Math.sin(ms * 0.0082 + 1.3) * 0.10 + Math.sin(ms * 0.0263)   * 0.05;
-      const n3 = Math.sin(ms * 0.0071 + 2.1) * 0.09 + Math.sin(ms * 0.0340 + 1.8) * 0.04;
+      const eased = p.progress * p.progress;
+      p.x = p.sx + (p.tx - p.sx) * eased;
+      p.y = p.sy + (p.ty - p.sy) * eased;
 
-      /* flame dimensions grow with t */
-      const H = t * 92;          /* max height ~92 px */
-      const W = t * 28;          /* max half-width ~28 px */
+      p.trail.push({ x: p.x, y: p.y });
+      if (p.trail.length > 7) p.trail.shift();
 
-      if (H > 1) {
-        /* ── Main tongue (centre) ── */
-        let g = ctx.createLinearGradient(ox, oy + 6, ox, oy - H);
-        g.addColorStop(0,    `rgba(255,65,5,${(t * 0.58).toFixed(3)})`);
-        g.addColorStop(0.28, `rgba(255,140,12,${(t * 0.68).toFixed(3)})`);
-        g.addColorStop(0.62, `rgba(255,210,65,${(t * 0.55).toFixed(3)})`);
-        g.addColorStop(1,    `rgba(255,255,180,${(t * 0.28).toFixed(3)})`);
-        flameTongue(ox, oy,
-          H  * (1 + n1 * 0.11),
-          W  * (1 + Math.abs(n2) * 0.18),
-          n2 * 9, g);
+      const [cr, cg, cb] = p.color;
+      const alpha = Math.min(p.progress * 5, 1) * (1 - eased * 0.4);
 
-        /* ── Left tongue — appears after 15 % growth ── */
-        if (t > 0.15) {
-          const t2 = Math.min((t - 0.15) / 0.85, 1);
-          const ss = t2 * t2 * (3 - 2 * t2); /* own smoothstep */
-          g = ctx.createLinearGradient(ox - 7, oy + 5, ox - 7, oy - H * 0.70);
-          g.addColorStop(0,    `rgba(255,55,5,${(ss * 0.42).toFixed(3)})`);
-          g.addColorStop(0.45, `rgba(255,115,18,${(ss * 0.48).toFixed(3)})`);
-          g.addColorStop(1,    `rgba(255,195,55,${(ss * 0.22).toFixed(3)})`);
-          flameTongue(ox - 8 + n3 * 11, oy,
-            H * 0.66 * (1 + n2 * 0.10),
-            W * 0.54, n3 * 7, g);
-        }
-
-        /* ── Right tongue — appears after 28 % growth ── */
-        if (t > 0.28) {
-          const t3 = Math.min((t - 0.28) / 0.72, 1);
-          const ss = t3 * t3 * (3 - 2 * t3);
-          g = ctx.createLinearGradient(ox + 6, oy + 5, ox + 6, oy - H * 0.62);
-          g.addColorStop(0,    `rgba(255,55,5,${(ss * 0.38).toFixed(3)})`);
-          g.addColorStop(0.45, `rgba(255,108,14,${(ss * 0.44).toFixed(3)})`);
-          g.addColorStop(1,    `rgba(255,185,48,${(ss * 0.20).toFixed(3)})`);
-          flameTongue(ox + 7 + n1 * 9, oy,
-            H * 0.60 * (1 + n3 * 0.12),
-            W * 0.50, n1 * 6, g);
-        }
-
-        /* ── Hot inner core — bright white-yellow centre ── */
-        const coreA = t * (0.52 + n1 * 0.10);
-        const cg = ctx.createRadialGradient(
-          ox, oy - H * 0.22, 0,
-          ox, oy - H * 0.18, H * 0.38
-        );
-        cg.addColorStop(0,   `rgba(255,255,215,${coreA.toFixed(3)})`);
-        cg.addColorStop(0.4, `rgba(255,215,80,${(coreA * 0.55).toFixed(3)})`);
-        cg.addColorStop(1,   'rgba(255,100,10,0)');
-        ctx.save();
-        ctx.globalCompositeOperation = 'screen';
-        ctx.fillStyle = cg;
-        const cr2 = H * 0.45;
-        ctx.beginPath();
-        ctx.arc(ox, oy - H * 0.18, cr2, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.restore();
-      }
-
-      /* ── Warm ground glow (always present, grows with t) ── */
-      const glowR = 42 + t * 72;
-      const glowA = t * (0.26 + n1 * 0.07);
-      const gg = ctx.createRadialGradient(ox, oy, 0, ox, oy, glowR);
-      gg.addColorStop(0,   `rgba(255,185,55,${glowA.toFixed(3)})`);
-      gg.addColorStop(0.4, `rgba(255,75,12,${(glowA * 0.38).toFixed(3)})`);
-      gg.addColorStop(1,   'rgba(200,28,0,0)');
+      /* trail */
       ctx.save();
-      ctx.globalCompositeOperation = 'screen';
-      ctx.fillStyle = gg;
+      for (let i = 1; i < p.trail.length; i++) {
+        ctx.globalAlpha = (i / p.trail.length) * alpha * 0.45;
+        ctx.shadowColor = `rgb(${cr},${cg},${cb})`;
+        ctx.shadowBlur  = p.size * 3;
+        ctx.strokeStyle = `rgb(${cr},${cg},${cb})`;
+        ctx.lineWidth   = p.size * (i / p.trail.length) * 0.8;
+        ctx.beginPath();
+        ctx.moveTo(p.trail[i - 1].x, p.trail[i - 1].y);
+        ctx.lineTo(p.trail[i].x,     p.trail[i].y);
+        ctx.stroke();
+      }
+      ctx.restore();
+
+      /* head */
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.shadowColor = `rgb(${cr},${cg},${cb})`;
+      ctx.shadowBlur  = p.size * 6;
+      ctx.fillStyle   = `rgb(${cr},${cg},${cb})`;
       ctx.beginPath();
-      ctx.arc(ox, oy, glowR, 0, Math.PI * 2);
+      ctx.arc(p.x, p.y, Math.max(p.size * (1 - eased * 0.6), 0.2), 0, Math.PI * 2);
       ctx.fill();
       ctx.restore();
     }
 
-    /* ── 2. Flash ring ── */
+    /* ── 2. Warm oven glow — no tall flame, just radiant heat ── */
+    if (fireGlow) {
+      const ms  = performance.now() - fireGlow.born;
+      /* fast burst then settle to steady warmth */
+      const raw = Math.min(ms / 900, 1);
+      const burst   = raw < 0.3 ? raw / 0.3 : 1 - (raw - 0.3) / 0.7 * 0.55;
+      const steady  = Math.max(burst, 0.45);
+      const flk     = Math.sin(ms * 0.007) * 0.08 + Math.sin(ms * 0.021) * 0.05;
+      const fin     = Math.max(0, steady + flk);
+      const rad     = 38 + burst * 48;
+
+      const g = ctx.createRadialGradient(
+        fireGlow.x, fireGlow.y, 0,
+        fireGlow.x, fireGlow.y, rad
+      );
+      g.addColorStop(0,   `rgba(255,205,75,${(fin * 0.38).toFixed(3)})`);
+      g.addColorStop(0.4, `rgba(255,88,14,${(fin * 0.18).toFixed(3)})`);
+      g.addColorStop(1,   'rgba(200,30,0,0)');
+      ctx.save();
+      ctx.globalCompositeOperation = 'screen';
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(fireGlow.x, fireGlow.y, rad, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    /* ── 3. Flash ring ── */
     if (flashRing) {
       flashRing.life--;
       flashRing.r += (flashRing.maxR - 4) / flashRing.maxLife;
@@ -260,13 +289,11 @@ navLinks.querySelectorAll('.nav__link').forEach(link => {
       if (flashRing.life <= 0) flashRing = null;
     }
 
-    /* ── 3. Sparks ── */
+    /* ── 4. Sparks ── */
     for (let i = sparks.length - 1; i >= 0; i--) {
       const s = sparks[i];
-      s.x  += s.vx;
-      s.y  += s.vy;
-      s.vx *= 0.93;
-      s.vy += 0.09;
+      s.x  += s.vx; s.y += s.vy;
+      s.vx *= 0.93; s.vy += 0.09;
       s.life--;
       if (s.life <= 0) { sparks.splice(i, 1); continue; }
       const t = s.life / s.maxLife;
@@ -282,12 +309,12 @@ navLinks.querySelectorAll('.nav__link').forEach(link => {
       ctx.restore();
     }
 
-    /* ── 4. Ambient embers ── */
+    /* ── 5. Ambient embers ── */
     for (let i = 0; i < embers.length; i++) {
       const p = embers[i];
       p.phase += p.phaseSpeed;
-      p.x  += p.vx + Math.sin(p.phase) * 0.38;
-      p.y  += p.vy;
+      p.x += p.vx + Math.sin(p.phase) * 0.38;
+      p.y += p.vy;
       p.vy -= 0.007;
       p.life--;
       if (p.life <= 0 || p.y < -12) { embers[i] = spawnEmber(false); continue; }
