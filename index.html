@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forno do Caminho — Pizzeria Artesanal</title>
+  <meta name="description" content="Forno do Caminho es una pizzería artesanal de take away con masas hechas a mano y cocinadas en horno de leña. Sabor auténtico, tradición italiana.">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Forno do Caminho — Pizzeria Artesanal">
+  <meta property="og:description" content="Pizzas artesanales del horno de leña. Take away con masa artesanal hecha a mano.">
+  <meta property="og:type" content="restaurant">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍕</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;0,6..96,700;1,6..96,400;1,6..96,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Skip to main content (accessibility) -->
+  <a href="#inicio" class="skip-link">Ir al contenido principal</a>
+
+  <!-- Scroll progress bar -->
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+  <!-- ═══════════════════════════════════════
+       NAV
+  ═══════════════════════════════════════ -->
+  <nav class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="#inicio" class="nav__logo">
+        <svg class="nav__logo-icon" viewBox="0 0 60 50" fill="none">
+          <!-- Dome body filled -->
+          <path d="M10 40 Q10 15 30 15 Q50 15 50 40 Z" fill="#1a0e06"/>
+          <!-- Dome outline -->
+          <path d="M10 40 Q10 15 30 15 Q50 15 50 40" stroke="#c9a84c" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <!-- Base -->
+          <path d="M5 40 L55 40" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- Arch opening -->
+          <path d="M21 40 Q21 28 30 28 Q39 28 39 40 Z" fill="#060100"/>
+          <path d="M21 40 Q21 28 30 28 Q39 28 39 40" stroke="#c9a84c" stroke-width="1" fill="none" opacity="0.45"/>
+          <!-- Flame — orange -->
+          <path d="M27 37 Q25 30 28 23 Q30 29 33 26 Q31 33 34 34 Q31 38 30 41 Q27 38 25 39Z" fill="#FF6B1A" opacity="0.9"/>
+          <path d="M28 39 Q27 33 30 27 Q32 33 35 30 Q33 37 35 38 Q33 41 31 44 Q28 41 26 42Z" fill="#FFD040" opacity="0.55"/>
+        </svg>
+        <span class="nav__logo-text">Forno do Caminho</span>
+      </a>
+      <button class="nav__toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav__links" id="navLinks">
+        <li><a href="#historia" class="nav__link">Nuestra Historia</a></li>
+        <li><a href="#carta" class="nav__link">Carta</a></li>
+        <li><a href="#takeaway" class="nav__link">Take Away</a></li>
+        <li><a href="#localizacao" class="nav__link nav__link--cta">Ubicación</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════
+       HERO
+  ═══════════════════════════════════════ -->
+  <section class="hero" id="inicio">
+    <!-- Ember particles canvas -->
+    <canvas class="hero__embers" id="embers" aria-hidden="true"></canvas>
+
+    <!-- Background radial glow -->
+    <div class="hero__glow" aria-hidden="true"></div>
+
+    <!-- Pilgrim routes intro canvas — streams converge to Santiago, then dissolve -->
+    <canvas class="hero__lines-canvas" id="introLines" aria-hidden="true"></canvas>
+
+    <!-- Landscape illustration — Santiago de Compostela + Camino -->
+    <div class="hero__illustration" aria-hidden="true">
+      <svg viewBox="0 -290 1400 900" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+
+
+        <!-- ═══ DISTANT SIERRA — jagged sketch peaks, full width ═══ -->
+        <g class="draw-mountains-far">
+          <path pathLength="100"
+                d="M0 248 L58 228 L96 241 L148 215 L192 230 L248 204 L295 220
+                   L352 194 L400 212 L454 186 L504 204 L554 180 L598 196
+                   L640 178 L672 190 L700 182 L728 190 L760 178 L802 196
+                   L846 180 L896 204 L946 186 L1000 212 L1048 194
+                   L1105 220 L1152 204 L1208 230 L1252 215 L1304 241
+                   L1342 228 L1400 248"
+                fill="none" stroke="#c9a84c" stroke-width="0.75" opacity="0.13"
+                stroke-linejoin="round" stroke-linecap="round"/>
+          <!-- Echo ridge -->
+          <path pathLength="100"
+                d="M0 262 L80 244 L152 255 L220 234 L292 246 L368 224
+                   L438 238 L510 216 L578 230 L632 212 L668 222 L700 216
+                   L732 222 L768 212 L822 230 L890 216 L962 238 L1032 224
+                   L1108 246 L1180 234 L1248 255 L1320 244 L1400 262"
+                fill="none" stroke="#c9a84c" stroke-width="0.45" opacity="0.07"
+                stroke-linejoin="round"/>
+        </g>
+
+        <!-- ═══ MID-RANGE MASSIFS — sketch style with facet lines ═══ -->
+        <g class="draw-mountains-mid">
+          <!-- Main ridge with pronounced jagged peaks -->
+          <path pathLength="100"
+                d="M0 298 L82 272 L158 286 L228 258 L302 274 L378 248
+                   L448 264 L520 238 L588 254 L628 240 L658 248 L678 238
+                   L700 244 L722 238 L742 248 L772 240 L812 254
+                   L880 238 L952 264 L1022 248 L1098 274 L1172 258
+                   L1242 286 L1318 272 L1400 298"
+                fill="none" stroke="#c9a84c" stroke-width="1.0" opacity="0.20"
+                stroke-linejoin="round" stroke-linecap="round"/>
+          <!-- Sketch facet lines on prominent faces (engraving style) -->
+          <path pathLength="100"
+                d="M228 258 L248 274 L268 266
+                   M378 248 L398 262 L420 255
+                   M520 238 L540 252 L558 245
+                   M880 238 L900 252 L918 245
+                   M1022 248 L1042 262 L1062 255
+                   M1172 258 L1192 274 L1212 266"
+                fill="none" stroke="#c9a84c" stroke-width="0.45" opacity="0.11"
+                stroke-linejoin="round"/>
+          <!-- Forested shoulders (smooth curves beneath the peaks) -->
+          <path pathLength="100"
+                d="M0 318 Q150 302 300 312 Q450 300 600 310
+                   Q650 306 700 308 Q750 306 800 310
+                   Q950 300 1100 312 Q1250 302 1400 318"
+                fill="none" stroke="#c9a84c" stroke-width="0.55" opacity="0.10"
+                stroke-linecap="round"/>
+        </g>
+
+        <!-- ═══ NEAR HILLS + TERRAIN + CAMINO PERSPECTIVE ═══ -->
+        <g class="draw-mountains-near">
+          <!-- Rolling near hills -->
+          <path pathLength="100"
+                d="M0 366 Q180 346 340 356 Q480 366 560 348
+                   Q620 336 680 346 Q700 350 720 346
+                   Q780 336 840 348 Q920 366 1060 356
+                   Q1220 346 1400 366"
+                fill="none" stroke="#c9a84c" stroke-width="0.9" opacity="0.22"
+                stroke-linecap="round"/>
+          <!-- Ground crease -->
+          <path pathLength="100"
+                d="M0 396 Q200 384 400 390 Q550 382 700 386
+                   Q850 382 1000 390 Q1200 384 1400 396"
+                fill="none" stroke="#c9a84c" stroke-width="0.6" opacity="0.14"
+                stroke-linecap="round"/>
+          <!-- Horizon lines -->
+          <line pathLength="100" x1="0" y1="422" x2="1400" y2="422" stroke="#c9a84c" stroke-width="0.4"  opacity="0.08"/>
+          <line pathLength="100" x1="0" y1="436" x2="1400" y2="436" stroke="#c9a84c" stroke-width="0.32" opacity="0.06"/>
+          <!-- Camino perspective radials from vanishing point -->
+          <line pathLength="100" x1="700" y1="378" x2="0"    y2="438" stroke="#c9a84c" stroke-width="0.55" opacity="0.07"/>
+          <line pathLength="100" x1="700" y1="378" x2="1400" y2="438" stroke="#c9a84c" stroke-width="0.55" opacity="0.07"/>
+          <line pathLength="100" x1="700" y1="378" x2="0"    y2="465" stroke="#c9a84c" stroke-width="0.42" opacity="0.05"/>
+          <line pathLength="100" x1="700" y1="378" x2="1400" y2="465" stroke="#c9a84c" stroke-width="0.42" opacity="0.05"/>
+          <line pathLength="100" x1="700" y1="378" x2="180"  y2="490" stroke="#c9a84c" stroke-width="0.3"  opacity="0.04"/>
+          <line pathLength="100" x1="700" y1="378" x2="1220" y2="490" stroke="#c9a84c" stroke-width="0.3"  opacity="0.04"/>
+        </g>
+
+        <!-- ═══ EL CAMINO — the golden road converging ═══ -->
+        <g class="draw-camino">
+          <path pathLength="100" d="M0 490 Q240 470 468 435 Q565 415 645 400"
+                stroke="#c9a84c" stroke-width="1.4" opacity="0.27" fill="none" stroke-linecap="round"/>
+          <path pathLength="100" d="M1400 490 Q1160 470 932 435 Q835 415 755 400"
+                stroke="#c9a84c" stroke-width="1.4" opacity="0.27" fill="none" stroke-linecap="round"/>
+          <path pathLength="100" d="M0 483 Q270 465 490 430 Q580 412 650 400"
+                stroke="#c9a84c" stroke-width="0.8" opacity="0.14" fill="none" stroke-linecap="round"/>
+          <path pathLength="100" d="M1400 483 Q1130 465 910 430 Q820 412 750 400"
+                stroke="#c9a84c" stroke-width="0.8" opacity="0.14" fill="none" stroke-linecap="round"/>
+          <path class="camino-dashes" d="M0 490 Q360 471 560 438 Q640 416 700 400"
+                stroke="#c9a84c" stroke-width="0.75" opacity="0" stroke-dasharray="6 11" fill="none"/>
+          <path class="camino-dashes" d="M1400 490 Q1040 471 840 438 Q760 416 700 400"
+                stroke="#c9a84c" stroke-width="0.75" opacity="0" stroke-dasharray="6 11" fill="none"/>
+          <path pathLength="100" d="M0 476 Q320 460 550 428 Q648 410 700 398"
+                stroke="#c9a84c" stroke-width="0.55" opacity="0.09" fill="none"/>
+          <path pathLength="100" d="M1400 476 Q1080 460 850 428 Q752 410 700 398"
+                stroke="#c9a84c" stroke-width="0.55" opacity="0.09" fill="none"/>
+          <line pathLength="100" x1="0" y1="480" x2="1400" y2="480" stroke="#c9a84c" stroke-width="0.42" opacity="0.07"/>
+          <line pathLength="100" x1="0" y1="471" x2="1400" y2="471" stroke="#c9a84c" stroke-width="0.36" opacity="0.06"/>
+          <line pathLength="100" x1="0" y1="462" x2="1400" y2="462" stroke="#c9a84c" stroke-width="0.30" opacity="0.05"/>
+          <line pathLength="100" x1="0" y1="453" x2="1400" y2="453" stroke="#c9a84c" stroke-width="0.26" opacity="0.04"/>
+        </g>
+
+        <!-- ═══ GALICIAN CONIFERS — 8 trees × 4 paths = 32 elements ═══ -->
+        <g class="draw-trees">
+          <!-- LEFT CLUSTER: x = 102, 160, 220, 282 -->
+
+          <!-- Tree L1  (cx=102) -->
+          <line pathLength="100" x1="102" y1="470" x2="102" y2="452" stroke="#c9a84c" stroke-width="0.9" opacity="0.22"/>
+          <path pathLength="100" d="M76 467 L102 452 L128 467"  fill="none" stroke="#c9a84c" stroke-width="1.3" opacity="0.30"/>
+          <path pathLength="100" d="M82 450 L102 434 L122 450"  fill="none" stroke="#c9a84c" stroke-width="1.1" opacity="0.26"/>
+          <path pathLength="100" d="M87 434 L102 418 L117 434 M96 418 L102 368 L108 418"
+                fill="none" stroke="#c9a84c" stroke-width="0.9" opacity="0.23"/>
+
+          <!-- Tree L2  (cx=160, tallest) -->
+          <line pathLength="100" x1="160" y1="470" x2="160" y2="447" stroke="#c9a84c" stroke-width="0.9" opacity="0.24"/>
+          <path pathLength="100" d="M133 466 L160 447 L187 466"  fill="none" stroke="#c9a84c" stroke-width="1.3" opacity="0.32"/>
+          <path pathLength="100" d="M139 449 L160 425 L181 449"  fill="none" stroke="#c9a84c" stroke-width="1.1" opacity="0.28"/>
+          <path pathLength="100" d="M144 429 L160 406 L176 429 M152 406 L160 345 L168 406"
+                fill="none" stroke="#c9a84c" stroke-width="0.9" opacity="0.26"/>
+
+          <!-- Tree L3  (cx=220) -->
+          <line pathLength="100" x1="220" y1="468" x2="220" y2="450" stroke="#c9a84c" stroke-width="0.8" opacity="0.20"/>
+          <path pathLength="100" d="M195 465 L220 450 L245 465"  fill="none" stroke="#c9a84c" stroke-width="1.2" opacity="0.27"/>
+          <path pathLength="100" d="M201 449 L220 431 L239 449"  fill="none" stroke="#c9a84c" stroke-width="1.0" opacity="0.24"/>
+          <path pathLength="100" d="M206 431 L220 413 L234 431 M214 413 L220 358 L226 413"
+                fill="none" stroke="#c9a84c" stroke-width="0.8" opacity="0.21"/>
+
+          <!-- Tree L4  (cx=282) -->
+          <line pathLength="100" x1="282" y1="466" x2="282" y2="449" stroke="#c9a84c" stroke-width="0.7" opacity="0.17"/>
+          <path pathLength="100" d="M258 463 L282 449 L306 463"  fill="none" stroke="#c9a84c" stroke-width="1.1" opacity="0.23"/>
+          <path pathLength="100" d="M264 448 L282 430 L300 448"  fill="none" stroke="#c9a84c" stroke-width="0.9" opacity="0.20"/>
+          <path pathLength="100" d="M270 430 L282 412 L294 430 M277 412 L282 372 L287 412"
+                fill="none" stroke="#c9a84c" stroke-width="0.8" opacity="0.17"/>
+
+          <!-- RIGHT CLUSTER: x = 1118, 1180, 1240, 1298 -->
+
+          <!-- Tree R1  (cx=1118) -->
+          <line pathLength="100" x1="1118" y1="466" x2="1118" y2="449" stroke="#c9a84c" stroke-width="0.7" opacity="0.17"/>
+          <path pathLength="100" d="M1094 463 L1118 449 L1142 463" fill="none" stroke="#c9a84c" stroke-width="1.1" opacity="0.23"/>
+          <path pathLength="100" d="M1100 448 L1118 430 L1136 448" fill="none" stroke="#c9a84c" stroke-width="0.9" opacity="0.20"/>
+          <path pathLength="100" d="M1106 430 L1118 412 L1130 430 M1113 412 L1118 372 L1123 412"
+                fill="none" stroke="#c9a84c" stroke-width="0.8" opacity="0.17"/>
+
+          <!-- Tree R2  (cx=1180) -->
+          <line pathLength="100" x1="1180" y1="468" x2="1180" y2="450" stroke="#c9a84c" stroke-width="0.8" opacity="0.20"/>
+          <path pathLength="100" d="M1155 465 L1180 450 L1205 465" fill="none" stroke="#c9a84c" stroke-width="1.2" opacity="0.27"/>
+          <path pathLength="100" d="M1161 449 L1180 431 L1199 449" fill="none" stroke="#c9a84c" stroke-width="1.0" opacity="0.24"/>
+          <path pathLength="100" d="M1166 431 L1180 413 L1194 431 M1174 413 L1180 358 L1186 413"
+                fill="none" stroke="#c9a84c" stroke-width="0.8" opacity="0.21"/>
+
+          <!-- Tree R3  (cx=1240, tallest) -->
+          <line pathLength="100" x1="1240" y1="470" x2="1240" y2="447" stroke="#c9a84c" stroke-width="0.9" opacity="0.24"/>
+          <path pathLength="100" d="M1213 466 L1240 447 L1267 466" fill="none" stroke="#c9a84c" stroke-width="1.3" opacity="0.32"/>
+          <path pathLength="100" d="M1219 449 L1240 425 L1261 449" fill="none" stroke="#c9a84c" stroke-width="1.1" opacity="0.28"/>
+          <path pathLength="100" d="M1224 429 L1240 406 L1256 429 M1232 406 L1240 345 L1248 406"
+                fill="none" stroke="#c9a84c" stroke-width="0.9" opacity="0.26"/>
+
+          <!-- Tree R4  (cx=1298) -->
+          <line pathLength="100" x1="1298" y1="470" x2="1298" y2="452" stroke="#c9a84c" stroke-width="0.9" opacity="0.22"/>
+          <path pathLength="100" d="M1272 467 L1298 452 L1324 467" fill="none" stroke="#c9a84c" stroke-width="1.3" opacity="0.30"/>
+          <path pathLength="100" d="M1278 450 L1298 434 L1318 450" fill="none" stroke="#c9a84c" stroke-width="1.1" opacity="0.26"/>
+          <path pathLength="100" d="M1283 434 L1298 418 L1313 434 M1292 418 L1298 368 L1304 418"
+                fill="none" stroke="#c9a84c" stroke-width="0.9" opacity="0.23"/>
+        </g>
+
+        <!-- ═══ SACRED HILL — the mountain the cathedral crowns ═══ -->
+        <g class="draw-cathedral-mountain">
+          <!-- Main mountain silhouette — primary ridge -->
+          <path pathLength="100"
+                d="M0 900 L80 800 Q200 718 360 648 Q480 596 570 554
+                   Q620 526 660 500 Q680 484 700 455
+                   Q720 484 740 500 Q780 526 830 554
+                   Q920 596 1040 648 Q1200 718 1320 800 L1400 900"
+                fill="none" stroke="#c9a84c" stroke-width="1.1" opacity="0.38"
+                stroke-linejoin="round" stroke-linecap="round"/>
+          <!-- Secondary contour — inner ridge, slightly lower -->
+          <path pathLength="100"
+                d="M0 900 L130 848 Q270 778 430 710 Q540 658 630 618
+                   Q665 600 700 590
+                   Q735 600 770 618 Q860 658 970 710
+                   Q1130 778 1270 848 L1400 900"
+                fill="none" stroke="#c9a84c" stroke-width="0.62" opacity="0.17"
+                stroke-linejoin="round"/>
+          <!-- Rocky facets — left flank (engraving depth lines) -->
+          <path pathLength="100"
+                d="M360 648 L386 668 L414 656
+                   M480 596 L504 614 L530 604
+                   M570 554 L590 568 L612 560"
+                fill="none" stroke="#c9a84c" stroke-width="0.40" opacity="0.15"
+                stroke-linejoin="round" stroke-linecap="round"/>
+          <!-- Rocky facets — right flank (mirror) -->
+          <path pathLength="100"
+                d="M1040 648 L1014 668 L986 656
+                   M920 596 L896 614 L870 604
+                   M830 554 L810 568 L788 560"
+                fill="none" stroke="#c9a84c" stroke-width="0.40" opacity="0.15"
+                stroke-linejoin="round" stroke-linecap="round"/>
+          <!-- Ground plane at base of mountain -->
+          <path pathLength="100"
+                d="M0 872 Q300 856 500 862 Q600 858 700 860
+                   Q800 858 900 862 Q1100 856 1400 872"
+                fill="none" stroke="#c9a84c" stroke-width="0.42" opacity="0.10"
+                stroke-linecap="round"/>
+          <!-- Camino descent — left arm going down the mountain slope -->
+          <path pathLength="100"
+                d="M0 840 Q100 808 220 768 Q340 728 458 688
+                   Q540 660 606 636 Q650 620 686 606"
+                fill="none" stroke="#c9a84c" stroke-width="0.82" opacity="0.14"
+                stroke-linecap="round"/>
+          <!-- Camino descent — right arm (mirror) -->
+          <path pathLength="100"
+                d="M1400 840 Q1300 808 1180 768 Q1060 728 942 688
+                   Q860 660 794 636 Q750 620 714 606"
+                fill="none" stroke="#c9a84c" stroke-width="0.82" opacity="0.14"
+                stroke-linecap="round"/>
+        </g>
+
+        <!-- ═══ GROUND DETAIL — road texture, verge & Camino milestones ═══ -->
+        <g class="draw-ground-detail">
+
+          <!-- Road foreground bands — the Camino continues toward viewer -->
+          <path pathLength="100"
+                d="M440 498 Q570 494 700 496 Q830 494 960 498"
+                fill="none" stroke="#c9a84c" stroke-width="0.50" opacity="0.13"
+                stroke-linecap="round"/>
+          <path pathLength="100"
+                d="M360 514 Q530 509 700 511 Q870 509 1040 514"
+                fill="none" stroke="#c9a84c" stroke-width="0.44" opacity="0.11"
+                stroke-linecap="round"/>
+          <path pathLength="100"
+                d="M270 533 Q490 527 700 529 Q910 527 1130 533"
+                fill="none" stroke="#c9a84c" stroke-width="0.38" opacity="0.09"
+                stroke-linecap="round"/>
+          <path pathLength="100"
+                d="M160 554 Q430 548 700 550 Q970 548 1240 554"
+                fill="none" stroke="#c9a84c" stroke-width="0.32" opacity="0.07"
+                stroke-linecap="round"/>
+          <path pathLength="100"
+                d="M60 576 Q380 570 700 572 Q1020 570 1340 576"
+                fill="none" stroke="#c9a84c" stroke-width="0.26" opacity="0.06"
+                stroke-linecap="round"/>
+
+          <!-- Road stone joints — short cross-marks suggesting paving -->
+          <path pathLength="100"
+                d="M556 499 L568 499 M588 498 L600 498 M620 498 L632 498
+                   M648 497 L660 497 M672 497 L684 497
+                   M716 497 L728 497 M740 497 L752 497
+                   M768 497 L780 498 M800 498 L812 498 M832 498 L844 499"
+                fill="none" stroke="#c9a84c" stroke-width="0.38" opacity="0.11"
+                stroke-linecap="round"/>
+          <path pathLength="100"
+                d="M610 505 L624 505 M638 504 L652 504 M666 504 L680 504
+                   M720 504 L734 504 M748 503 L762 503 M776 503 L790 504"
+                fill="none" stroke="#c9a84c" stroke-width="0.35" opacity="0.10"
+                stroke-linecap="round"/>
+
+          <!-- Verge grass tufts — LEFT side (x 335–530, y 470–492) -->
+          <path pathLength="100"
+                d="M338 492 L336 481 M345 491 L349 479
+                   M357 490 L356 481 M368 489 L372 478
+                   M382 488 L380 479 M395 488 L399 476
+                   M410 487 L408 477 M424 486 L428 474
+                   M440 485 L438 476 M454 484 L459 472
+                   M470 483 L468 474 M485 482 L490 470
+                   M502 481 L500 473 M517 480 L522 468
+                   M530 479 L527 472"
+                fill="none" stroke="#c9a84c" stroke-width="0.62" opacity="0.21"
+                stroke-linecap="round"/>
+
+          <!-- Verge grass tufts — RIGHT side (x 870–1065, y 470–492) -->
+          <path pathLength="100"
+                d="M1062 492 L1064 481 M1055 491 L1051 479
+                   M1043 490 L1044 481 M1032 489 L1028 478
+                   M1018 488 L1020 479 M1005 488 L1001 476
+                   M990 487 L992 477 M976 486 L972 474
+                   M960 485 L962 476 M946 484 L941 472
+                   M930 483 L932 474 M915 482 L910 470
+                   M898 481 L900 473 M883 480 L878 468
+                   M870 479 L873 472"
+                fill="none" stroke="#c9a84c" stroke-width="0.62" opacity="0.21"
+                stroke-linecap="round"/>
+
+          <!-- Milestone stone LEFT — Hito del Camino de Santiago -->
+          <path pathLength="100"
+                d="M458 482 L458 464 Q458 460 462 459 L471 459 Q475 460 475 464 L475 482"
+                fill="none" stroke="#c9a84c" stroke-width="0.72" opacity="0.38"
+                stroke-linejoin="round" stroke-linecap="round"/>
+          <path pathLength="100" d="M460 462 Q466 456 474 462"
+                fill="none" stroke="#c9a84c" stroke-width="0.58" opacity="0.30" stroke-linecap="round"/>
+          <path pathLength="100" d="M455 482 L478 482"
+                fill="none" stroke="#c9a84c" stroke-width="0.50" opacity="0.25" stroke-linecap="round"/>
+
+          <!-- Milestone stone RIGHT — Hito del Camino de Santiago (mirror) -->
+          <path pathLength="100"
+                d="M925 482 L925 464 Q925 460 929 459 L938 459 Q942 460 942 464 L942 482"
+                fill="none" stroke="#c9a84c" stroke-width="0.72" opacity="0.38"
+                stroke-linejoin="round" stroke-linecap="round"/>
+          <path pathLength="100" d="M927 462 Q933 456 941 462"
+                fill="none" stroke="#c9a84c" stroke-width="0.58" opacity="0.30" stroke-linecap="round"/>
+          <path pathLength="100" d="M922 482 L945 482"
+                fill="none" stroke="#c9a84c" stroke-width="0.50" opacity="0.25" stroke-linecap="round"/>
+
+        </g>
+
+        <!-- ═══════════════════════════════════════════════════════════
+             CATEDRAL DE SANTIAGO DE COMPOSTELA
+             Fachada del Obradoiro — linework sketch, gold
+             Torres: x 521–614 (L) / 786–879 (R) — tops at y ≈ 35
+             Central facade: x 614–786 — top at y ≈ 215
+             Grand staircase: x 422–978 at base
+        ═══════════════════════════════════════════════════════════ -->
+
+        <!-- ── Stage 4: Grand staircase (escalinata) + tower bases ── -->
+        <g class="draw-cathedral-base">
+          <!-- Escalinata outer silhouette -->
+          <path pathLength="100"
+                d="M422 492 L521 450 L879 450 L978 492"
+                fill="none" stroke="#c9a84c" stroke-width="1.0" opacity="0.55"/>
+          <!-- Step lines (descending toward viewer) -->
+          <path pathLength="100"
+                d="M432 492 L527 455 L873 455 L968 492
+                   M443 492 L533 460 L867 460 L957 492
+                   M454 492 L539 465 L861 465 L946 492
+                   M465 492 L545 469 L855 469 L935 492"
+                fill="none" stroke="#c9a84c" stroke-width="0.4" opacity="0.28"/>
+          <!-- Tower plinths left + right -->
+          <path pathLength="100"
+                d="M521 492 L521 450 L614 450 L614 492"
+                fill="none" stroke="#c9a84c" stroke-width="0.7" opacity="0.48"/>
+          <path pathLength="100"
+                d="M786 492 L786 450 L879 450 L879 492"
+                fill="none" stroke="#c9a84c" stroke-width="0.7" opacity="0.48"/>
+          <!-- Central facade ground floor + pilasters -->
+          <path pathLength="100"
+                d="M614 450 L786 450 M638 492 L638 450 M762 492 L762 450"
+                fill="none" stroke="#c9a84c" stroke-width="0.5" opacity="0.38"/>
+          <!-- Faint halo behind cathedral -->
+          <circle pathLength="100" cx="700" cy="310" r="128" fill="none" stroke="#c9a84c" stroke-width="0.4" opacity="0.06"/>
+        </g>
+
+        <!-- ── Stage 5: Tower bodies — Level 1 (y 450→355) + Level 2 (y 355→262) ── -->
+        <g class="draw-towers-base">
+          <!-- LEFT outer wall -->
+          <path pathLength="100"
+                d="M521 450 L521 355 L524 355 L524 262 L527 262"
+                fill="none" stroke="#c9a84c" stroke-width="0.85" opacity="0.58"/>
+          <!-- LEFT inner wall -->
+          <path pathLength="100"
+                d="M614 450 L614 355 L611 355 L611 262 L608 262"
+                fill="none" stroke="#c9a84c" stroke-width="0.85" opacity="0.58"/>
+          <!-- LEFT cornices (horizontal stage divisions) -->
+          <path pathLength="100"
+                d="M521 355 L614 355 M524 262 L611 262"
+                fill="none" stroke="#c9a84c" stroke-width="0.55" opacity="0.46"/>
+          <!-- LEFT Level-1 arched windows (2) -->
+          <path pathLength="100"
+                d="M536 422 L536 385 Q536 369 549 369 Q562 369 562 385 L562 422
+                   M574 422 L574 385 Q574 369 587 369 Q600 369 600 385 L600 422"
+                fill="none" stroke="#c9a84c" stroke-width="0.6" opacity="0.44"/>
+          <!-- LEFT Level-2 arched windows (2) -->
+          <path pathLength="100"
+                d="M533 340 L533 308 Q533 293 547 293 Q561 293 561 308 L561 340
+                   M571 340 L571 308 Q571 293 585 293 Q599 293 599 308 L599 340"
+                fill="none" stroke="#c9a84c" stroke-width="0.6" opacity="0.44"/>
+          <!-- RIGHT outer wall (mirror: 521→879, 524→876, 527→873) -->
+          <path pathLength="100"
+                d="M879 450 L879 355 L876 355 L876 262 L873 262"
+                fill="none" stroke="#c9a84c" stroke-width="0.85" opacity="0.58"/>
+          <!-- RIGHT inner wall (614→786, 611→789, 608→792) -->
+          <path pathLength="100"
+                d="M786 450 L786 355 L789 355 L789 262 L792 262"
+                fill="none" stroke="#c9a84c" stroke-width="0.85" opacity="0.58"/>
+          <!-- RIGHT cornices -->
+          <path pathLength="100"
+                d="M786 355 L879 355 M789 262 L876 262"
+                fill="none" stroke="#c9a84c" stroke-width="0.55" opacity="0.46"/>
+          <!-- RIGHT Level-1 windows (536→864, 562→838, 574→826, 600→800) -->
+          <path pathLength="100"
+                d="M800 422 L800 385 Q800 369 813 369 Q826 369 826 385 L826 422
+                   M838 422 L838 385 Q838 369 851 369 Q864 369 864 385 L864 422"
+                fill="none" stroke="#c9a84c" stroke-width="0.6" opacity="0.44"/>
+          <!-- RIGHT Level-2 windows -->
+          <path pathLength="100"
+                d="M801 340 L801 308 Q801 293 815 293 Q829 293 829 308 L829 340
+                   M839 340 L839 308 Q839 293 853 293 Q867 293 867 308 L867 340"
+                fill="none" stroke="#c9a84c" stroke-width="0.6" opacity="0.44"/>
+        </g>
+
+        <!-- ── Stage 6: Central facade — portal, niche, oculus, gable ── -->
+        <g class="draw-facade">
+          <!-- Facade side walls to upper roofline -->
+          <path pathLength="100"
+                d="M614 492 L614 262 M786 492 L786 262"
+                fill="none" stroke="#c9a84c" stroke-width="0.65" opacity="0.52"/>
+          <!-- Horizontal divisions matching tower stages -->
+          <path pathLength="100"
+                d="M614 355 L786 355 M614 262 L786 262"
+                fill="none" stroke="#c9a84c" stroke-width="0.45" opacity="0.38"/>
+          <!-- MAIN PORTAL: outer arch (Portico de la Gloria) -->
+          <path pathLength="100"
+                d="M645 492 L645 386 Q645 352 700 352 Q755 352 755 386 L755 492"
+                fill="none" stroke="#c9a84c" stroke-width="0.80" opacity="0.58"/>
+          <!-- Main portal: inner door arch -->
+          <path pathLength="100"
+                d="M660 492 L660 392 Q660 366 700 366 Q740 366 740 392 L740 492"
+                fill="none" stroke="#c9a84c" stroke-width="0.55" opacity="0.46"/>
+          <!-- Portal mullion + horizontal rail -->
+          <path pathLength="100"
+                d="M700 492 L700 366 M645 425 L755 425"
+                fill="none" stroke="#c9a84c" stroke-width="0.40" opacity="0.32"/>
+          <!-- UPPER NICHE / window -->
+          <path pathLength="100"
+                d="M670 350 L670 310 Q670 287 700 287 Q730 287 730 310 L730 350"
+                fill="none" stroke="#c9a84c" stroke-width="0.65" opacity="0.50"/>
+          <!-- Oculus (circular window above niche) -->
+          <path pathLength="100"
+                d="M684 277 Q684 258 700 258 Q716 258 716 277 Q716 296 700 296 Q684 296 684 277"
+                fill="none" stroke="#c9a84c" stroke-width="0.60" opacity="0.44"/>
+          <!-- Pointed gable / pediment connecting towers -->
+          <path pathLength="100"
+                d="M614 262 L700 215 L786 262"
+                fill="none" stroke="#c9a84c" stroke-width="0.68" opacity="0.52"/>
+          <!-- Facade outer pilasters -->
+          <path pathLength="100"
+                d="M636 492 L636 355 M764 492 L764 355"
+                fill="none" stroke="#c9a84c" stroke-width="0.35" opacity="0.25"/>
+        </g>
+
+        <!-- ── Stage 7: Tower upper — Level 3 belfry (y 262→185) + Level 4 (y 185→120) ── -->
+        <g class="draw-towers-upper">
+          <!-- LEFT Level-3 outer/inner edges (inset 3px each stage) -->
+          <path pathLength="100"
+                d="M527 262 L527 185 L530 185 L530 120 L533 120"
+                fill="none" stroke="#c9a84c" stroke-width="0.85" opacity="0.58"/>
+          <path pathLength="100"
+                d="M608 262 L608 185 L605 185 L605 120 L602 120"
+                fill="none" stroke="#c9a84c" stroke-width="0.85" opacity="0.58"/>
+          <!-- LEFT upper cornices -->
+          <path pathLength="100"
+                d="M527 185 L608 185 M530 120 L605 120"
+                fill="none" stroke="#c9a84c" stroke-width="0.55" opacity="0.46"/>
+          <!-- LEFT belfry arches (Level 3, large open) -->
+          <path pathLength="100"
+                d="M534 250 L534 212 Q534 196 548 196 Q562 196 562 212 L562 250
+                   M570 250 L570 212 Q570 196 584 196 Q598 196 598 212 L598 250"
+                fill="none" stroke="#c9a84c" stroke-width="0.68" opacity="0.50"/>
+          <!-- LEFT Level-4 windows -->
+          <path pathLength="100"
+                d="M537 176 L537 147 Q537 133 550 133 Q563 133 563 147 L563 176
+                   M572 176 L572 147 Q572 133 585 133 Q598 133 598 147 L598 176"
+                fill="none" stroke="#c9a84c" stroke-width="0.58" opacity="0.44"/>
+          <!-- RIGHT mirrors -->
+          <path pathLength="100"
+                d="M873 262 L873 185 L870 185 L870 120 L867 120"
+                fill="none" stroke="#c9a84c" stroke-width="0.85" opacity="0.58"/>
+          <path pathLength="100"
+                d="M792 262 L792 185 L795 185 L795 120 L798 120"
+                fill="none" stroke="#c9a84c" stroke-width="0.85" opacity="0.58"/>
+          <path pathLength="100"
+                d="M792 185 L873 185 M795 120 L870 120"
+                fill="none" stroke="#c9a84c" stroke-width="0.55" opacity="0.46"/>
+          <!-- RIGHT belfry arches (534→866, 562→838, 570→830, 598→802) -->
+          <path pathLength="100"
+                d="M802 250 L802 212 Q802 196 816 196 Q830 196 830 212 L830 250
+                   M838 250 L838 212 Q838 196 852 196 Q866 196 866 212 L866 250"
+                fill="none" stroke="#c9a84c" stroke-width="0.68" opacity="0.50"/>
+          <path pathLength="100"
+                d="M803 176 L803 147 Q803 133 816 133 Q829 133 829 147 L829 176
+                   M839 176 L839 147 Q839 133 852 133 Q865 133 865 147 L865 176"
+                fill="none" stroke="#c9a84c" stroke-width="0.58" opacity="0.44"/>
+        </g>
+
+        <!-- ── Stage 8: Spires — from Level-4 tops to sky ── -->
+        <g class="draw-spires">
+          <!-- LEFT spire silhouette (base x 533–602 → tip 567, 35) -->
+          <path pathLength="100"
+                d="M533 120 L540 120 L554 76 L567 35 L580 76 L594 120 L602 120"
+                fill="none" stroke="#c9a84c" stroke-width="0.90" opacity="0.65"/>
+          <!-- LEFT spire internal ridge lines (sketch engraving feel) -->
+          <path pathLength="100"
+                d="M546 102 L567 35 L588 102 M552 80 L567 35 L582 80"
+                fill="none" stroke="#c9a84c" stroke-width="0.35" opacity="0.28"/>
+          <!-- RIGHT spire (533→867, 540→860, 554→846, 567→833, 580→820, 594→806, 602→798) -->
+          <path pathLength="100"
+                d="M798 120 L806 120 L820 76 L833 35 L846 76 L860 120 L867 120"
+                fill="none" stroke="#c9a84c" stroke-width="0.90" opacity="0.65"/>
+          <path pathLength="100"
+                d="M812 102 L833 35 L854 102 M818 80 L833 35 L848 80"
+                fill="none" stroke="#c9a84c" stroke-width="0.35" opacity="0.28"/>
+        </g>
+
+        <!-- ── Stage 9: Finials, crosses, decorative stonework ── -->
+        <g class="draw-details">
+          <!-- Left spire cross -->
+          <path pathLength="100"
+                d="M567 35 L567 18 M558 26 L576 26"
+                fill="none" stroke="#c9a84c" stroke-width="0.95" opacity="0.70"/>
+          <!-- Right spire cross -->
+          <path pathLength="100"
+                d="M833 35 L833 18 M824 26 L842 26"
+                fill="none" stroke="#c9a84c" stroke-width="0.95" opacity="0.70"/>
+          <!-- Gable finial cross -->
+          <path pathLength="100"
+                d="M700 215 L700 198 M691 206 L709 206"
+                fill="none" stroke="#c9a84c" stroke-width="0.78" opacity="0.60"/>
+          <!-- Portal arch crown moulding -->
+          <path pathLength="100"
+                d="M642 352 Q700 340 758 352"
+                fill="none" stroke="#c9a84c" stroke-width="0.45" opacity="0.30"/>
+          <!-- Oculus inner wheel (rose window spokes) -->
+          <path pathLength="100"
+                d="M700 258 L700 296 M684 277 L716 277"
+                fill="none" stroke="#c9a84c" stroke-width="0.35" opacity="0.22"/>
+          <!-- Baroque stonework bands on tower bodies -->
+          <path pathLength="100"
+                d="M527 272 L608 272 M527 285 L608 285
+                   M792 272 L873 272 M792 285 L873 285"
+                fill="none" stroke="#c9a84c" stroke-width="0.28" opacity="0.20"/>
+          <!-- Pilaster capitals on central facade -->
+          <path pathLength="100"
+                d="M636 266 L636 255 M764 266 L764 255
+                   M636 358 L636 347 M764 358 L764 347"
+                fill="none" stroke="#c9a84c" stroke-width="0.30" opacity="0.22"/>
+          <!-- Portal keystone block -->
+          <path pathLength="100"
+                d="M695 352 L695 340 L705 340 L705 352"
+                fill="none" stroke="#c9a84c" stroke-width="0.35" opacity="0.25"/>
+        </g>
+
+      </svg>
+    </div>
+
+    <!-- Edge blur layers (cult-ui EdgeBlur pattern) -->
+    <div class="edge-blur edge-blur--bottom" aria-hidden="true"></div>
+
+    <div class="hero__content">
+      <div class="hero__icon-wrap">
+        <svg viewBox="0 0 120 100" fill="none" class="hero__oven-icon">
+          <defs>
+            <linearGradient id="heroFlameA" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0%" stop-color="#CC2200"/>
+              <stop offset="35%" stop-color="#FF5500"/>
+              <stop offset="70%" stop-color="#FF9500"/>
+              <stop offset="100%" stop-color="#FFD040"/>
+            </linearGradient>
+            <linearGradient id="heroFlameB" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0%" stop-color="#FF6B1A"/>
+              <stop offset="60%" stop-color="#FFD020"/>
+              <stop offset="100%" stop-color="#FFF5A0"/>
+            </linearGradient>
+          </defs>
+          <!-- Stone base platform -->
+          <rect x="10" y="78" width="100" height="12" rx="3" fill="#1a1008" stroke="#c9a84c" stroke-width="2" opacity="0.9"/>
+          <line x1="10" y1="86" x2="110" y2="86" stroke="#c9a84c" stroke-width="0.8" opacity="0.28"/>
+          <!-- Oven dome (filled stone) -->
+          <path d="M18 78 Q18 26 60 26 Q102 26 102 78 Z" fill="#1a0e06"/>
+          <!-- Dome outline -->
+          <path d="M18 78 Q18 26 60 26 Q102 26 102 78" fill="none" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- Brick rows on dome -->
+          <path d="M21 64 Q60 57 99 64" stroke="#c9a84c" stroke-width="0.9" opacity="0.28" fill="none"/>
+          <path d="M19 50 Q60 42 101 50" stroke="#c9a84c" stroke-width="0.8" opacity="0.22" fill="none"/>
+          <path d="M23 38 Q60 30 97 38" stroke="#c9a84c" stroke-width="0.7" opacity="0.16" fill="none"/>
+          <!-- Chimney -->
+          <rect x="54" y="17" width="12" height="11" rx="2" fill="#1a0e06" stroke="#c9a84c" stroke-width="1.2" opacity="0.65"/>
+          <!-- Arch opening (dark oven mouth) -->
+          <path d="M38 78 Q38 50 60 50 Q82 50 82 78 Z" fill="#060100"/>
+          <path d="M38 78 Q38 50 60 50 Q82 50 82 78" fill="none" stroke="#c9a84c" stroke-width="1.5" opacity="0.7"/>
+          <!-- Ember glow at base -->
+          <ellipse cx="60" cy="77" rx="19" ry="5" fill="#FF4500" opacity="0.22" class="fire-pulse"/>
+          <!-- Main flame (back layer) -->
+          <path d="M52 73 Q47 56 55 43 Q59 55 67 49 Q62 63 71 65 Q63 73 60 81 Q54 72 49 74Z" fill="url(#heroFlameA)" opacity="0.9" class="flame-anim-1"/>
+          <!-- Inner bright flame -->
+          <path d="M55 75 Q53 64 58 54 Q61 63 66 59 Q63 69 68 71 Q63 77 61 83 Q57 76 53 77Z" fill="url(#heroFlameB)" opacity="0.85" class="flame-anim-2"/>
+          <!-- Bright tip -->
+          <path d="M58 67 Q56 59 61 52 Q63 59 66 56 Q64 64 67 66 Q64 71 62 76 Q59 70 57 71Z" fill="#FFF0A0" opacity="0.65" class="flame-anim-3"/>
+        </svg>
+      </div>
+      <p class="hero__eyebrow">Pizzeria Artesanal · Take Away</p>
+      <h1 class="hero__title">
+        Forno do<br>
+        <em class="hero__glow-text" data-text="Caminho">Caminho</em>
+      </h1>
+      <p class="hero__subtitle">Masa artesanal, horno de leña,<br>sabor que se queda en la memoria.</p>
+      <div class="hero__actions">
+        <a href="#carta" class="btn btn--primary btn--shimmer btn--magnetic">
+          Ver la Carta
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+        <a href="#takeaway" class="btn btn--ghost btn--magnetic">Cómo Pedir</a>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       FEATURES STRIP
+  ═══════════════════════════════════════ -->
+  <section class="features-strip" aria-label="Por qué elegirnos">
+    <div class="container">
+      <div class="features-strip__grid">
+
+        <div class="feature-block" style="--fb-i: 0">
+          <div class="feature-block__icon-wrap">
+            <div class="feature-block__icon-bg" aria-hidden="true"></div>
+            <div class="feature-block__icon-ring" aria-hidden="true"></div>
+            <svg class="feature-block__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M17 8C8 10 5.9 16.17 3.82 19.17L5.71 21 8 18.24C9.6 16.24 11.6 14 15 13l1 4 6-8-5-7-1 4z"/>
+            </svg>
+          </div>
+          <div class="feature-block__body">
+            <span class="feature-block__value">400°</span>
+            <span class="feature-block__label">Horno de Leña</span>
+          </div>
+        </div>
+
+        <div class="feature-sep" aria-hidden="true"></div>
+
+        <div class="feature-block" style="--fb-i: 1">
+          <div class="feature-block__icon-wrap">
+            <div class="feature-block__icon-bg" aria-hidden="true"></div>
+            <div class="feature-block__icon-ring" aria-hidden="true"></div>
+            <svg class="feature-block__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 6v6l4 2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="feature-block__body">
+            <span class="feature-block__value">72 h</span>
+            <span class="feature-block__label">Fermentación lenta</span>
+          </div>
+        </div>
+
+        <div class="feature-sep" aria-hidden="true"></div>
+
+        <div class="feature-block" style="--fb-i: 2">
+          <div class="feature-block__icon-wrap">
+            <div class="feature-block__icon-bg" aria-hidden="true"></div>
+            <div class="feature-block__icon-ring" aria-hidden="true"></div>
+            <svg class="feature-block__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <div class="feature-block__body">
+            <span class="feature-block__value">100%</span>
+            <span class="feature-block__label">Ingredientes naturales</span>
+          </div>
+        </div>
+
+        <div class="feature-sep" aria-hidden="true"></div>
+
+        <div class="feature-block" style="--fb-i: 3">
+          <div class="feature-block__icon-wrap">
+            <div class="feature-block__icon-bg" aria-hidden="true"></div>
+            <div class="feature-block__icon-ring" aria-hidden="true"></div>
+            <svg class="feature-block__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+            </svg>
+          </div>
+          <div class="feature-block__body">
+            <span class="feature-block__value">A mano</span>
+            <span class="feature-block__label">Masa artesanal</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       A NOSSA HISTÓRIA
+  ═══════════════════════════════════════ -->
+  <section class="section historia" id="historia">
+    <div class="container">
+      <div class="historia__inner">
+        <div class="historia__visual reveal-left">
+          <div class="historia__oven-card">
+            <!-- Animated glow from fire -->
+            <div class="historia__fire-glow" aria-hidden="true"></div>
+
+            <!-- Oven SVG — stone dome with realistic fire -->
+            <svg viewBox="0 0 300 260" fill="none" xmlns="http://www.w3.org/2000/svg" class="historia__oven-svg">
+              <defs>
+                <!-- Flame gradients: base=deep red, tip=bright yellow -->
+                <linearGradient id="histFlameA" x1="0" y1="1" x2="0" y2="0">
+                  <stop offset="0%" stop-color="#CC2200"/>
+                  <stop offset="30%" stop-color="#FF4A00"/>
+                  <stop offset="65%" stop-color="#FF9000"/>
+                  <stop offset="100%" stop-color="#FFD020"/>
+                </linearGradient>
+                <linearGradient id="histFlameB" x1="0" y1="1" x2="0" y2="0">
+                  <stop offset="0%" stop-color="#FF5500"/>
+                  <stop offset="50%" stop-color="#FFB020"/>
+                  <stop offset="100%" stop-color="#FFE060"/>
+                </linearGradient>
+                <linearGradient id="histFlameC" x1="0" y1="1" x2="0" y2="0">
+                  <stop offset="0%" stop-color="#FF7700"/>
+                  <stop offset="55%" stop-color="#FFCA30"/>
+                  <stop offset="100%" stop-color="#FFF5A0"/>
+                </linearGradient>
+                <!-- Dome fill — warm dark stone -->
+                <radialGradient id="histDome" cx="50%" cy="75%" r="65%">
+                  <stop offset="0%" stop-color="#241505"/>
+                  <stop offset="100%" stop-color="#0c0803"/>
+                </radialGradient>
+                <!-- Fire light projection inside arch -->
+                <radialGradient id="histFireGlow" cx="50%" cy="95%" r="55%">
+                  <stop offset="0%"   stop-color="#FF5500" stop-opacity="0.28"/>
+                  <stop offset="45%"  stop-color="#FF3300" stop-opacity="0.08"/>
+                  <stop offset="100%" stop-color="#FF2000" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+
+              <!-- Stone base platform -->
+              <rect x="30" y="195" width="240" height="50" rx="4" fill="#1a1008" stroke="#c9a84c" stroke-width="1.8" opacity="0.85"/>
+              <!-- Stone layer lines on base -->
+              <line x1="30" y1="213" x2="270" y2="213" stroke="#c9a84c" stroke-width="0.7" opacity="0.22"/>
+              <line x1="30" y1="228" x2="270" y2="228" stroke="#c9a84c" stroke-width="0.7" opacity="0.15"/>
+              <!-- Vertical joints on base (staggered) -->
+              <line x1="95"  y1="195" x2="95"  y2="213" stroke="#c9a84c" stroke-width="0.6" opacity="0.14"/>
+              <line x1="150" y1="213" x2="150" y2="228" stroke="#c9a84c" stroke-width="0.6" opacity="0.12"/>
+              <line x1="205" y1="195" x2="205" y2="213" stroke="#c9a84c" stroke-width="0.6" opacity="0.14"/>
+              <line x1="65"  y1="213" x2="65"  y2="228" stroke="#c9a84c" stroke-width="0.5" opacity="0.10"/>
+              <line x1="235" y1="213" x2="235" y2="228" stroke="#c9a84c" stroke-width="0.5" opacity="0.10"/>
+
+              <!-- Oven legs -->
+              <rect x="50" y="245" width="14" height="12" rx="2" fill="#1a1008" stroke="#c9a84c" stroke-width="1.2" opacity="0.65"/>
+              <rect x="236" y="245" width="14" height="12" rx="2" fill="#1a1008" stroke="#c9a84c" stroke-width="1.2" opacity="0.65"/>
+
+              <!-- Main dome body (filled stone) -->
+              <path d="M45 195 Q45 70 150 70 Q255 70 255 195 Z" fill="url(#histDome)"/>
+              <!-- Dome outline -->
+              <path d="M45 195 Q45 70 150 70 Q255 70 255 195" fill="none" stroke="#c9a84c" stroke-width="2" opacity="0.9"/>
+
+              <!-- Brick rows (horizontal arcs across dome) -->
+              <path d="M51 178 Q100 170 150 170 Q200 170 249 178" stroke="#c9a84c" stroke-width="0.9" opacity="0.22" fill="none"/>
+              <path d="M48 160 Q100 150 150 150 Q200 150 252 160" stroke="#c9a84c" stroke-width="0.9" opacity="0.19" fill="none"/>
+              <path d="M47 142 Q100 130 150 130 Q200 130 253 142" stroke="#c9a84c" stroke-width="0.8" opacity="0.16" fill="none"/>
+              <path d="M48 124 Q100 111 150 111 Q200 111 252 124" stroke="#c9a84c" stroke-width="0.8" opacity="0.13" fill="none"/>
+              <path d="M51 107 Q100 93 150 91 Q200 93 249 107"  stroke="#c9a84c" stroke-width="0.7" opacity="0.11" fill="none"/>
+              <path d="M57 91  Q100 77 150 75 Q200 77 243 91"   stroke="#c9a84c" stroke-width="0.7" opacity="0.09" fill="none"/>
+
+              <!-- Vertical brick joints (staggered between rows) -->
+              <line x1="100" y1="170" x2="103" y2="150" stroke="#c9a84c" stroke-width="0.6" opacity="0.13"/>
+              <line x1="200" y1="170" x2="197" y2="150" stroke="#c9a84c" stroke-width="0.6" opacity="0.13"/>
+              <line x1="75"  y1="160" x2="77"  y2="142" stroke="#c9a84c" stroke-width="0.5" opacity="0.11"/>
+              <line x1="225" y1="160" x2="223" y2="142" stroke="#c9a84c" stroke-width="0.5" opacity="0.11"/>
+              <line x1="115" y1="150" x2="117" y2="130" stroke="#c9a84c" stroke-width="0.5" opacity="0.10"/>
+              <line x1="185" y1="150" x2="183" y2="130" stroke="#c9a84c" stroke-width="0.5" opacity="0.10"/>
+              <line x1="130" y1="130" x2="131" y2="111" stroke="#c9a84c" stroke-width="0.4" opacity="0.08"/>
+              <line x1="170" y1="130" x2="169" y2="111" stroke="#c9a84c" stroke-width="0.4" opacity="0.08"/>
+
+              <!-- Chimney -->
+              <rect x="137" y="52" width="26" height="20" rx="3" fill="#1a1008" stroke="#c9a84c" stroke-width="1.3" opacity="0.58"/>
+              <rect x="141" y="44" width="18" height="10" rx="2" fill="#1a1008" stroke="#c9a84c" stroke-width="1"   opacity="0.46"/>
+              <!-- Smoke wisps -->
+              <path d="M148 43 Q144 35 147 27 Q151 35 149 27" stroke="#c9a84c" stroke-width="0.8" opacity="0.13" fill="none" stroke-linecap="round"/>
+              <path d="M153 43 Q157 34 154 25"                stroke="#c9a84c" stroke-width="0.7" opacity="0.10" fill="none" stroke-linecap="round"/>
+
+              <!-- Base shelf line -->
+              <line x1="45" y1="195" x2="255" y2="195" stroke="#c9a84c" stroke-width="1.5" opacity="0.55"/>
+
+              <!-- Arch opening (deep dark oven interior) -->
+              <path d="M78 195 Q78 128 150 128 Q222 128 222 195 Z" fill="#050200"/>
+              <path d="M78 195 Q78 128 150 128 Q222 128 222 195" fill="none" stroke="#c9a84c" stroke-width="1.5" opacity="0.72"/>
+
+              <!-- Fire light inside arch -->
+              <path d="M78 195 Q78 128 150 128 Q222 128 222 195 Z" fill="url(#histFireGlow)" class="fire-pulse"/>
+
+              <!-- Hot coals glow at base -->
+              <ellipse cx="150" cy="194" rx="56" ry="8"   fill="#FF3300" opacity="0.12" class="fire-pulse-2"/>
+              <ellipse cx="150" cy="194" rx="32" ry="4.5" fill="#FF6B00" opacity="0.24" class="fire-pulse"/>
+
+              <!-- Flame 1 — back/large (deep red → amber) -->
+              <path d="M132 187 Q125 163 137 145 Q142 160 154 152 Q146 167 160 170 Q150 180 146 193 Q138 181 130 183Z"
+                    fill="url(#histFlameA)" opacity="0.9" class="flame-anim-1"/>
+
+              <!-- Flame 2 — mid (amber → yellow) -->
+              <path d="M141 189 Q137 169 146 154 Q150 167 159 160 Q154 173 165 175 Q156 184 153 194 Q146 184 140 186Z"
+                    fill="url(#histFlameB)" opacity="0.88" class="flame-anim-2"/>
+
+              <!-- Flame 3 — front (yellow → cream tip) -->
+              <path d="M146 191 Q143 176 150 164 Q153 175 158 171 Q155 182 162 184 Q156 190 154 196 Q149 190 144 192Z"
+                    fill="url(#histFlameC)" opacity="0.92" class="flame-anim-3"/>
+
+              <!-- Bright tip highlight -->
+              <path d="M149 177 Q147 168 151 160 Q154 168 157 164 Q155 173 159 175 Q155 179 153 185 Q150 179 147 180Z"
+                    fill="#FFEF90" opacity="0.75" class="flame-anim-2"/>
+            </svg>
+
+            <!-- Stats chips inside the card -->
+            <div class="historia__chips">
+              <div class="historia__chip">
+                <span class="historia__chip-val">400°</span>
+                <span class="historia__chip-lbl">leña</span>
+              </div>
+              <div class="historia__chip">
+                <span class="historia__chip-val">72h</span>
+                <span class="historia__chip-lbl">masa</span>
+              </div>
+              <div class="historia__chip">
+                <span class="historia__chip-val">100%</span>
+                <span class="historia__chip-lbl">fresco</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="historia__content reveal-right">
+          <span class="section__label">Nuestra Historia</span>
+          <h2 class="section__title">Una pizza que cuenta<br><em>la historia del camino</em></h2>
+          <p class="historia__text">
+            Forno do Caminho nació de una pasión sencilla: hacer la pizza como se hacía antes. Masa larga, fermentada con tiempo y paciencia, estirada a mano y cocinada en el calor vivo de nuestro horno de leña.
+          </p>
+          <p class="historia__text">
+            Cada pizza que sale de nuestras manos es un pequeño ritual. Elegimos los ingredientes con cuidado, respetamos el proceso y entregamos el resultado con orgullo.
+          </p>
+          <div class="historia__pillars">
+            <div class="pillar">
+              <span class="pillar__number" data-counter="72" data-suffix="h">72h</span>
+              <span class="pillar__label">de fermentación<br>de la masa</span>
+            </div>
+            <div class="pillar__sep" aria-hidden="true"></div>
+            <div class="pillar">
+              <span class="pillar__number" data-counter="400" data-suffix="°">400°</span>
+              <span class="pillar__label">en el horno<br>de leña</span>
+            </div>
+            <div class="pillar__sep" aria-hidden="true"></div>
+            <div class="pillar">
+              <span class="pillar__number" data-counter="100" data-suffix="%">100%</span>
+              <span class="pillar__label">ingredientes<br>frescos</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gold divider -->
+  <div class="gold-divider" aria-hidden="true">
+    <svg viewBox="0 0 1200 2" preserveAspectRatio="none"><line x1="0" y1="1" x2="1200" y2="1" stroke="url(#goldGrad)" stroke-width="1"/><defs><linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#c9a84c" stop-opacity="0"/><stop offset="30%" stop-color="#c9a84c" stop-opacity="0.4"/><stop offset="50%" stop-color="#e8c97a" stop-opacity="0.8"/><stop offset="70%" stop-color="#c9a84c" stop-opacity="0.4"/><stop offset="100%" stop-color="#c9a84c" stop-opacity="0"/></linearGradient></defs></svg>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       CARTA
+  ═══════════════════════════════════════ -->
+  <section class="section carta" id="carta">
+    <!-- Grain texture overlay -->
+    <div class="section-grain" aria-hidden="true"></div>
+    <div class="container">
+      <div class="section__header reveal-up">
+        <h2 class="section__title">Nuestra Carta</h2>
+        <p class="section__subtitle">Todas las pizzas se preparan al momento con masa artesanal del día.</p>
+      </div>
+
+      <div class="carta__tabs reveal-up">
+        <button class="carta__tab carta__tab--active" data-category="classicas">Clásicas</button>
+        <button class="carta__tab" data-category="especiais">Especiales</button>
+        <button class="carta__tab" data-category="extras">Extras</button>
+      </div>
+
+      <!-- Spotlight cards grid (cult-ui animated-cards pattern) -->
+      <div class="carta__grid animated-cards" id="cartaGrid">
+
+        <div class="carta__item" data-category="classicas">
+          <div class="carta__spotlight" aria-hidden="true"></div>
+          <div class="carta__item-header">
+            <h3 class="carta__item-name">Margherita</h3>
+            <span class="carta__item-price">9,50€</span>
+          </div>
+          <p class="carta__item-desc">Salsa de tomate San Marzano, mozzarella fior di latte, albahaca fresca</p>
+          <span class="carta__item-tag">Vegetariana</span>
+        </div>
+
+        <div class="carta__item" data-category="classicas">
+          <div class="carta__spotlight" aria-hidden="true"></div>
+          <div class="carta__item-header">
+            <h3 class="carta__item-name">Napolitana</h3>
+            <span class="carta__item-price">10,50€</span>
+          </div>
+          <p class="carta__item-desc">Salsa de tomate, mozzarella, anchoas, alcaparras, aceitunas negras, orégano</p>
+        </div>
+
+        <div class="carta__item" data-category="classicas">
+          <div class="carta__spotlight" aria-hidden="true"></div>
+          <div class="carta__item-header">
+            <h3 class="carta__item-name">Prosciutto</h3>
+            <span class="carta__item-price">12,00€</span>
+          </div>
+          <p class="carta__item-desc">Salsa de tomate, mozzarella, jamón crudo, rúcula, parmesano en lascas</p>
+        </div>
+
+        <div class="carta__item" data-category="classicas">
+          <div class="carta__spotlight" aria-hidden="true"></div>
+          <div class="carta__item-header">
+            <h3 class="carta__item-name">Quattro Stagioni</h3>
+            <span class="carta__item-price">13,00€</span>
+          </div>
+          <p class="carta__item-desc">Salsa de tomate, mozzarella, champiñones, jamón, alcachofas y aceitunas</p>
+        </div>
+
+        <div class="carta__item carta__item--hidden" data-category="especiais">
+          <div class="carta__spotlight" aria-hidden="true"></div>
+          <div class="carta__item-header">
+            <h3 class="carta__item-name">Caminho</h3>
+            <span class="carta__item-price">14,50€</span>
+          </div>
+          <p class="carta__item-desc">Nuestra firma. Salsa de tomate, mozzarella, nduja, miel de romero, nuez y rúcula</p>
+          <span class="carta__item-tag carta__item-tag--gold">Chef's Pick</span>
+        </div>
+
+        <div class="carta__item carta__item--hidden" data-category="especiais">
+          <div class="carta__spotlight" aria-hidden="true"></div>
+          <div class="carta__item-header">
+            <h3 class="carta__item-name">Trufada</h3>
+            <span class="carta__item-price">15,50€</span>
+          </div>
+          <p class="carta__item-desc">Base de crema de trufa, mozzarella, setas silvestres, parmesano y aceite trufado</p>
+          <span class="carta__item-tag">Sin tomate</span>
+        </div>
+
+        <div class="carta__item carta__item--hidden" data-category="especiais">
+          <div class="carta__spotlight" aria-hidden="true"></div>
+          <div class="carta__item-header">
+            <h3 class="carta__item-name">Alheira</h3>
+            <span class="carta__item-price">13,50€</span>
+          </div>
+          <p class="carta__item-desc">Salsa de tomate, mozzarella, alheira artesanal, pimiento asado y berza gallega</p>
+          <span class="carta__item-tag">Sabor portugués</span>
+        </div>
+
+        <div class="carta__item carta__item--hidden" data-category="especiais">
+          <div class="carta__spotlight" aria-hidden="true"></div>
+          <div class="carta__item-header">
+            <h3 class="carta__item-name">Burrata</h3>
+            <span class="carta__item-price">15,00€</span>
+          </div>
+          <p class="carta__item-desc">Salsa de tomate cherry, burrata fresca, tomate cherry, albahaca y aceite de oliva virgen extra</p>
+          <span class="carta__item-tag">Vegetariana</span>
+        </div>
+
+        <div class="carta__item carta__item--hidden" data-category="extras">
+          <div class="carta__spotlight" aria-hidden="true"></div>
+          <div class="carta__item-header">
+            <h3 class="carta__item-name">Ingrediente extra</h3>
+            <span class="carta__item-price">1,50€</span>
+          </div>
+          <p class="carta__item-desc">Añade cualquier ingrediente a tu pizza</p>
+        </div>
+
+        <div class="carta__item carta__item--hidden" data-category="extras">
+          <div class="carta__spotlight" aria-hidden="true"></div>
+          <div class="carta__item-header">
+            <h3 class="carta__item-name">Masa sin gluten</h3>
+            <span class="carta__item-price">+2,00€</span>
+          </div>
+          <p class="carta__item-desc">Disponible para todas las pizzas con pedido anticipado</p>
+        </div>
+
+        <div class="carta__item carta__item--hidden" data-category="extras">
+          <div class="carta__spotlight" aria-hidden="true"></div>
+          <div class="carta__item-header">
+            <h3 class="carta__item-name">Bebidas</h3>
+            <span class="carta__item-price">1,50€ — 3,00€</span>
+          </div>
+          <p class="carta__item-desc">Agua, refrescos, cervezas artesanales y vino tinto de la región</p>
+        </div>
+
+      </div>
+
+      <p class="carta__note reveal-up">
+        * Los precios incluyen IVA. Carta sujeta a cambios estacionales.<br>
+        Infórmenos sobre alergias o intolerancias alimentarias.
+      </p>
+    </div>
+  </section>
+
+  <!-- Gold divider -->
+  <div class="gold-divider" aria-hidden="true">
+    <svg viewBox="0 0 1200 2" preserveAspectRatio="none"><line x1="0" y1="1" x2="1200" y2="1" stroke="url(#goldGrad2)" stroke-width="1"/><defs><linearGradient id="goldGrad2" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#c9a84c" stop-opacity="0"/><stop offset="30%" stop-color="#c9a84c" stop-opacity="0.4"/><stop offset="50%" stop-color="#e8c97a" stop-opacity="0.8"/><stop offset="70%" stop-color="#c9a84c" stop-opacity="0.4"/><stop offset="100%" stop-color="#c9a84c" stop-opacity="0"/></linearGradient></defs></svg>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       TAKE AWAY
+  ═══════════════════════════════════════ -->
+  <section class="section takeaway" id="takeaway">
+    <div class="takeaway__radial" aria-hidden="true"></div>
+    <div class="container">
+      <div class="section__header reveal-up">
+        <h2 class="section__title">Take Away<br><em>simple y rápido</em></h2>
+        <p class="section__subtitle">Tu pizza artesanal, lista para llevar en minutos.</p>
+      </div>
+
+      <div class="takeaway__steps">
+        <div class="step reveal-up" style="--delay:0ms; --step-i: 0">
+          <div class="step__number">01</div>
+          <div class="step__icon-wrap">
+            <div class="step__icon-ring" aria-hidden="true"></div>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+          </div>
+          <h3 class="step__title">Llámanos</h3>
+          <p class="step__desc">Llama o envía un mensaje con tu pedido. Dinos la hora a la que quieres venir a recogerlo.</p>
+        </div>
+
+        <div class="step__arrow" aria-hidden="true">
+          <svg viewBox="0 0 80 24" fill="none"><path d="M0 12 Q20 6 40 12 Q60 18 80 12" stroke="#c9a84c" stroke-width="1.5" opacity="0.35"/><path d="M70 7 L80 12 L70 17" stroke="#c9a84c" stroke-width="1.5" opacity="0.35" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+
+        <div class="step reveal-up" style="--delay:100ms; --step-i: 1">
+          <div class="step__number">02</div>
+          <div class="step__icon-wrap">
+            <div class="step__icon-ring" aria-hidden="true"></div>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          </div>
+          <h3 class="step__title">Preparamos</h3>
+          <p class="step__desc">Estiramos la masa, la montamos con ingredientes frescos y va directo al horno de leña.</p>
+        </div>
+
+        <div class="step__arrow" aria-hidden="true">
+          <svg viewBox="0 0 80 24" fill="none"><path d="M0 12 Q20 6 40 12 Q60 18 80 12" stroke="#c9a84c" stroke-width="1.5" opacity="0.35"/><path d="M70 7 L80 12 L70 17" stroke="#c9a84c" stroke-width="1.5" opacity="0.35" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+
+        <div class="step reveal-up" style="--delay:200ms; --step-i: 2">
+          <div class="step__number">03</div>
+          <div class="step__icon-wrap">
+            <div class="step__icon-ring" aria-hidden="true"></div>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+          </div>
+          <h3 class="step__title">Recoges tu pedido</h3>
+          <p class="step__desc">A la hora acordada, tu pizza está calentita y embalada, lista para llevar.</p>
+        </div>
+      </div>
+
+      <div class="takeaway__cta reveal-up">
+        <a href="tel:+351000000000" class="btn btn--primary btn--shimmer btn--large btn--magnetic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" aria-hidden="true"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+          Pedir ahora
+        </a>
+        <p class="takeaway__tel-note">También aceptamos pedidos por WhatsApp</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       LOCALIZAÇÃO
+  ═══════════════════════════════════════ -->
+  <section class="section localizacao" id="localizacao">
+    <div class="section-grain" aria-hidden="true"></div>
+    <div class="container">
+      <div class="localizacao__inner">
+        <div class="localizacao__info reveal-left">
+          <span class="section__label">Dónde estamos</span>
+          <h2 class="section__title">Ven a vernos</h2>
+
+          <div class="info-block">
+            <div class="info-block__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            </div>
+            <div>
+              <h3 class="info-block__title">Dirección</h3>
+              <p class="info-block__text">Calle [Completar]<br>[Ciudad], Portugal</p>
+            </div>
+          </div>
+
+          <div class="info-block">
+            <div class="info-block__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            </div>
+            <div>
+              <h3 class="info-block__title">Horario</h3>
+              <div class="horario">
+                <div class="horario__row">
+                  <span class="horario__dia">Martes — Viernes</span>
+                  <span class="horario__horas">12h00 — 15h00 · 19h00 — 22h30</span>
+                </div>
+                <div class="horario__row">
+                  <span class="horario__dia">Sábado — Domingo</span>
+                  <span class="horario__horas">12h00 — 15h30 · 19h00 — 23h00</span>
+                </div>
+                <div class="horario__row horario__row--closed">
+                  <span class="horario__dia">Lunes</span>
+                  <span class="horario__horas">Cerrado</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-block">
+            <div class="info-block__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+            </div>
+            <div>
+              <h3 class="info-block__title">Contacto</h3>
+              <p class="info-block__text"><a href="tel:+351000000000" class="info-link">+351 000 000 000</a></p>
+              <p class="info-block__text"><a href="mailto:info@fornodocaminho.pt" class="info-link">info@fornodocaminho.pt</a></p>
+            </div>
+          </div>
+
+          <div class="localizacao__social">
+            <a href="#" class="social-link" aria-label="Instagram de Forno do Caminho">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+              <span>Instagram</span>
+            </a>
+            <a href="#" class="social-link" aria-label="Facebook de Forno do Caminho">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+              <span>Facebook</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="localizacao__map reveal-right">
+          <div class="map-card">
+            <div class="map-card__inner">
+              <svg viewBox="0 0 440 300" fill="none" xmlns="http://www.w3.org/2000/svg" class="map-card__svg">
+                <rect width="440" height="300" fill="#141414"/>
+                <!-- Grid lines -->
+                <line x1="0" y1="80" x2="440" y2="80" stroke="#1e1e1e" stroke-width="14"/>
+                <line x1="0" y1="180" x2="440" y2="180" stroke="#1e1e1e" stroke-width="9"/>
+                <line x1="0" y1="240" x2="440" y2="240" stroke="#1e1e1e" stroke-width="6"/>
+                <line x1="160" y1="0" x2="160" y2="300" stroke="#1e1e1e" stroke-width="12"/>
+                <line x1="300" y1="0" x2="300" y2="300" stroke="#1e1e1e" stroke-width="7"/>
+                <line x1="60" y1="0" x2="60" y2="300" stroke="#1e1e1e" stroke-width="5"/>
+                <line x1="380" y1="0" x2="380" y2="300" stroke="#1e1e1e" stroke-width="5"/>
+                <!-- Blocks -->
+                <rect x="170" y="90" width="120" height="80" rx="3" fill="#1e1e1e"/>
+                <rect x="65" y="90" width="85" height="80" rx="3" fill="#1a1a1a"/>
+                <rect x="310" y="190" width="60" height="40" rx="3" fill="#1a1a1a"/>
+                <rect x="170" y="190" width="120" height="40" rx="3" fill="#1a1a1a"/>
+                <!-- Pin pulse -->
+                <circle cx="220" cy="155" r="38" fill="#c9a84c" opacity="0.06"/>
+                <circle cx="220" cy="155" r="24" fill="#c9a84c" opacity="0.1"/>
+                <circle cx="220" cy="155" r="12" fill="#c9a84c" opacity="0.2"/>
+                <path d="M220 132 C228 132 236 140 236 148 C236 161 220 178 220 178 C220 178 204 161 204 148 C204 140 212 132 220 132Z" fill="#c9a84c"/>
+                <circle cx="220" cy="147" r="6" fill="#141414"/>
+              </svg>
+            </div>
+            <div class="map-card__footer">
+              <p class="map-card__note">Mapa interactivo próximamente</p>
+              <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer" class="btn btn--ghost btn--small">Ver en Google Maps</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="footer__glow" aria-hidden="true"></div>
+    <div class="footer__top">
+      <div class="container">
+        <div class="footer__brand-wrap">
+          <svg class="footer__logo-icon" viewBox="0 0 60 50" fill="none">
+            <path d="M10 40 Q10 15 30 15 Q50 15 50 40 Z" fill="#1a0e06"/>
+            <path d="M10 40 Q10 15 30 15 Q50 15 50 40" stroke="#c9a84c" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path d="M5 40 L55 40" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M21 40 Q21 28 30 28 Q39 28 39 40 Z" fill="#060100"/>
+            <path d="M21 40 Q21 28 30 28 Q39 28 39 40" stroke="#c9a84c" stroke-width="1" fill="none" opacity="0.45"/>
+            <path d="M27 37 Q25 30 28 23 Q30 29 33 26 Q31 33 34 34 Q31 38 30 41 Q27 38 25 39Z" fill="#FF6B1A" opacity="0.9"/>
+            <path d="M28 39 Q27 33 30 27 Q32 33 35 30 Q33 37 35 38 Q33 41 31 44 Q28 41 26 42Z" fill="#FFD040" opacity="0.55"/>
+          </svg>
+          <div>
+            <span class="footer__brand">Forno do Caminho</span>
+            <span class="footer__tagline">Pizzeria Artesanal</span>
+          </div>
+        </div>
+        <blockquote class="footer__quote">
+          "Una buena pizza no tiene prisa.<br>Como el camino, se hace paso a paso."
+        </blockquote>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <div class="container">
+        <p>&copy; 2026 Forno do Caminho. Todos los derechos reservados.</p>
+        <div class="footer__legal">
+          <a href="#">Política de Privacidad</a>
+          <a href="#">Términos de Uso</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
