@@ -200,10 +200,10 @@ navLinks.querySelectorAll('.nav__link').forEach(link => {
         ty: oy + (Math.random() - 0.5) * 14,
         x: sx, y: sy,
         progress: 0,
-        /* travel: each particle takes ~0.3–0.6 s to cross */
-        speed: 0.020 + Math.random() * 0.015,
-        /* stagger: full set launches over ~1.5 s */
-        frameDelay: Math.floor(i * 3 + Math.random() * 2),
+        /* travel: each particle takes ~0.4–0.7 s to cross */
+        speed: 0.016 + Math.random() * 0.012,
+        /* stagger: full set launches over ~2 s */
+        frameDelay: Math.floor(i * 4 + Math.random() * 2),
         size: 1.0 + Math.random() * 2.2,
         color: HOT_COLORS[Math.floor(Math.random() * HOT_COLORS.length)],
         /* longer trail = more cinematic streak */
