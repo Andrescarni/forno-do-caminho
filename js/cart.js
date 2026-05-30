@@ -591,4 +591,33 @@ document.getElementById('cartFloatOpen')?.addEventListener('click', () => CartDr
       if (bebida) quickAddBebida(bebida, btn);
     }
   });
+
+  /* ─── Sync carta card states with cart ─── */
+  function syncCartaState(cartItems) {
+    // Sum quantities per menu item id (same pizza can appear multiple times with diff extras)
+    const qty = {};
+    cartItems.forEach(item => {
+      qty[item.id] = (qty[item.id] || 0) + item.quantity;
+    });
+
+    document.querySelectorAll('.carta__item[data-item-id]').forEach(card => {
+      const id    = card.dataset.itemId;
+      const count = qty[id] || 0;
+      const btn   = card.querySelector('.carta__add-btn');
+      if (!btn) return;
+
+      if (count > 0) {
+        card.classList.add('carta__item--in-cart');
+        btn.classList.add('carta__add-btn--added');
+        btn.innerHTML = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13" aria-hidden="true"><path d="M2 8l4 4 8-8"/></svg>En pedido<span class="carta__add-btn__qty">×${count}</span>`;
+      } else {
+        card.classList.remove('carta__item--in-cart');
+        btn.classList.remove('carta__add-btn--added');
+        btn.innerHTML = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13" aria-hidden="true"><path d="M8 2v12M2 8h12"/></svg>Añadir`;
+      }
+    });
+  }
+
+  // Cart.subscribe calls fn immediately with current items, then on every change
+  Cart.subscribe(syncCartaState);
 })();
