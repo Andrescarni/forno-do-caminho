@@ -2368,26 +2368,26 @@ body::after {
 @media (max-width: 680px) and (prefers-reduced-motion: no-preference) {
 
   .svg-ready .draw-mountains-far * {
-    animation: path-draw 1.1s var(--ease-out-expo) 0.0s  forwards;
+    animation: path-draw 0.7s var(--ease-out-expo) 0.0s  forwards;
   }
   .svg-ready .draw-mountains-mid * {
-    animation: path-draw 1.0s var(--ease-out-expo) 0.5s  forwards;
+    animation: path-draw 0.65s var(--ease-out-expo) 0.3s  forwards;
   }
   .svg-ready .draw-mountains-near * {
-    animation: path-draw 0.9s var(--ease-out-expo) 1.0s  forwards;
+    animation: path-draw 0.6s var(--ease-out-expo) 0.65s forwards;
   }
   .svg-ready .draw-camino *:not(.camino-dashes) {
-    animation: path-draw 1.0s var(--ease-out-expo) 1.55s forwards;
+    animation: path-draw 0.65s var(--ease-out-expo) 1.0s  forwards;
   }
   .svg-ready .camino-dashes {
-    animation: camino-dash-fade 0.45s ease-out 2.65s forwards;
+    animation: camino-dash-fade 0.3s ease-out 1.7s  forwards;
   }
   .svg-ready .draw-ground-detail * {
-    animation: path-draw 0.8s var(--ease-out-expo) 1.75s forwards;
+    animation: path-draw 0.5s var(--ease-out-expo) 1.1s  forwards;
   }
   /* Trees: all appear together — stagger invisible on mobile */
   .svg-ready .draw-trees * {
-    animation: path-draw 0.45s var(--ease-out-expo) 2.1s  forwards;
+    animation: path-draw 0.3s var(--ease-out-expo) 1.35s forwards;
   }
   .svg-ready .draw-trees :nth-child(1),  .svg-ready .draw-trees :nth-child(2),
   .svg-ready .draw-trees :nth-child(3),  .svg-ready .draw-trees :nth-child(4),
@@ -2405,28 +2405,28 @@ body::after {
   .svg-ready .draw-trees :nth-child(27), .svg-ready .draw-trees :nth-child(28),
   .svg-ready .draw-trees :nth-child(29), .svg-ready .draw-trees :nth-child(30),
   .svg-ready .draw-trees :nth-child(31), .svg-ready .draw-trees :nth-child(32) {
-    animation-delay: 2.1s;
+    animation-delay: 1.35s;
   }
   .svg-ready .draw-cathedral-mountain * {
-    animation: path-draw 1.0s var(--ease-out-expo) 2.2s  forwards;
+    animation: path-draw 0.65s var(--ease-out-expo) 1.4s  forwards;
   }
   .svg-ready .draw-cathedral-base * {
-    animation: path-draw 0.6s var(--ease-out-expo) 2.5s  forwards;
+    animation: path-draw 0.4s var(--ease-out-expo) 1.6s  forwards;
   }
   .svg-ready .draw-towers-base * {
-    animation: path-draw 0.6s var(--ease-out-expo) 3.0s  forwards;
+    animation: path-draw 0.4s var(--ease-out-expo) 1.95s forwards;
   }
   .svg-ready .draw-facade * {
-    animation: path-draw 0.5s var(--ease-out-expo) 3.3s  forwards;
+    animation: path-draw 0.35s var(--ease-out-expo) 2.15s forwards;
   }
   .svg-ready .draw-towers-upper * {
-    animation: path-draw 0.6s var(--ease-out-expo) 3.6s  forwards;
+    animation: path-draw 0.4s var(--ease-out-expo) 2.3s  forwards;
   }
   .svg-ready .draw-spires * {
-    animation: path-draw 0.45s var(--ease-out-expo) 4.0s  forwards;
+    animation: path-draw 0.3s var(--ease-out-expo) 2.6s  forwards;
   }
   .svg-ready .draw-details * {
-    animation: path-draw 0.45s var(--ease-out-expo) 4.25s forwards;
+    animation: path-draw 0.3s var(--ease-out-expo) 2.76s forwards;
   }
 }
 
