@@ -1,7 +1,7 @@
-{
+﻿{
   "name": "forno-do-caminho",
   "version": "1.0.0",
-  "description": "Pizzeria artesanal take-away — Forno do Caminho",
+  "description": "Pizzeria artesanal take-away — Forno do Camiño",
   "private": true,
   "dependencies": {
     "@supabase/supabase-js": "^2.45.0",

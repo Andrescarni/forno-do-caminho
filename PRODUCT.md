@@ -1,4 +1,4 @@
-# Forno do Caminho — Product Brief
+﻿# Forno do Camiño — Product Brief
 
 ## What this is
 Landing page para una pizzería artesanal de take away ubicada en Portugal. Página única (single-page) con navegación por anclas.
@@ -7,7 +7,7 @@ Landing page para una pizzería artesanal de take away ubicada en Portugal. Pág
 brand — design IS the product. Marketing site, landing page, campaign.
 
 ## Brand identity
-- **Nombre:** Forno do Caminho (Horno del Camino)
+- **Nombre:** Forno do Camiño (Horno del Camino)
 - **Concepto:** Pizzería artesanal con masa fermentada 72h, cocida en horno de leña a 400°. Take away.
 - **Tono:** Artesanal, cálido, con raíces portuguesas e italianas. Auténtico, no pretencioso.
 - **Referencia cultural:** El Camino de Santiago — tradición, esfuerzo, recompensa al final del trayecto.

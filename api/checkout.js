@@ -1,4 +1,4 @@
-// Vercel serverless function — POST /api/checkout
+﻿// Vercel serverless function — POST /api/checkout
 // Creates a Stripe Checkout session from cart items.
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
@@ -63,7 +63,7 @@ module.exports = async function handler(req, res) {
 
       /* Appearance */
       payment_intent_data: {
-        description: `Pedido Forno do Caminho — ${customerName || 'Cliente'}`,
+        description: `Pedido Forno do Camiño — ${customerName || 'Cliente'}`,
       },
     });
 

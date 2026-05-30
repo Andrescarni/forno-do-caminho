@@ -1,4 +1,4 @@
-'use strict';
+﻿'use strict';
 
 /* ════════════════════════════════════════
    MENU DATA
@@ -39,7 +39,7 @@ const MENU = {
     },
     {
       id: 'caminho',
-      name: 'Caminho',
+      name: 'Camiño',
       description: 'Nuestra firma. Salsa de tomate, mozzarella, nduja, miel de romero, nuez y rúcula',
       price: 14.50,
       category: 'especiais',
