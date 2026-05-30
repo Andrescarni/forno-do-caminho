@@ -7,6 +7,24 @@ const isMobile = window.innerWidth <= 680;
 document.documentElement.classList.add('js-loaded');
 
 /* ════════════════════════════════════════
+   FREEZE ENTRANCE ANIMATIONS
+   After hero animations finish, lock them
+   to their final state (opacity:1) so
+   mobile browsers can't replay them when
+   the hero scrolls back into view.
+   Longest: .hero__actions @ 0.78s delay + 0.7s = 1.48s total.
+════════════════════════════════════════ */
+setTimeout(() => {
+  document.querySelectorAll(
+    '.hero__icon-wrap, .hero__eyebrow, .hero__title, .hero__subtitle, .hero__actions'
+  ).forEach(el => {
+    el.style.opacity   = '1';
+    el.style.transform = 'translateY(0)';
+    el.style.animation = 'none';
+  });
+}, 2000);
+
+/* ════════════════════════════════════════
    SCROLL PROGRESS BAR
 ════════════════════════════════════════ */
 const progressBar = document.getElementById('scrollProgress');
