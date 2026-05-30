@@ -1610,6 +1610,31 @@ body::after {
 .draw-details { opacity: 0.52; }
 
 /* ════════════════════════════════════════
+   SCROLL-DRIVEN STATE
+   When JS adds .scroll-driven to the illustration,
+   a single CSS custom property (--undraw-t) controls
+   ALL path offsets — 1 DOM write/frame instead of 100+.
+   !important overrides both CSS animations and inline styles.
+════════════════════════════════════════ */
+.hero__illustration.scroll-driven .draw-mountains-far *,
+.hero__illustration.scroll-driven .draw-mountains-mid *,
+.hero__illustration.scroll-driven .draw-mountains-near *,
+.hero__illustration.scroll-driven .draw-camino *:not(.camino-dashes),
+.hero__illustration.scroll-driven .draw-trees *,
+.hero__illustration.scroll-driven .draw-ground-detail *,
+.hero__illustration.scroll-driven .draw-cathedral-mountain *,
+.hero__illustration.scroll-driven .draw-cathedral-base *,
+.hero__illustration.scroll-driven .draw-towers-base *,
+.hero__illustration.scroll-driven .draw-facade *,
+.hero__illustration.scroll-driven .draw-towers-upper *,
+.hero__illustration.scroll-driven .draw-spires *,
+.hero__illustration.scroll-driven .draw-details * {
+  stroke-dashoffset: var(--undraw-t, 0) !important;
+  animation: none !important;
+  transition: none !important;
+}
+
+/* ════════════════════════════════════════
    SVG ILLUSTRATION — HIDDEN BY DEFAULT
    Paths start invisible regardless of JS.
    Animations triggered by .svg-ready class

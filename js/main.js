@@ -432,8 +432,7 @@ navLinks.querySelectorAll('.nav__link').forEach(link => {
    redraws when the user scrolls back up.
 ════════════════════════════════════════ */
 (function initScrollUndraw() {
-  /* Skip on mobile — modifying strokeDashoffset on 100+ SVG paths per scroll
-     frame causes significant jank on mobile. Illustration stays fully drawn. */
+  /* On mobile: skip — illustration stays fully drawn, no scroll manipulation */
   if (isMobile) return;
 
   const hero  = document.getElementById('inicio');
@@ -442,29 +441,11 @@ navLinks.querySelectorAll('.nav__link').forEach(link => {
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* Collect every drawn child element */
-  const paths = [...illus.querySelectorAll([
-    '.draw-mountains-far *',
-    '.draw-mountains-mid *',
-    '.draw-mountains-near *',
-    '.draw-camino *:not(.camino-dashes)',
-    '.draw-trees *',
-    '.draw-ground-detail *',
-    '.draw-cathedral-mountain *',
-    '.draw-cathedral-base *',
-    '.draw-towers-base *',
-    '.draw-facade *',
-    '.draw-towers-upper *',
-    '.draw-spires *',
-    '.draw-details *',
-  ].join(','))];
+  let ready   = false;
+  let ticking = false;
+  let prevT   = -1;
 
-  let ready        = false;
-  let ticking      = false;
-  let prevT        = -1;
-  let transitioning = false;
-
-  /* Compute scroll t + eased offset at current scroll position */
+  /* Compute scroll progress (0 = top, 1 = hero fully gone) */
   function scrollState() {
     const heroH = hero.offsetHeight;
     const raw   = window.scrollY / heroH;
@@ -473,59 +454,29 @@ navLinks.querySelectorAll('.nav__link').forEach(link => {
     return { t, offset: eased * 100, opacity: 1 - eased * 0.5 };
   }
 
-  /* Take over from the CSS draw animations */
-  function enableScrollControl(early) {
+  /* Switch illustration to CSS-variable-driven mode.
+     ONE setProperty() per scroll frame instead of 100+ individual writes. */
+  function enableScrollControl() {
     if (ready) return;
     ready = true;
 
-    if (!early) {
-      /* Normal path: animations already finished, dashoffset is 0 */
-      paths.forEach(el => {
-        el.style.strokeDashoffset = '0';
-        el.style.animation        = 'none';
-      });
-      return;
-    }
+    /* Apply current scroll position immediately so there's no jump */
+    const { offset, opacity } = scrollState();
+    illus.style.setProperty('--undraw-t', offset);
+    illus.style.opacity = String(opacity);
 
-    /* Early path: user scrolled before animations completed.
-       1. Read each path's current animated position via getComputedStyle.
-       2. Freeze it there (stop animation, write inline style).
-       3. Smooth-transition to the scroll-based target.          */
-    paths.forEach(el => {
-      const cur = parseFloat(getComputedStyle(el).strokeDashoffset);
-      el.style.animation        = 'none';
-      el.style.strokeDashoffset = `${isNaN(cur) ? 0 : Math.max(0, Math.min(100, cur))}`;
-    });
-
-    const { t, offset, opacity } = scrollState();
-    prevT        = t;
-    transitioning = true;
-
-    const TR = 'stroke-dashoffset 0.45s cubic-bezier(0.4, 0, 0.2, 1)';
-    paths.forEach(el => { el.style.transition = TR; });
-    illus.style.transition = 'opacity 0.45s ease-out';
-
-    /* One rAF so the frozen value is painted before the transition starts */
-    requestAnimationFrame(() => {
-      paths.forEach(el => { el.style.strokeDashoffset = `${offset}`; });
-      illus.style.opacity = opacity;
-
-      setTimeout(() => {
-        paths.forEach(el => { el.style.transition = ''; });
-        illus.style.transition = '';
-        transitioning = false;
-      }, 480);
-    });
+    /* Add class AFTER setting variable — paths snap to correct position */
+    illus.classList.add('scroll-driven');
   }
 
   /* svg-ready fires at ~2.3s; last draw animation ends at ~10.8s */
   if (reduceMotion) {
-    enableScrollControl(false);
+    enableScrollControl();
   } else {
-    setTimeout(() => enableScrollControl(false), 11200);
+    setTimeout(enableScrollControl, 11200);
   }
 
-  /* Scroll listener */
+  /* Scroll listener — single rAF gate, 2 DOM writes total */
   window.addEventListener('scroll', () => {
     if (ticking) return;
     ticking = true;
@@ -535,18 +486,16 @@ navLinks.querySelectorAll('.nav__link').forEach(link => {
   function update() {
     ticking = false;
 
-    /* Force-enable if user scrolls before animations complete */
-    if (!ready) { enableScrollControl(true); return; }
-
-    /* While the hand-off transition is running, don't fight it */
-    if (transitioning) return;
+    /* Enable early if user scrolls before animations complete */
+    if (!ready) { enableScrollControl(); return; }
 
     const { t, offset, opacity } = scrollState();
     if (t === prevT) return;
     prevT = t;
 
-    paths.forEach(el => { el.style.strokeDashoffset = offset; });
-    illus.style.opacity = opacity;
+    /* 2 writes instead of 100+ — the CSS engine does the rest */
+    illus.style.setProperty('--undraw-t', offset);
+    illus.style.opacity = String(opacity);
   }
 })();
 
