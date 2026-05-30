@@ -1134,15 +1134,15 @@ body::after {
    RESPONSIVE
 ════════════════════════════════════════ */
 @media (max-width: 960px) {
-  /* ── Hero: pull content to top so the illustration shows below ── */
+  /* ── Hero: center content vertically on tablet ── */
   .hero {
-    align-items: flex-start;
-    padding-top: 5.5rem;
-    padding-bottom: 0;
+    align-items: center;
+    padding-top: 7rem;
+    padding-bottom: 5rem;
   }
   .hero__content {
     width: 100%;
-    padding-bottom: 2rem;
+    padding-bottom: 0;
   }
   .hero__glow {
     width: min(920px, 100%);
