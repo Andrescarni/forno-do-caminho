@@ -1,5 +1,8 @@
 'use strict';
 
+/* Mobile detection — used to scale down expensive effects */
+const isMobile = window.innerWidth <= 680;
+
 /* JS-loaded class — used by CSS to enable reveal animations only when JS runs */
 document.documentElement.classList.add('js-loaded');
 
@@ -112,6 +115,7 @@ navLinks.querySelectorAll('.nav__link').forEach(link => {
   let   flashRing = null;
   let   fireGlow  = null;
   let   ignited   = false;
+  let   _animPaused = false; /* paused when hero scrolls out of view */
 
   function spawnSpark(ox, oy) {
     const angle   = Math.random() * Math.PI * 2;
@@ -181,7 +185,7 @@ navLinks.querySelectorAll('.nav__link').forEach(link => {
      28 embers arrive one by one over ~8 s.
      Ignition fires when 80 % have arrived.
   ════════════════════════════════════════ */
-  const CONV_N  = 28;
+  const CONV_N  = isMobile ? 8 : 28;
   const conv    = [];
   let   convDone = 0;
 
@@ -217,7 +221,7 @@ navLinks.querySelectorAll('.nav__link').forEach(link => {
   /* ════════════════════════════════════════
      AMBIENT EMBERS — continuous, very subtle
   ════════════════════════════════════════ */
-  const MAX = 38;
+  const MAX = isMobile ? 12 : 38;
   function spawnEmber(randomY) {
     const cx = Math.random() * canvas.width;
     const cy = randomY
@@ -242,6 +246,8 @@ navLinks.querySelectorAll('.nav__link').forEach(link => {
      MAIN LOOP
   ════════════════════════════════════════ */
   function tick() {
+    /* Skip all drawing when hero is off-screen — saves 60fps on mobile */
+    if (_animPaused) { requestAnimationFrame(tick); return; }
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     /* ── 1. Converging streaks → oven ── */
@@ -276,7 +282,7 @@ navLinks.querySelectorAll('.nav__link').forEach(link => {
         const tf = i / p.trail.length;
         ctx.globalAlpha = tf * alpha * 0.5;
         ctx.shadowColor = `rgb(${cr},${cg},${cb})`;
-        ctx.shadowBlur  = p.size * 4;
+        ctx.shadowBlur  = isMobile ? 0 : p.size * 4;
         ctx.strokeStyle = `rgb(${cr},${cg},${cb})`;
         ctx.lineWidth   = p.size * tf * 0.75;
         ctx.beginPath();
@@ -290,7 +296,7 @@ navLinks.querySelectorAll('.nav__link').forEach(link => {
       ctx.save();
       ctx.globalAlpha = alpha;
       ctx.shadowColor = `rgb(${cr},${cg},${cb})`;
-      ctx.shadowBlur  = p.size * 8;
+      ctx.shadowBlur  = isMobile ? 0 : p.size * 8;
       ctx.fillStyle   = `rgb(${cr},${cg},${cb})`;
       ctx.beginPath();
       ctx.arc(p.x, p.y, Math.max(p.size * (1 - eased * 0.5), 0.3), 0, Math.PI * 2);
@@ -335,7 +341,7 @@ navLinks.querySelectorAll('.nav__link').forEach(link => {
       ctx.strokeStyle = 'rgb(255,215,95)';
       ctx.lineWidth   = 2.2 * ft;
       ctx.shadowColor = 'rgb(255,170,30)';
-      ctx.shadowBlur  = 20 * ft;
+      ctx.shadowBlur  = isMobile ? 0 : 20 * ft;
       ctx.beginPath();
       ctx.arc(flashRing.x, flashRing.y, flashRing.r, 0, Math.PI * 2);
       ctx.stroke();
@@ -355,7 +361,7 @@ navLinks.querySelectorAll('.nav__link').forEach(link => {
       ctx.save();
       ctx.globalAlpha = t * 0.92;
       ctx.shadowColor = `rgb(${cr},${cg},${cb})`;
-      ctx.shadowBlur  = s.size * 7;
+      ctx.shadowBlur  = isMobile ? 0 : s.size * 7;
       ctx.fillStyle   = `rgb(${cr},${cg},${cb})`;
       ctx.beginPath();
       ctx.arc(s.x, s.y, Math.max(s.size * t, 0.1), 0, Math.PI * 2);
@@ -380,7 +386,7 @@ navLinks.querySelectorAll('.nav__link').forEach(link => {
       ctx.save();
       ctx.globalAlpha = alpha * 0.34;
       ctx.shadowColor = `rgb(${cr},${cg},${cb})`;
-      ctx.shadowBlur  = r * 3;
+      ctx.shadowBlur  = isMobile ? 0 : r * 3;
       ctx.fillStyle   = `rgb(${cr},${cg},${cb})`;
       ctx.beginPath();
       ctx.arc(p.x, p.y, Math.max(r, 0.1), 0, Math.PI * 2);
@@ -391,6 +397,15 @@ navLinks.querySelectorAll('.nav__link').forEach(link => {
     requestAnimationFrame(tick);
   }
   tick();
+
+  /* Pause the rAF loop when the hero section is fully off-screen.
+     Saves ~60 canvas draw calls/s while the user reads other sections. */
+  const _heroSection = document.getElementById('inicio');
+  if (_heroSection) {
+    new IntersectionObserver(entries => {
+      _animPaused = !entries[0].isIntersecting;
+    }, { rootMargin: '150px 0px 150px 0px', threshold: 0 }).observe(_heroSection);
+  }
 })();
 
 /* ════════════════════════════════════════
@@ -399,6 +414,10 @@ navLinks.querySelectorAll('.nav__link').forEach(link => {
    redraws when the user scrolls back up.
 ════════════════════════════════════════ */
 (function initScrollUndraw() {
+  /* Skip on mobile — modifying strokeDashoffset on 100+ SVG paths per scroll
+     frame causes significant jank on mobile. Illustration stays fully drawn. */
+  if (isMobile) return;
+
   const hero  = document.getElementById('inicio');
   const illus = hero?.querySelector('.hero__illustration');
   if (!hero || !illus) return;
