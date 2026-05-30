@@ -657,5 +657,5 @@ document.querySelectorAll('.btn--magnetic').forEach(btn => {
      Desktop: 2300ms to sync with canvas intro. */
   setTimeout(() => {
     document.documentElement.classList.add('svg-ready');
-  }, isMobile ? 300 : 2300);
+  }, isMobile ? 100 : 2300);
 })();
