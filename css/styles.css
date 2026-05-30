@@ -234,6 +234,19 @@ body::after {
   25%, 100% { transform: translateX(200%); }
 }
 
+.btn--secondary {
+  background: var(--bg-raised);
+  color: var(--cream);
+  border: 1px solid var(--border-h);
+}
+.btn--secondary:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: var(--gold-dim);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(201,168,76,.15);
+}
+
 .btn--ghost {
   background: transparent;
   color: var(--cream);
