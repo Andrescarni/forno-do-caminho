@@ -653,8 +653,9 @@ document.querySelectorAll('.btn--magnetic').forEach(btn => {
     return;
   }
 
-  /* Match original ~2300ms timing so SVG draws at the same moment */
+  /* Mobile: trigger earlier (500ms) so cathedral appears faster.
+     Desktop: 2300ms to sync with canvas intro. */
   setTimeout(() => {
     document.documentElement.classList.add('svg-ready');
-  }, 2300);
+  }, isMobile ? 500 : 2300);
 })();
